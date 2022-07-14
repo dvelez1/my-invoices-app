@@ -18,7 +18,7 @@ export const Customers = () => {
             className="btn btn-primary mt-2"
             onClick={handleUpsertClick}
           >
-            Add New
+            Create New Customer
           </button>
           <table className="table mt-2">
             <thead>
