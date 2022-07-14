@@ -6,6 +6,7 @@ import { CustomersPage } from "./pages/CustomersPage";
 import { ProductsPage } from "./pages/ProductsPage";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { CustomerUpsert } from "./components/Customers/CustomerUpsert";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/customer" element={<CustomersPage />} />
+            <Route path="/customerUpsert" element={<CustomerUpsert />} />
             <Route path="/product" element={<ProductsPage />} />
           </Routes>
   

@@ -1,10 +1,10 @@
-import React from 'react'
+import React from "react";
 
-export const CustomerUpsert = () => {
+export const Home = () => {
   return (
     <>
       <div className="card">
-        <h3 className="card-header">Add/Edit Customer</h3>
+        <h3 className="card-header">Home</h3>
         <div className="card-body">
           <h5 className="card-title">Welcome to the Invoice Application</h5>
           <p className="card-text">
@@ -14,7 +14,5 @@ export const CustomerUpsert = () => {
         </div>
       </div>
     </>
-  )
-}
-
-
+  );
+};
