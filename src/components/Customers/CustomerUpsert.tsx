@@ -12,8 +12,6 @@ export const CustomerUpsert = () => {
       <div className="card">
         <h3 className="card-header">Add/Edit Customer</h3>
         <div className="card-body">
-
-
           <div className="row">
             <div className="col-md-3">
               <label className="form-label">Name</label>
@@ -113,13 +111,20 @@ export const CustomerUpsert = () => {
             </div>
           </div>
 
-          <button
-            type="button"
-            className="btn btn-primary mt-2"
-            onClick={handleUpsertClick}
-          >
-            Cancel
-          </button>
+          <div className="card-footer text-muted">
+            <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button className="btn btn-primary me-md-2" type="button">
+                Save
+              </button>
+              <button
+                className="btn btn-primary"
+                type="button"
+                onClick={handleUpsertClick}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </>
