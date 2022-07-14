@@ -111,7 +111,7 @@ export const CustomerUpsert = () => {
             </div>
           </div>
 
-          <div className="card-footer text-muted">
+          <div className="card-footer text-muted mt-4">
             <div className="d-grid gap-2 d-md-flex justify-content-md-end">
               <button className="btn btn-primary me-md-2" type="button">
                 Save
