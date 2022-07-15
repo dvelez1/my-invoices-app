@@ -9,7 +9,7 @@ export const Customers = () => {
   };
 
   const customers = CustomerApi();
-  console.log("Customer Page", customers)
+  console.log("Customer Page", customers);
 
   return (
     <>
@@ -37,17 +37,32 @@ export const Customers = () => {
                 <th>Action</th>
               </tr>
             </thead>
+
             <tbody>
-              <tr>
-                <th>1</th>
-                <td>Dennis Vélez</td>
-                <td>Carr 116</td>
-                <td></td>
-                <td>Lajas</td>
-                <td>PR</td>
-                <td>00610</td>
-                <td>Edit / Delete</td>
-              </tr>
+              {customers.map(
+                ({
+                  CustomerId,
+                  Name,
+                  FirstName,
+                  LastName,
+                  Addres1,
+                  Address2,
+                  City,
+                  State,
+                  ZipCode,
+                }) => (
+                  <tr key={CustomerId}>
+                    <td>{CustomerId}</td>
+                    <td>{Name + " " + FirstName + " " + LastName}</td>
+                    <td>{Addres1}</td>
+                    <td>{Address2}</td>
+                    <td>{City}</td>
+                    <td>{State}</td>
+                    <td>{ZipCode}</td>
+                    <td>Edit / Delete</td>
+                  </tr>
+                )
+              )}
             </tbody>
           </table>
         </div>
