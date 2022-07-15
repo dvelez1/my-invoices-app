@@ -45,7 +45,7 @@ export const Customers = () => {
                   Name,
                   FirstName,
                   LastName,
-                  Addres1,
+                  Address1,
                   Address2,
                   City,
                   State,
@@ -54,7 +54,7 @@ export const Customers = () => {
                   <tr key={CustomerId}>
                     <td>{CustomerId}</td>
                     <td>{Name + " " + FirstName + " " + LastName}</td>
-                    <td>{Addres1}</td>
+                    <td>{Address1}</td>
                     <td>{Address2}</td>
                     <td>{City}</td>
                     <td>{State}</td>

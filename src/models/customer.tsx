@@ -4,7 +4,7 @@ export interface Customer{
     MiddleName:string,
     FirstName:string,
     LastName:string,
-    Addres1:string,
+    Address1:string,
     Address2:string,
     City:string,
     State:string,
