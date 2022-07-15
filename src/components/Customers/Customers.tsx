@@ -1,11 +1,15 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { CustomerApi } from "../../api/Customers/CustomerApi";
 
 export const Customers = () => {
   const navigate = useNavigate();
   const handleUpsertClick = () => {
     navigate("/customerUpsert");
   };
+
+  const customers = CustomerApi();
+  console.log("Customer Page", customers)
 
   return (
     <>
