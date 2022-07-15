@@ -1,10 +1,56 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useRef, useState } from "react";
+import { useNavigate,useLocation } from "react-router-dom";
+import { createCustomer, updateCustomer } from "../../api/Customers/upsertEvents";
+import { setCustomerInterface } from "../../helper/setCustomerInterface";
+import { Customer } from "../../models/customer";
 
 export const CustomerUpsert = () => {
   const navigate = useNavigate();
   const handleUpsertClick = () => {
     navigate("/customer");
+  };
+
+ 
+  const CustomerId = useRef(0);
+  const Name = useRef<HTMLInputElement | null>(null);
+  const MiddleName = useRef<HTMLInputElement | null>(null);
+  const FirstName = useRef<HTMLInputElement | null>(null);
+  const LastName = useRef<HTMLInputElement | null>(null);
+  const Address1 = useRef<HTMLInputElement | null>(null);
+  const Address2 = useRef<HTMLInputElement | null>(null);
+  const City = useRef<HTMLInputElement | null>(null);
+  const State = useRef<HTMLInputElement | null>(null);
+  const ZipCode = useRef<HTMLInputElement | null>(null);
+
+  const [customer, setCustomer] = useState<Customer>();
+
+  const handleSaveClick = () => {
+    const formData = {
+      CustomerId: 0,
+      Name: String(Name.current?.value),
+      MiddleName: String(MiddleName.current?.value),
+      FirstName: String(FirstName.current?.value),
+      LastName: String(LastName.current?.value),
+      Address1: String(Address1.current?.value),
+      Address2: String(Address2.current?.value),
+      City: String(City.current?.value),
+      State: String(State.current?.value),
+      ZipCode: String(ZipCode.current?.value),
+      StartDate: new Date(),
+      EndDate: null,
+    };
+    setCustomer(setCustomerInterface(formData));
+    var successResponse: boolean = false;
+    if (customer?.CustomerId === 0) {
+      //PUT (Create)
+      successResponse = createCustomer(customer);
+    } else if (customer && customer.CustomerId > 0) {
+      // Post (Update)
+      successResponse = updateCustomer(customer);
+    }
+
+    if (successResponse) alert("success");
+    else alert("fail");
   };
 
   return (
@@ -21,6 +67,7 @@ export const CustomerUpsert = () => {
                 id="name"
                 name="name"
                 placeholder="Name"
+                ref={Name}
               />
             </div>
             <div className="col-md-3">
@@ -31,6 +78,7 @@ export const CustomerUpsert = () => {
                 id="middleName"
                 name="middleName"
                 placeholder="Middle Name"
+                ref={MiddleName}
               />
             </div>
             <div className="col-md-3">
@@ -41,6 +89,7 @@ export const CustomerUpsert = () => {
                 id="firstName"
                 name="firstName"
                 placeholder="First Name"
+                ref={FirstName}
               />
             </div>
             <div className="col-md-3">
@@ -51,10 +100,11 @@ export const CustomerUpsert = () => {
                 id="lastName"
                 name="lastName"
                 placeholder="Last Name"
+                ref={LastName}
               />
             </div>
           </div>
-
+  
           <div className="row mt-2">
             <div className="col-md-6">
               <label className="form-label">Adress 1</label>
@@ -64,6 +114,7 @@ export const CustomerUpsert = () => {
                 id="address1"
                 name="address1"
                 placeholder="Address 1"
+                ref={Address1}
               />
             </div>
             <div className="col-md-6">
@@ -74,6 +125,7 @@ export const CustomerUpsert = () => {
                 id="address2"
                 name="address2"
                 placeholder="Address 2"
+                ref={Address2}
               />
             </div>
           </div>
@@ -87,6 +139,7 @@ export const CustomerUpsert = () => {
                 id="city"
                 name="city"
                 placeholder="City"
+                ref={City}
               />
             </div>
             <div className="col-md-4">
@@ -97,6 +150,7 @@ export const CustomerUpsert = () => {
                 id="state"
                 name="state"
                 placeholder="State"
+                ref={State}
               />
             </div>
             <div className="col-md-4">
@@ -107,13 +161,18 @@ export const CustomerUpsert = () => {
                 id="zip-code"
                 name="zip-code"
                 placeholder="Zip Code"
+                ref={ZipCode}
               />
             </div>
           </div>
 
           <div className="card-footer text-muted mt-4">
             <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-              <button className="btn btn-primary me-md-2" type="button">
+              <button
+                className="btn btn-primary me-md-2"
+                type="button"
+                onClick={handleSaveClick}
+              >
                 Save
               </button>
               <button

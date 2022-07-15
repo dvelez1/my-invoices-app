@@ -10,6 +10,6 @@ export interface Customer{
     State:string,
     ZipCode:string,
     StartDate: Date,
-    EndDate: Date,
+    EndDate: Date | null,
 
 }

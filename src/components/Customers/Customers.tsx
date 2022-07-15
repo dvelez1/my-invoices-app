@@ -2,15 +2,15 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useCustomersGet } from "../../hooks/Customers/useCustomersGet";
 
-
 export const Customers = () => {
   const navigate = useNavigate();
+
+  const customers = useCustomersGet();
+
   const handleUpsertClick = () => {
     navigate("/customerUpsert");
   };
 
-  const customers = useCustomersGet();
-  console.log("Customer Page", customers);
 
   return (
     <>
@@ -60,7 +60,14 @@ export const Customers = () => {
                     <td>{City}</td>
                     <td>{State}</td>
                     <td>{ZipCode}</td>
-                    <td>Edit / Delete</td>
+                    <td>
+                      <button className="btn btn-primary me-md-2" type="button">
+                        Edit
+                      </button>
+                      <button className="btn btn-primary" type="button">
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 )
               )}
