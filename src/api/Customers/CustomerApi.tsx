@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { axiosInterface } from '../../helper/axiosInterface';
+import { axiosInterface } from "../../helper/axiosInterface";
+import { Customer } from "../../models/customer";
+import { Customers } from "../../components/Customers/Customers";
 
 // const instance = axios.create({
 //     baseURL: 'http://localhost:5000/Api/customer',
@@ -10,20 +12,17 @@ import { axiosInterface } from '../../helper/axiosInterface';
 ///getCustomers
 
 export const CustomerApi = () => {
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  
+  useEffect(() => {
+    axiosInterface
+      .get<Customer[]>("customer/getCustomers")
+      .then((response) => {
+        setCustomers(response.data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
-    const [customers, setCustomers] = useState(null);
-
-    useEffect(() => {
-        axiosInterface.get("customer/getCustomers").
-        then((response) => {
-            setCustomers(response.data);
-        });
-      }, []);
-
-
-  return (
-    customers
-  )
-}
-
+  return customers;
+};
 
