@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { CustomerApi } from "../../api/Customers/CustomerApi";
+import { useCustomersGet } from "../../hooks/Customers/useCustomersGet";
+
 
 export const Customers = () => {
   const navigate = useNavigate();
@@ -8,7 +9,7 @@ export const Customers = () => {
     navigate("/customerUpsert");
   };
 
-  const customers = CustomerApi();
+  const customers = useCustomersGet();
   console.log("Customer Page", customers);
 
   return (

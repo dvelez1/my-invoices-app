@@ -11,7 +11,7 @@ import { Customers } from "../../components/Customers/Customers";
 //   });
 ///getCustomers
 
-export const CustomerApi = () => {
+export const useCustomersGet = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
   
   useEffect(() => {
