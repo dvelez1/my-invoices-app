@@ -1,19 +1,21 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {createCustomer , updateCustomer} from "../../api/Customers/upsertEvents";
+import {
+  createCustomer,
+  updateCustomer,
+} from "../../api/Customers/upsertEvents";
 import { setCustomerInterface } from "../../helper/setCustomerInterface";
 import { Customer } from "../../models/customer";
 
 // Data Context
 import { useCustomerDataContext } from "../../context/DataContext";
 
-
 export const CustomerUpsert = () => {
-
   const { setCustomerModel, customerModel } = useCustomerDataContext();
 
   const navigate = useNavigate();
   const handleUpsertClick = () => {
+    setCustomerModel(undefined);
     navigate("/customer");
   };
 
@@ -32,7 +34,7 @@ export const CustomerUpsert = () => {
 
   const handleSaveClick = () => {
     const formData = {
-      CustomerId: 0,
+      CustomerId: customerModel == undefined ? 0 : customerModel.CustomerId,
       Name: String(Name.current?.value),
       MiddleName: String(MiddleName.current?.value),
       FirstName: String(FirstName.current?.value),
