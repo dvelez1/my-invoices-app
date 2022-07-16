@@ -29,7 +29,7 @@ export const CustomerUpsert = () => {
   const City = useRef<HTMLInputElement | null>(null);
   const State = useRef<HTMLInputElement | null>(null);
   const ZipCode = useRef<HTMLInputElement | null>(null);
-
+ 
   const [customer, setCustomer] = useState<Customer>();
 
   const handleSaveClick = () => {
@@ -63,7 +63,7 @@ export const CustomerUpsert = () => {
 
   return (
     <>
-      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+     
       <div className="card">
         <h3 className="card-header">Add/Edit Customer</h3>
         <div className="card-body">
@@ -77,6 +77,7 @@ export const CustomerUpsert = () => {
                 name="name"
                 placeholder="Name"
                 ref={Name}
+                value={customerModel?.Name}
               />
             </div>
             <div className="col-md-3">
@@ -88,6 +89,7 @@ export const CustomerUpsert = () => {
                 name="middleName"
                 placeholder="Middle Name"
                 ref={MiddleName}
+                value={customerModel?.MiddleName}
               />
             </div>
             <div className="col-md-3">
@@ -99,6 +101,7 @@ export const CustomerUpsert = () => {
                 name="firstName"
                 placeholder="First Name"
                 ref={FirstName}
+                value={customerModel?.FirstName}
               />
             </div>
             <div className="col-md-3">
@@ -110,6 +113,7 @@ export const CustomerUpsert = () => {
                 name="lastName"
                 placeholder="Last Name"
                 ref={LastName}
+                value={customerModel?.LastName}
               />
             </div>
           </div>
@@ -124,6 +128,7 @@ export const CustomerUpsert = () => {
                 name="address1"
                 placeholder="Address 1"
                 ref={Address1}
+                value={customerModel?.Address1}
               />
             </div>
             <div className="col-md-6">
@@ -135,6 +140,7 @@ export const CustomerUpsert = () => {
                 name="address2"
                 placeholder="Address 2"
                 ref={Address2}
+                value={customerModel?.Address2}
               />
             </div>
           </div>
@@ -149,6 +155,7 @@ export const CustomerUpsert = () => {
                 name="city"
                 placeholder="City"
                 ref={City}
+                value={customerModel?.City}
               />
             </div>
             <div className="col-md-4">
@@ -160,6 +167,7 @@ export const CustomerUpsert = () => {
                 name="state"
                 placeholder="State"
                 ref={State}
+                value={customerModel?.State}
               />
             </div>
             <div className="col-md-4">
@@ -171,6 +179,7 @@ export const CustomerUpsert = () => {
                 name="zip-code"
                 placeholder="Zip Code"
                 ref={ZipCode}
+                value={customerModel?.ZipCode}
               />
             </div>
           </div>
