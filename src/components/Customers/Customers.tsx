@@ -2,7 +2,12 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useCustomersGet } from "../../hooks/Customers/useCustomersGet";
 
+// Data Context
+import { useCustomerDataContext } from "../../context/DataContext";
+
 export const Customers = () => {
+  const {name, setName} = useCustomerDataContext();
+
   const navigate = useNavigate();
 
   const customers = useCustomersGet();
@@ -11,9 +16,10 @@ export const Customers = () => {
     navigate("/customerUpsert");
   };
 
-
   return (
     <>
+      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+      
       <div className="card">
         <h3 className="card-header">Customers</h3>
         <div className="card-body">

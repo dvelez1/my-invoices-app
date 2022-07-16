@@ -1,16 +1,24 @@
 import React, { useRef, useState } from "react";
-import { useNavigate,useLocation } from "react-router-dom";
-import { createCustomer, updateCustomer } from "../../api/Customers/upsertEvents";
+import { useNavigate } from "react-router-dom";
+import {
+  createCustomer,
+  updateCustomer,
+} from "../../api/Customers/upsertEvents";
 import { setCustomerInterface } from "../../helper/setCustomerInterface";
 import { Customer } from "../../models/customer";
 
+// Data Context
+import { useCustomerDataContext } from "../../context/DataContext";
+
+
 export const CustomerUpsert = () => {
+  const {name, setName} = useCustomerDataContext();
+
   const navigate = useNavigate();
   const handleUpsertClick = () => {
     navigate("/customer");
   };
 
- 
   const CustomerId = useRef(0);
   const Name = useRef<HTMLInputElement | null>(null);
   const MiddleName = useRef<HTMLInputElement | null>(null);
@@ -55,6 +63,7 @@ export const CustomerUpsert = () => {
 
   return (
     <>
+      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
       <div className="card">
         <h3 className="card-header">Add/Edit Customer</h3>
         <div className="card-body">
@@ -104,7 +113,7 @@ export const CustomerUpsert = () => {
               />
             </div>
           </div>
-  
+
           <div className="row mt-2">
             <div className="col-md-6">
               <label className="form-label">Adress 1</label>
