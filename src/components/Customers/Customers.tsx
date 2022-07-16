@@ -5,8 +5,9 @@ import { useCustomersGet } from "../../hooks/Customers/useCustomersGet";
 // Data Context
 import { useCustomerDataContext } from "../../context/DataContext";
 
+
 export const Customers = () => {
-  const {name, setName} = useCustomerDataContext();
+  const {setCustomerModel, customerModel } = useCustomerDataContext();
 
   const navigate = useNavigate();
 
@@ -16,10 +17,17 @@ export const Customers = () => {
     navigate("/customerUpsert");
   };
 
+  function handleEditClick(customerId: Number) {
+    setCustomerModel(
+      customers.filter((obj) => {
+        return obj.CustomerId === customerId;
+      })[0]
+    );
+    if (customerId > 0) handleUpsertClick();
+  }
+
   return (
     <>
-      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
-      
       <div className="card">
         <h3 className="card-header">Customers</h3>
         <div className="card-body">
@@ -67,7 +75,11 @@ export const Customers = () => {
                     <td>{State}</td>
                     <td>{ZipCode}</td>
                     <td>
-                      <button className="btn btn-primary me-md-2" type="button">
+                      <button
+                        className="btn btn-primary me-md-2"
+                        type="button"
+                        onClick={() => handleEditClick(CustomerId)}
+                      >
                         Edit
                       </button>
                       <button className="btn btn-primary" type="button">

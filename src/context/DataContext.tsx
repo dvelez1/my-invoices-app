@@ -1,29 +1,25 @@
 import React, { useState } from "react";
+import { Customer } from "../models/customer";
 
 interface Props {
   children: React.ReactNode;
 }
 
-const dataFixed = {
-  nombre: "Fernando",
-  edad: 35,
-};
-
 type nameDataType = {
-  name: string;
-  setName: React.Dispatch<React.SetStateAction<string>>;
+  customerModel: Customer | undefined;
+  setCustomerModel:React.Dispatch<React.SetStateAction<Customer | undefined>>
 };
 
 const Context = React.createContext<nameDataType>({} as nameDataType);
 
 const CustomerDataProvider: React.FC<Props> = ({ children }) => {
-  const [name, setName] = useState("Dennis");
+  const [customerModel, setCustomerModel] = useState<Customer | undefined>(undefined)
 
   return (
       <Context.Provider
         value={{
-          name,
-          setName,
+          customerModel,
+          setCustomerModel
         }}
       >
         {children}

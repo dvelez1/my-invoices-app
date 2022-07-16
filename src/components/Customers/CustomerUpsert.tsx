@@ -1,9 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  createCustomer,
-  updateCustomer,
-} from "../../api/Customers/upsertEvents";
+import {createCustomer , updateCustomer} from "../../api/Customers/upsertEvents";
 import { setCustomerInterface } from "../../helper/setCustomerInterface";
 import { Customer } from "../../models/customer";
 
@@ -12,7 +9,8 @@ import { useCustomerDataContext } from "../../context/DataContext";
 
 
 export const CustomerUpsert = () => {
-  const {name, setName} = useCustomerDataContext();
+
+  const { setCustomerModel, customerModel } = useCustomerDataContext();
 
   const navigate = useNavigate();
   const handleUpsertClick = () => {
