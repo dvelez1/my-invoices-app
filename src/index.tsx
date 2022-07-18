@@ -1,3 +1,8 @@
+// Boostrap  5 --> npm i bootstrap
+import 'bootstrap/dist/css/bootstrap.min.css';
+// Boostrap Icons --> npm i bootstrap-icons
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';

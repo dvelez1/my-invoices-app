@@ -1,28 +1,29 @@
 import { axiosInterface } from "../../helper/axiosInterface";
 import { Customer } from "../../models/customer";
 
-var result: boolean = false;
+var successResult: boolean = false;
 
-export const createCustomer = (customer: Customer) => {
-  axiosInterface
-    .put("customer/createCustomer", customer)
-    .then((response) => {
-      result = response.data.status === 200;
-    })
-    .catch((error) => console.log(error));
+export const createCustomer = async (customer: Customer): Promise<boolean> => {
+  try {
+    const resp = await axiosInterface.put("customer/createCustomer", customer);
+    successResult = resp.status === 200;
+  } catch (error) {
+    console.error(error);
+  }
 
-  return result;
+  return successResult;
 };
 
 export const updateCustomer = (customer: Customer) => {
-    axiosInterface
+  console.log(customer)
+  axiosInterface
     .post("customer/updateCustomer", customer)
     .then((response) => {
-      result = response.data.status === 200;
+      successResult = response.status === 200 ? true : false;
     })
     .catch((error) => console.log(error));
 
-  return result;
+  return successResult;
 };
 
 // export const deleteCustomer = (customer: Customer) => {};

@@ -1,18 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCustomersGet } from "../../hooks/Customers/useCustomersGet";
 
 // Data Context
 import { useCustomerDataContext } from "../../context/DataContext";
-
+// import useSpinner from "../../helper/useSpinner";
 
 export const Customers = () => {
-  const {setCustomerModel, customerModel } = useCustomerDataContext();
+  //Spinner
+  //const [loading, setLoading] = useState<boolean>(true);
 
-  const navigate = useNavigate();
-
+  const { setCustomerModel, customerModel } = useCustomerDataContext();
   const customers = useCustomersGet();
 
+  //setLoading(false);
+
+  const navigate = useNavigate();
   const handleUpsertClick = () => {
     navigate("/customerUpsert");
   };
@@ -75,23 +78,24 @@ export const Customers = () => {
                     <td>{State}</td>
                     <td>{ZipCode}</td>
                     <td>
-                      <button
-                        className="btn btn-primary me-md-2"
-                        type="button"
-                        onClick={() => handleEditClick(CustomerId)}
-                      >
-                        Edit
-                      </button>
-                      <button className="btn btn-primary" type="button">
-                        Delete
-                      </button>
+                      <span className="me-md-2 ">
+                        <i
+                         title="Edit Customer"
+                          className="bi bi-pencil-square cursor"
+                          style={{ fontSize: 25 }}
+                          onClick={() => handleEditClick(CustomerId)}
+                        ></i>
+                      </span>
+                      <span>
+                        <i title="Delete Customer" className="bi bi-trash cursor" style={{ fontSize: 25 }}></i>
+                      </span>
                     </td>
                   </tr>
                 )
               )}
             </tbody>
           </table>
-        </div>
+            </div>
       </div>
     </>
   );
