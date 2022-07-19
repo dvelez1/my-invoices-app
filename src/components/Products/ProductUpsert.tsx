@@ -11,7 +11,7 @@ import { Product } from "../../models/product";
 import { Loading } from "../../components/shared/Loading";
 
 // Data Context
-// import { useProductDataContext } from "../../context/DataContext";
+ import { useDataContext } from "../../context/DataContext";
 
 // Import Toast components (react-toastify) -> Note: Was implemented a custom solution
 import "react-toastify/dist/ReactToastify.css";
@@ -23,7 +23,9 @@ import { ToastContainerImplementation } from "../shared/ToastContainerImplementa
 
 export const ProductUpsert = () => {
   // Data Context
-  // const { setProductModel, productModel } = useProductDataContext();
+   const { productModel, setProductModel } = useDataContext();
+
+   console.log(productModel)
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -94,7 +96,7 @@ export const ProductUpsert = () => {
                 name="name"
                 placeholder="Name"
                 ref={Name}
-               // defaultValue={customerModel?.Name}
+                defaultValue={productModel?.Name}
               />
             </div>
             <div className="col-md-3">
@@ -106,11 +108,10 @@ export const ProductUpsert = () => {
                 name="middleName"
                 placeholder="Middle Name"
                 ref={Price}
-                //defaultValue={customerModel?.MiddleName}
+                defaultValue={productModel?.Price}
               />
             </div>
           </div>
-
 
           {isLoading && <Loading />}
 
