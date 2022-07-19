@@ -7,12 +7,17 @@ import {
 
 import { Customer } from "../../models/customer";
 
+// Import Spinner
+import { Loading } from "../../components/shared/Loading";
+
 // Data Context
 import { useCustomerDataContext } from "../../context/DataContext";
 
 export const CustomerUpsert = () => {
   const { setCustomerModel, customerModel } = useCustomerDataContext();
+  const [isLoading, setIsLoading] = useState(false);
 
+  // Navigate (Route)
   const navigate = useNavigate();
   const handleUpsertClick = () => {
     setCustomerModel(undefined);
@@ -31,6 +36,9 @@ export const CustomerUpsert = () => {
   const ZipCode = useRef<HTMLInputElement | null>(null);
 
   const handleSaveClick = () => {
+
+    setIsLoading(true);
+
     // Prepare formData for Post/Put
     const formData: Customer = {
       CustomerId: customerModel == undefined ? 0 : customerModel.CustomerId,
@@ -46,18 +54,19 @@ export const CustomerUpsert = () => {
       StartDate: new Date(),
       EndDate: null,
     };
-   
+
     //Insert / Update Operation
     var successResponse: boolean = false;
 
     if (formData.CustomerId === 0) {
       //PUT (Create)
       var successResponse = Boolean(createCustomer(formData));
-   
     } else if (formData.CustomerId > 0) {
       // Post (Update)
       successResponse = updateCustomer(formData);
     }
+
+    setIsLoading(false);
 
     if (successResponse) {
       alert("success");
@@ -147,7 +156,7 @@ export const CustomerUpsert = () => {
               />
             </div>
           </div>
-
+          {isLoading && <Loading />}
           <div className="row mt-2 mb-2">
             <div className="col-md-4">
               <label className="form-label">City</label>

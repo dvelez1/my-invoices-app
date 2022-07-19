@@ -9,8 +9,7 @@ import { useCustomerDataContext } from "../../context/DataContext";
 import {Loading} from "../../components/shared/Loading";
 
 export const Customers = () => {
-  //Spinner
-  //const [loading, setLoading] = useState<boolean>(true);
+
 
   const { setCustomerModel, customerModel } = useCustomerDataContext();
   const { customers, isLoading } = useCustomersGet();
