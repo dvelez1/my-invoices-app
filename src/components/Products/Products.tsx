@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Product } from "../../models/product";
 
 // Data Context
+import { useDataContext } from "../../context/DataContext";
 
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";
@@ -11,14 +12,18 @@ import { useProductsGet } from "../../hooks/Products/useProductsGet";
 
 export const Products = () => {
   // Add DataContext
+  const { productModel, setProductModel } = useDataContext();
 
-  // Add Get
+  // Get Product and execute Loading Spinner
   const { products, isLoading } = useProductsGet();
+
+  // Properties for paging and Search
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
 
   //#region "Methods"
 
+  // Page Redirection
   const navigate = useNavigate();
   const handleUpsertClick = () => {
     navigate("/productUpsert");
@@ -26,11 +31,11 @@ export const Products = () => {
 
   // Redirect to Main Page
   function handleEditClick(productId: Number) {
-    // setCustomerModel(
-    //   customers.filter((obj) => {
-    //     return obj.CustomerId === customerId;
-    //   })[0]
-    // );
+    setProductModel(
+      products.filter((obj) => {
+        return obj.ProductId === productId;
+      })[0]
+    );
     if (productId > 0) handleUpsertClick();
   }
 
