@@ -13,10 +13,19 @@ import { Loading } from "../../components/shared/Loading";
 // Data Context
 import { useCustomerDataContext } from "../../context/DataContext";
 
+// Import Toast components (react-toastify)
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import {
+  successToastTransaction,
+  errorToastTransaction,
+} from "../../helper/toastMessages";
+
 export const CustomerUpsert = () => {
   const { setCustomerModel, customerModel } = useCustomerDataContext();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [successResponse, setSuccessResponse] = useState(false);
 
   // Navigate (Route)
   const navigate = useNavigate();
@@ -56,22 +65,23 @@ export const CustomerUpsert = () => {
     };
 
     //Insert / Update Operation
-    var successResponse: boolean = false;
 
     if (formData.CustomerId === 0) {
       //PUT (Create)
-      var successResponse = Boolean(createCustomer(formData));
+      setSuccessResponse(Boolean(createCustomer(formData)));
     } else if (formData.CustomerId > 0) {
       // Post (Update)
-      successResponse = updateCustomer(formData);
+      setSuccessResponse(Boolean(updateCustomer(formData)));
     }
 
     setIsLoading(false);
 
     if (successResponse) {
       alert("success");
-      handleUpsertClick();
     } else alert("fail");
+
+    successToastTransaction("Success Transaction!");
+    errorToastTransaction("Failed Transaction!");
   };
 
   return (
@@ -214,6 +224,17 @@ export const CustomerUpsert = () => {
               </button>
             </div>
           </div>
+          <ToastContainer
+            position="top-left"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
         </div>
       </div>
     </>
