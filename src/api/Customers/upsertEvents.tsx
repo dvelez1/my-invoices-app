@@ -33,7 +33,6 @@ export const updateCustomer = async (customer: Customer): Promise<boolean> => {
   } catch (error) {
     console.error(error);
   }
-
   return successResult;
 };
 

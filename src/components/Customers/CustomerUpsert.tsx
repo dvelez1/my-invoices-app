@@ -22,17 +22,10 @@ import {
 import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
 
 export const CustomerUpsert = () => {
+  // Data Context
   const { setCustomerModel, customerModel } = useCustomerDataContext();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [successResponse, setSuccessResponse] = useState(false);
-
-  // Navigate (Route)
-  const navigate = useNavigate();
-  const handleUpsertClick = () => {
-    setCustomerModel(undefined);
-    navigate("/customer");
-  };
 
   const CustomerId = useRef(0);
   const Name = useRef<HTMLInputElement | null>(null);
@@ -45,6 +38,16 @@ export const CustomerUpsert = () => {
   const State = useRef<HTMLInputElement | null>(null);
   const ZipCode = useRef<HTMLInputElement | null>(null);
 
+  //#region "Methods"
+
+  // Navigate (Route)
+  const navigate = useNavigate();
+  const handleUpsertClick = () => {
+    setCustomerModel(undefined);
+    navigate("/customer");
+  };
+
+  // Insert/Edit Operation
   const handleSaveClick = () => {
     setIsLoading(true);
 
@@ -67,24 +70,32 @@ export const CustomerUpsert = () => {
     //Insert / Update Operation
     if (formData.CustomerId === 0) {
       //PUT (Create)
-      setSuccessResponse(Boolean(createCustomer(formData)));
+      saveEventResultMessageHandler(Boolean(createCustomer(formData)));
     } else if (formData.CustomerId > 0) {
       // Post (Update)
-      setSuccessResponse(Boolean(updateCustomer(formData)));
+      saveEventResultMessageHandler(Boolean(updateCustomer(formData)));
     }
 
     setIsLoading(false);
 
+  };
+
+  // Method to handle Insert/Update Operation Result Message
+  const saveEventResultMessageHandler = (successResponse: boolean) => {
     if (successResponse) {
       successToastTransaction("Success Transaction!");
       handleUpsertClick();
     } else errorToastTransaction("Failed Transaction!");
   };
 
+  //#endregion "Methods"
+
   return (
     <>
       <div className="card">
-        <h3 className="card-header">{customerModel === undefined ? 'Create Customer' : 'Edit Customer'}</h3>
+        <h3 className="card-header">
+          {customerModel === undefined ? "Create Customer" : "Edit Customer"}
+        </h3>
         <div className="card-body">
           <div className="row">
             <div className="col-md-3">
