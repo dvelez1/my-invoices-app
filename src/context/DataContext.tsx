@@ -29,17 +29,3 @@ const CustomerDataProvider: React.FC<Props> = ({ children }) => {
 
 export default CustomerDataProvider;
 export const useCustomerDataContext = () => React.useContext(Context);
-
-// const Context = React.createContext({});
-
-// const CharacterIdProvider: React.FC<Props> = ({ children }) => {
-//   const [characterId, setCharacterId] = useState(1);
-
-//   return (
-//     <Context.Provider value={{ characterId, setCharacterId }}>
-//       {children}
-//     </Context.Provider>
-//   );
-// };
-
-// export default CharacterIdProvider;

@@ -84,7 +84,7 @@ export const CustomerUpsert = () => {
   return (
     <>
       <div className="card">
-        <h3 className="card-header">Add/Edit Customer</h3>
+        <h3 className="card-header">{customerModel === undefined ? 'Create Customer' : 'Edit Customer'}</h3>
         <div className="card-body">
           <div className="row">
             <div className="col-md-3">
