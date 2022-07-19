@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   createCustomer,
@@ -13,13 +13,13 @@ import { Loading } from "../../components/shared/Loading";
 // Data Context
 import { useCustomerDataContext } from "../../context/DataContext";
 
-// Import Toast components (react-toastify)
-import { ToastContainer, toast } from "react-toastify";
+// Import Toast components (react-toastify) -> Note: Was implemented a custom solution
 import "react-toastify/dist/ReactToastify.css";
 import {
   successToastTransaction,
   errorToastTransaction,
 } from "../../helper/toastMessages";
+import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
 
 export const CustomerUpsert = () => {
   const { setCustomerModel, customerModel } = useCustomerDataContext();
@@ -65,7 +65,6 @@ export const CustomerUpsert = () => {
     };
 
     //Insert / Update Operation
-
     if (formData.CustomerId === 0) {
       //PUT (Create)
       setSuccessResponse(Boolean(createCustomer(formData)));
@@ -77,11 +76,9 @@ export const CustomerUpsert = () => {
     setIsLoading(false);
 
     if (successResponse) {
-      alert("success");
-    } else alert("fail");
-
-    successToastTransaction("Success Transaction!");
-    errorToastTransaction("Failed Transaction!");
+      successToastTransaction("Success Transaction!");
+      handleUpsertClick();
+    } else errorToastTransaction("Failed Transaction!");
   };
 
   return (
@@ -224,17 +221,7 @@ export const CustomerUpsert = () => {
               </button>
             </div>
           </div>
-          <ToastContainer
-            position="top-left"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-          />
+          <ToastContainerImplementation />
         </div>
       </div>
     </>
