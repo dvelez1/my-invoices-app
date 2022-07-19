@@ -35,13 +35,15 @@ export const Customers = () => {
   function handleDeleteClick(customerId: Number) {
     if (customerId > 0) alert("Pending Delete Implementation");
   }
+
+
   //#region "Filtering and Pagination"
   const filteredCustomers = (): Customer[] => {
     if (search.length === 0)
       return customers.slice(currentPage, currentPage + 10);
 
     //Search Input with data
-    const filtered = customers.filter((cust) => cust.Name.includes(search));
+    const filtered = customers.filter((cust) => cust.Name.toLowerCase().includes(search));
     return filtered.slice(currentPage, currentPage + 10);
   };
 
@@ -59,7 +61,7 @@ export const Customers = () => {
 
   const onSearchChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentPage(0);
-    setSearch(target.value);
+    setSearch(target.value.toLowerCase());
   };
 
   //#endregion "Filtering and Pagination"
