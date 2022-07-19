@@ -7,6 +7,7 @@ import { ProductsPage } from "./pages/ProductsPage";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { CustomerUpsert } from "./components/Customers/CustomerUpsert";
+import { ProductUpsert } from "./components/Products/ProductUpsert";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/customer" element={<CustomersPage />} />
             <Route path="/customerUpsert" element={<CustomerUpsert />} />
             <Route path="/product" element={<ProductsPage />} />
+            <Route path="/productUpsert" element={<ProductUpsert />} />
           </Routes>
         </div>
       </BrowserRouter>

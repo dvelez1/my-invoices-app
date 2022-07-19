@@ -7,11 +7,13 @@ import { Product } from "../../models/product";
 
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";
+import { useProductsGet } from "../../hooks/Products/useProductsGet";
 
 export const Products = () => {
   // Add DataContext
 
   // Add Get
+  const { products, isLoading } = useProductsGet();
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
 
@@ -23,35 +25,37 @@ export const Products = () => {
   };
 
   // Redirect to Main Page
-  function handleEditClick(customerId: Number) {
+  function handleEditClick(productId: Number) {
     // setCustomerModel(
     //   customers.filter((obj) => {
     //     return obj.CustomerId === customerId;
     //   })[0]
     // );
-    // if (customerId > 0) handleUpsertClick();
+    if (productId > 0) handleUpsertClick();
   }
 
   //#region "Filtering and Pagination"
-  // const filteredProduct = (): Product[] => {
-  //   if (search.length === 0)
-  //     return products.slice(currentPage, currentPage + 10);
+  const filteredProduct = (): Product[] => {
+    if (search.length === 0)
+      return products.slice(currentPage, currentPage + 10);
 
-  //   //Search Input with data
-  //   const filtered = products.filter((prod) => prod.Name.toLowerCase().includes(search));
-  //   return filtered.slice(currentPage, currentPage + 10);
-  // };
+    //Search Input with data
+    const filtered = products.filter((prod) =>
+      prod.Name.toLowerCase().includes(search)
+    );
+    return filtered.slice(currentPage, currentPage + 10);
+  };
 
   const nextPage = () => {
-    // if (
-    //   products.filter((prod) => prod.Name.includes(search)).length >
-    //   currentPage + 10
-    // )
-    //   setCurrentPage(currentPage + 10);
+    if (
+      products.filter((prod) => prod.Name.includes(search)).length >
+      currentPage + 10
+    )
+      setCurrentPage(currentPage + 10);
   };
 
   const prevPage = () => {
-     if (currentPage > 0) setCurrentPage(currentPage - 10);
+    if (currentPage > 0) setCurrentPage(currentPage - 10);
   };
 
   const onSearchChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,43 +100,25 @@ export const Products = () => {
               </tr>
             </thead>
 
-            {/* <tbody>
-              {filteredCustomers().map(
-                ({
-                  CustomerId,
-                  Name,
-                  FirstName,
-                  LastName,
-                  Address1,
-                  Address2,
-                  City,
-                  State,
-                  ZipCode,
-                }) => (
-                  <tr key={CustomerId}>
-                    <td>{CustomerId}</td>
-                    <td>{Name + " " + FirstName + " " + LastName}</td>
-                    <td>{Address1}</td>
-                    <td>{Address2}</td>
-                    <td>{City}</td>
-                    <td>{State}</td>
-                    <td>{ZipCode}</td>
-                    <td>
-                      <span className="me-md-2 ">
-                        <i
-                          title="Edit Customer"
-                          className="bi bi-pencil-square cursor"
-                          style={{ fontSize: 25 }}
-                          onClick={() => handleEditClick(CustomerId)}
-                        ></i>
-                      </span>
-                    </td>
-                  </tr>
-                )
-              )}
-            
-            
-            </tbody> */}
+            <tbody>
+              {filteredProduct().map(({ ProductId, Name, Price }) => (
+                <tr key={ProductId}>
+                  <td>{ProductId}</td>
+                  <td>{Name}</td>
+                  <td>{Price}</td>
+                  <td>
+                    <span className="me-md-2 ">
+                      <i
+                        title="Edit Product"
+                        className="bi bi-pencil-square cursor"
+                        style={{ fontSize: 25 }}
+                        onClick={() => handleEditClick(ProductId)}
+                      ></i>
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
           <div className="d-grid gap-2 d-md-flex justify-content-md-end">
             <button className="btn btn-primary me-md-2" onClick={prevPage}>
@@ -142,7 +128,7 @@ export const Products = () => {
               Next
             </button>
           </div>
-          {/* {isLoading && <Loading />} */}
+          {isLoading && <Loading />}
         </div>
       </div>
     </>
