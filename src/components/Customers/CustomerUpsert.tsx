@@ -15,6 +15,7 @@ import { useCustomerDataContext } from "../../context/DataContext";
 
 export const CustomerUpsert = () => {
   const { setCustomerModel, customerModel } = useCustomerDataContext();
+
   const [isLoading, setIsLoading] = useState(false);
 
   // Navigate (Route)
@@ -36,7 +37,6 @@ export const CustomerUpsert = () => {
   const ZipCode = useRef<HTMLInputElement | null>(null);
 
   const handleSaveClick = () => {
-
     setIsLoading(true);
 
     // Prepare formData for Post/Put

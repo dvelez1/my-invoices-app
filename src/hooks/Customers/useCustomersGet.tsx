@@ -12,6 +12,7 @@ import { Customer } from "../../models/customer";
 
 export const useCustomersGet = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
+  // Used to Loading /Spinner Implementation
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

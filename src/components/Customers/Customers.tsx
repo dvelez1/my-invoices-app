@@ -44,7 +44,7 @@ export const Customers = () => {
             Create New Customer
           </button>
           <table className="table mt-2">
-            <thead>
+            <thead className="thead-dark">
               <tr>
                 <th>Id</th>
                 <th>Name</th>
