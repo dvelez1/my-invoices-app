@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Customer } from "../models/customer";
+import { Product } from "../models/product";
 
 interface Props {
   children: React.ReactNode;
@@ -8,18 +9,23 @@ interface Props {
 type nameDataType = {
   customerModel: Customer | undefined;
   setCustomerModel:React.Dispatch<React.SetStateAction<Customer | undefined>>
+  productModel : Product | undefined;
+  setProductModel:React.Dispatch<React.SetStateAction<Product | undefined>>
 };
 
 const Context = React.createContext<nameDataType>({} as nameDataType);
 
-const CustomerDataProvider: React.FC<Props> = ({ children }) => {
+const DataProvider: React.FC<Props> = ({ children }) => {
   const [customerModel, setCustomerModel] = useState<Customer | undefined>(undefined)
+  const [productModel, setProductModel] = useState<Product | undefined>(undefined)
 
   return (
       <Context.Provider
         value={{
           customerModel,
-          setCustomerModel
+          setCustomerModel,
+          productModel, 
+          setProductModel
         }}
       >
         {children}
@@ -27,5 +33,5 @@ const CustomerDataProvider: React.FC<Props> = ({ children }) => {
   );
 };
 
-export default CustomerDataProvider;
-export const useCustomerDataContext = () => React.useContext(Context);
+export default DataProvider;
+export const useDataContext = () => React.useContext(Context);

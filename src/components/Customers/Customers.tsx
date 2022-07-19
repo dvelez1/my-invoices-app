@@ -4,13 +4,13 @@ import { useCustomersGet } from "../../hooks/Customers/useCustomersGet";
 import { Customer } from "../../models/customer";
 
 // Data Context
-import { useCustomerDataContext } from "../../context/DataContext";
+import { useDataContext } from "../../context/DataContext";
 
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";
 
 export const Customers = () => {
-  const { setCustomerModel, customerModel } = useCustomerDataContext();
+  const { setCustomerModel, customerModel } = useDataContext();
   const { customers, isLoading } = useCustomersGet();
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");

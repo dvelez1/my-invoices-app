@@ -11,7 +11,7 @@ import { Customer } from "../../models/customer";
 import { Loading } from "../../components/shared/Loading";
 
 // Data Context
-import { useCustomerDataContext } from "../../context/DataContext";
+import { useDataContext } from "../../context/DataContext";
 
 // Import Toast components (react-toastify) -> Note: Was implemented a custom solution
 import "react-toastify/dist/ReactToastify.css";
@@ -23,7 +23,7 @@ import { ToastContainerImplementation } from "../shared/ToastContainerImplementa
 
 export const CustomerUpsert = () => {
   // Data Context
-  const { setCustomerModel, customerModel } = useCustomerDataContext();
+  const { setCustomerModel, customerModel } = useDataContext();
 
   const [isLoading, setIsLoading] = useState(false);
 
