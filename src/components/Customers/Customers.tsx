@@ -1,26 +1,28 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCustomersGet } from "../../hooks/Customers/useCustomersGet";
+import { Customer } from "../../models/customer";
 
 // Data Context
 import { useCustomerDataContext } from "../../context/DataContext";
 
-// Import Spinner 
-import {Loading} from "../../components/shared/Loading";
+// Import Spinner
+import { Loading } from "../../components/shared/Loading";
 
 export const Customers = () => {
-
-
   const { setCustomerModel, customerModel } = useCustomerDataContext();
   const { customers, isLoading } = useCustomersGet();
+  const [currentPage, setCurrentPage] = useState(0);
+  const [search, setSearch] = useState("");
 
-  //setLoading(false);
+  //#region "Methods"
 
   const navigate = useNavigate();
   const handleUpsertClick = () => {
     navigate("/customerUpsert");
   };
 
+  // Redirect to Main Page
   function handleEditClick(customerId: Number) {
     setCustomerModel(
       customers.filter((obj) => {
@@ -30,12 +32,56 @@ export const Customers = () => {
     if (customerId > 0) handleUpsertClick();
   }
 
+  function handleDeleteClick(customerId: Number) {
+    if (customerId > 0) alert("Pending Delete Implementation");
+  }
+  //#region "Filtering and Pagination"
+  const filteredCustomers = (): Customer[] => {
+    if (search.length === 0)
+      return customers.slice(currentPage, currentPage + 10);
+
+    //Search Input with data
+    const filtered = customers.filter((cust) => cust.Name.includes(search));
+    return filtered.slice(currentPage, currentPage + 10);
+  };
+
+  const nextPage = () => {
+    if (
+      customers.filter((cust) => cust.Name.includes(search)).length >
+      currentPage + 10
+    )
+      setCurrentPage(currentPage + 10);
+  };
+
+  const prevPage = () => {
+    if (currentPage > 0) setCurrentPage(currentPage - 10);
+  };
+
+  const onSearchChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentPage(0);
+    setSearch(target.value);
+  };
+
+  //#endregion "Filtering and Pagination"
+
+  //#endregion "Methods"
+
   return (
     <>
       <div className="card">
         <h3 className="card-header">Customers</h3>
         <div className="card-body">
           <h5 className="card-title">List of Customers</h5>
+          <hr />
+
+          <input
+            className="mb-2 form-control"
+            type="text"
+            placeholder="Customers Search by Name"
+            value={search}
+            onChange={onSearchChange}
+          />
+
           <button
             type="button"
             className="btn btn-primary mt-2"
@@ -58,7 +104,7 @@ export const Customers = () => {
             </thead>
 
             <tbody>
-              {customers.map(
+              {filteredCustomers().map(
                 ({
                   CustomerId,
                   Name,
@@ -81,14 +127,19 @@ export const Customers = () => {
                     <td>
                       <span className="me-md-2 ">
                         <i
-                         title="Edit Customer"
+                          title="Edit Customer"
                           className="bi bi-pencil-square cursor"
                           style={{ fontSize: 25 }}
                           onClick={() => handleEditClick(CustomerId)}
                         ></i>
                       </span>
                       <span>
-                        <i title="Delete Customer" className="bi bi-trash cursor" style={{ fontSize: 25 }}></i>
+                        <i
+                          title="Delete Customer"
+                          className="bi bi-trash cursor"
+                          style={{ fontSize: 25 }}
+                          onClick={() => handleDeleteClick(CustomerId)}
+                        ></i>
                       </span>
                     </td>
                   </tr>
@@ -96,8 +147,16 @@ export const Customers = () => {
               )}
             </tbody>
           </table>
+          <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button className="btn btn-primary me-md-2" onClick={prevPage}>
+              Previous
+            </button>
+            <button className="btn btn-primary" onClick={nextPage}>
+              Next
+            </button>
+          </div>
           {isLoading && <Loading />}
-            </div>
+        </div>
       </div>
     </>
   );
