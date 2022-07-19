@@ -32,11 +32,6 @@ export const Customers = () => {
     if (customerId > 0) handleUpsertClick();
   }
 
-  function handleDeleteClick(customerId: Number) {
-    if (customerId > 0) alert("Pending Delete Implementation");
-  }
-
-
   //#region "Filtering and Pagination"
   const filteredCustomers = (): Customer[] => {
     if (search.length === 0)
@@ -135,14 +130,14 @@ export const Customers = () => {
                           onClick={() => handleEditClick(CustomerId)}
                         ></i>
                       </span>
-                      <span>
+                      {/* <span>
                         <i
                           title="Delete Customer"
                           className="bi bi-trash cursor"
                           style={{ fontSize: 25 }}
                           onClick={() => handleDeleteClick(CustomerId)}
                         ></i>
-                      </span>
+                      </span> */}
                     </td>
                   </tr>
                 )
