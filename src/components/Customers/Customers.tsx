@@ -4,14 +4,16 @@ import { useCustomersGet } from "../../hooks/Customers/useCustomersGet";
 
 // Data Context
 import { useCustomerDataContext } from "../../context/DataContext";
-// import useSpinner from "../../helper/useSpinner";
+
+// Import Spinner 
+import {Loading} from "../../components/shared/Loading";
 
 export const Customers = () => {
   //Spinner
   //const [loading, setLoading] = useState<boolean>(true);
 
   const { setCustomerModel, customerModel } = useCustomerDataContext();
-  const customers = useCustomersGet();
+  const { customers, isLoading } = useCustomersGet();
 
   //setLoading(false);
 
@@ -95,6 +97,7 @@ export const Customers = () => {
               )}
             </tbody>
           </table>
+          {isLoading && <Loading />}
             </div>
       </div>
     </>

@@ -3,7 +3,6 @@ import axios from "axios";
 import { axiosInterface } from "../../helper/axiosInterface";
 import { Customer } from "../../models/customer";
 
-
 // const instance = axios.create({
 //     baseURL: 'http://localhost:5000/Api/customer',
 //     timeout: 1000,
@@ -13,16 +12,20 @@ import { Customer } from "../../models/customer";
 
 export const useCustomersGet = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
-  
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     axiosInterface
       .get<Customer[]>("customer/getCustomers")
       .then((response) => {
         setCustomers(response.data);
+        setIsLoading(false);
       })
       .catch((error) => console.log(error));
   }, []);
 
-  return customers;
+  return { 
+    customers,
+    isLoading 
+  };
 };
-
