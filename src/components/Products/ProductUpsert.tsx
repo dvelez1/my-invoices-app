@@ -1,9 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import {
-//   createProduct,
-//   updateProduct,
-// } from "../../api/Products/upsertEvents";
+import { createProduct, updateProduct } from "../../api/Products/upsertEvents";
 
 import { Product } from "../../models/product";
 
@@ -11,7 +8,7 @@ import { Product } from "../../models/product";
 import { Loading } from "../../components/shared/Loading";
 
 // Data Context
- import { useDataContext } from "../../context/DataContext";
+import { useDataContext } from "../../context/DataContext";
 
 // Import Toast components (react-toastify) -> Note: Was implemented a custom solution
 import "react-toastify/dist/ReactToastify.css";
@@ -23,9 +20,7 @@ import { ToastContainerImplementation } from "../shared/ToastContainerImplementa
 
 export const ProductUpsert = () => {
   // Data Context
-   const { productModel, setProductModel } = useDataContext();
-
-   console.log(productModel)
+  const { productModel, setProductModel } = useDataContext();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -38,7 +33,7 @@ export const ProductUpsert = () => {
   // Navigate (Route)
   const navigate = useNavigate();
   const handleUpsertClick = () => {
-    // setProductModel(undefined);
+    setProductModel(undefined);
     navigate("/product");
   };
 
@@ -48,7 +43,10 @@ export const ProductUpsert = () => {
 
     // Prepare formData for Post/Put
     const formData: Product = {
-      ProductId: 0,
+      ProductId:
+        productModel === undefined || productModel.ProductId === 0
+          ? 0
+          : productModel.ProductId,
       Name: String(Name.current?.value),
       Price: Number(Price.current?.value),
       StartDate: new Date(),
@@ -58,12 +56,10 @@ export const ProductUpsert = () => {
     //Insert / Update Operation
     if (formData.ProductId === 0) {
       //PUT (Create)
-      // saveEventResultMessageHandler(Boolean(createCustomer(formData)));
-      alert("Insert")
+      saveEventResultMessageHandler(Boolean(createProduct(formData)));
     } else if (formData.ProductId > 0) {
       // Post (Update)
-      // saveEventResultMessageHandler(Boolean(updateCustomer(formData)));
-      alert("Update")
+      saveEventResultMessageHandler(Boolean(updateProduct(formData)));
     }
 
     setIsLoading(false);
@@ -83,7 +79,7 @@ export const ProductUpsert = () => {
     <>
       <div className="card">
         <h3 className="card-header">
-          Create/Edit Customer
+          {productModel === undefined ? "Edit Product" : "Create Product"}
         </h3>
         <div className="card-body">
           <div className="row">
