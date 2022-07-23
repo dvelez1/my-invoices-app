@@ -1,4 +1,4 @@
-export interface invoiceMaster {
+export interface InvoiceMaster {
   InvoiceId: number;
   CustomerId: number;
   CustomerName: string;

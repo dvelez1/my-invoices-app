@@ -1,4 +1,4 @@
-export interface invoicePayments {
+export interface InvoicePayments {
     InvoicePaiymentsId: number;
     InvoiceId: number;
     Payment: number;
