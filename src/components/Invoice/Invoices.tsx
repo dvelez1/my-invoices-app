@@ -78,7 +78,7 @@ export const Invoices = () => {
   return (
     <>
       <div className="card">
-        <h3 className="card-header">Invoice</h3>
+        <h3 className="card-header">Invoices</h3>
         <div className="card-body">
           <h5 className="card-title">List of Invoices</h5>
           <hr />
@@ -133,11 +133,24 @@ export const Invoices = () => {
                       <div className="col-md-3">
                         <label>
                           {" "}
-                          <span className="fw-bold">Invoice Closed On:</span>{" "}
+                          <span className="fw-bold">
+                            Invoice Closed On:
+                          </span>{" "}
                           {EndDate != null && new Date(EndDate).toDateString()}{" "}
                         </label>
                       </div>
+                      <div className="col-md-3">
+                        <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+                          <button className="btn btn-primary btn-sm me-md-2">
+                            Payment
+                          </button>
+                          <button className="btn btn-primary btn-sm">
+                            Void Invoice
+                          </button>
+                        </div>
+                      </div>
                     </div>
+
                     <div className="row">
                       <div className="col-md-3">
                         <label>
@@ -170,7 +183,8 @@ export const Invoices = () => {
                         </label>
                       </div>
                     </div>
-                    <div className="row">
+
+                    <div className="row mt-2">
                       <div className="col-md-3">
                         <label>
                           {" "}
