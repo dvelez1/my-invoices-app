@@ -21,7 +21,11 @@ import { useDataContext } from "../../context/DataContext";
 
 export const Invoices = () => {
   // Import Data Context Properties
-  const { invoiceMasterModel, setInvoiceMasterModel } = useDataContext();
+  const {
+    setInvoiceMasterModel,
+    setInvoiceDetailsArray,
+    setInvoicePaymentsArray,
+  } = useDataContext();
   // Load Invoices
   const { isLoading, invoiceMaster, invoiceDetails, invoicePayments } =
     useInvoicesGet();
@@ -37,11 +41,24 @@ export const Invoices = () => {
 
   // Redirect to Main Page
   function handleEditClick(invoiceId: Number) {
+    //#region "Set DataContext Properties"
     setInvoiceMasterModel(
       invoiceMaster.filter((obj) => {
         return obj.InvoiceId === invoiceId;
       })[0]
     );
+    setInvoiceDetailsArray(
+      invoiceDetails.filter((obj) => {
+        return obj.InvoiceId === invoiceId && obj.RemovedTransaction === false;
+      })
+    );
+    setInvoicePaymentsArray(
+      invoicePayments.filter((obj) => {
+        return obj.InvoiceId === invoiceId && obj.RemovedTransaction === false;
+      })
+    );
+    //#endregion
+    
     if (invoiceId > 0) handleUpsertClick();
   }
 

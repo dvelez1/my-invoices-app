@@ -18,8 +18,14 @@ import { useDataContext } from "../../context/DataContext";
 
 export const InvoiceUpsert = () => {
   // Import Data Context Properties
-  const { invoiceMasterModel, setInvoiceMasterModel } = useDataContext();
-  console.log("Modelo Upsert Invoice",invoiceMasterModel)
+  const {
+    invoiceMasterModel,
+    setInvoiceMasterModel,
+    invoiceDetailsArray,
+    setInvoiceDetailsArray,
+    invoicePaymentsArray,
+    setInvoicePaymentsArray,
+  } = useDataContext();
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
 
@@ -33,7 +39,6 @@ export const InvoiceUpsert = () => {
   // Insert/Edit Operation
   const handleSaveClick = () => {
     // setIsLoading(true);
-
     // // Prepare formData for Post/Put
     // const formData: Customer = {
     //   CustomerId: customerModel == undefined ? 0 : customerModel.CustomerId,
@@ -49,7 +54,6 @@ export const InvoiceUpsert = () => {
     //   StartDate: new Date(),
     //   EndDate: null,
     // };
-
     // //Insert / Update Operation
     // if (formData.CustomerId === 0) {
     //   //PUT (Create)
@@ -58,9 +62,7 @@ export const InvoiceUpsert = () => {
     //   // Post (Update)
     //   saveEventResultMessageHandler(Boolean(updateCustomer(formData)));
     // }
-
     // setIsLoading(false);
-
   };
 
   //#endregion "Filtering and Pagination"
