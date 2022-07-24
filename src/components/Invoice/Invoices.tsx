@@ -122,10 +122,10 @@ export const Invoices = () => {
                         <label className="fw-bold">Invoice Id: {InvoiceId}</label>  
                         </div>
                         <div className="col-md-3">
-                        <label>  <span className="fw-bold">Transaction Date:</span> { new Date(StartDate).toDateString()} </label>
+                        <label>  <span className="fw-bold">Invoice Date:</span> { new Date(StartDate).toDateString()} </label>
                         </div>
                         <div className="col-md-3">
-                        <label>  <span className="fw-bold">Transaction Completed:</span> { EndDate != null && new Date(EndDate).toDateString()} </label>
+                        <label>  <span className="fw-bold">Invoice Closed:</span> { EndDate != null && new Date(EndDate).toDateString()} </label>
                         </div>
                     </div>
                     <div className="row">
@@ -141,6 +141,12 @@ export const Invoices = () => {
                         <div className="col-md-3">
                         <label> <span className="fw-bold">Amount Diference:</span> {TotalAmount - PayedAmount}</label>  
                         </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-3">
+                        <label> <span className="fw-bold">Comments:</span> {Note} </label>  
+                        </div>
+
                     </div>
 
                     <hr />
