@@ -1,16 +1,167 @@
-import React from "react";
+import React, { useState } from "react";
+// Used for routing
+import { useNavigate } from "react-router-dom";
+
+// Import Spinner
+import { Loading } from "../../components/shared/Loading";
+
+// Custom hook with mhy models
 import { useInvoicesGet } from "../../hooks/Invoice/useInvoicesGet";
+
+// Models
+import { InvoiceMaster } from "../../models/InvoiceMaster";
+import { InvoiceDetails } from "../../models/InvoiceDetails";
+import { InvoicePayments } from "../../models/InvoicePayments";
+
+// Data Context
+import { useDataContext } from "../../context/DataContext";
 
 export const Invoices = () => {
   const { isLoading, invoiceMaster, invoiceDetails, invoicePayments } =
     useInvoicesGet();
 
-    console.log("invoiceMaster",invoiceMaster)
-    console.log("invoiceDetails",invoiceDetails)
-    console.log("invoicePayments",invoicePayments)
+  const [currentPage, setCurrentPage] = useState(0);
+  const [search, setSearch] = useState("");
+
+  //#region "Methods"
+
+  const navigate = useNavigate();
+  const handleUpsertClick = () => {
+    navigate("/invoiceUpsert");
+  };
+
+  // Redirect to Main Page
+  function handleEditClick(invoiceId: Number) {
+    // setCustomerModel(
+    //   customers.filter((obj) => {
+    //     return obj.CustomerId === customerId;
+    //   })[0]
+    // );
+    if (invoiceId > 0) handleUpsertClick();
+  }
+
+  //#region "Filtering and Pagination"
+  const filteredInvoce = (): InvoiceMaster[] => {
+    if (search.length === 0)
+      return invoiceMaster.slice(currentPage, currentPage + 10);
+
+    //Search Input with data
+    const filtered = invoiceMaster.filter((invMaster) =>
+      invMaster.CustomerName.toLowerCase().includes(search)
+    );
+    return filtered.slice(currentPage, currentPage + 10);
+  };
+
+  const nextPage = () => {
+    if (
+      invoiceMaster.filter((invMaster) =>
+        invMaster.CustomerName.includes(search)
+      ).length >
+      currentPage + 10
+    )
+      setCurrentPage(currentPage + 10);
+  };
+
+  const prevPage = () => {
+    if (currentPage > 0) setCurrentPage(currentPage - 10);
+  };
+
+  const onSearchChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentPage(0);
+    setSearch(target.value.toLowerCase());
+  };
+
+  //#endregion "Filtering and Pagination"
+
+  //#endregion "Methods"
+
   return (
-    <div>
-      <p>Invoice</p>
-    </div>
+    <>
+      <div className="card">
+        <h3 className="card-header">Invoice</h3>
+        <div className="card-body">
+          <h5 className="card-title">List of Invoices</h5>
+          <hr />
+
+          <input
+            className="mb-2 form-control"
+            type="text"
+            placeholder="Invoice Search by Name"
+            value={search}
+            onChange={onSearchChange}
+          />
+
+          <button
+            type="button"
+            className="btn btn-primary mt-2"
+            onClick={handleUpsertClick}
+          >
+            Create New Invoice
+          </button>
+
+          {filteredInvoce().map(
+            ({
+              InvoiceId,
+              CustomerId,
+              CustomerName,
+              FirstName,
+              LastName,
+              TransactionActive,
+              TotalAmount,
+              PayedAmount,
+              Note,
+              Void,
+              StartDate,
+              EndDate,
+            }) => (
+              <div key={InvoiceId} className="mt-2">
+                <div className="card">
+                  <div className="card-body">
+                    <div className="row">
+                        <div className="col-md-3">
+                        <label className="fw-bold">Invoice Id: {InvoiceId}</label>  
+                        </div>
+                        <div className="col-md-3">
+                        <label>  <span className="fw-bold">Transaction Date:</span> { new Date(StartDate).toDateString()} </label>
+                        </div>
+                        <div className="col-md-3">
+                        <label>  <span className="fw-bold">Transaction Completed:</span> { EndDate != null && new Date(EndDate).toDateString()} </label>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-3">
+                        <label> <span className="fw-bold">Name:</span> {CustomerName} {FirstName} {LastName}</label>  
+                        </div>
+                        <div className="col-md-3">
+                        <label> <span className="fw-bold">Total Amount:</span> {TotalAmount}</label>  
+                        </div>
+                        <div className="col-md-3">
+                        <label> <span className="fw-bold">Payed Amount:</span> {PayedAmount}</label>  
+                        </div>
+                        <div className="col-md-3">
+                        <label> <span className="fw-bold">Amount Diference:</span> {TotalAmount - PayedAmount}</label>  
+                        </div>
+                    </div>
+
+                    <hr />
+                    <h5>Invoice Details</h5>
+                  </div>
+                </div>
+              </div>
+            )
+          )}
+
+          <div className="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
+            <button className="btn btn-primary me-md-2" onClick={prevPage}>
+              Previous
+            </button>
+            <button className="btn btn-primary" onClick={nextPage}>
+              Next
+            </button>
+          </div>
+          {isLoading && <Loading />}
+        </div>
+      </div>
+    </>
   );
 };

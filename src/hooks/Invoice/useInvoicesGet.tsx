@@ -1,31 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { axiosInterface } from "../../helper/axiosInterface";
+
+// Models
 import { InvoiceMaster } from "../../models/InvoiceMaster";
 import { InvoiceDetails } from "../../models/InvoiceDetails";
 import { InvoicePayments } from "../../models/InvoicePayments";
-
-
-// export const useCustomersGet = () => {
-//   const [customers, setCustomers] = useState<Customer[]>([]);
-//   // Used to Loading /Spinner Implementation
-//   const [isLoading, setIsLoading] = useState(true);
-
-//   useEffect(() => {
-//     axiosInterface
-//       .get<Customer[]>("customer/getCustomers")
-//       .then((response) => {
-//         setCustomers(response.data);
-//         setIsLoading(false);
-//       })
-//       .catch((error) => console.log(error));
-//   }, []);
-
-//   return { 
-//     customers,
-//     isLoading 
-//   };
-// };
 
 export const useInvoicesGet = () => {
     // Used to Loading /Spinner Implementation
