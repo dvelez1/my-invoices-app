@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Customer } from "../models/customer";
 import { Product } from "../models/product";
-import { InvoiceMaster } from "../models/InvoiceMaster"
-import { InvoiceDetails } from "../models/InvoiceDetails"
-import { InvoicePayments } from "../models/InvoicePayments"
+import { InvoiceMaster } from "../models/InvoiceMaster";
+import { InvoiceDetails } from "../models/InvoiceDetails";
+import { InvoicePayments } from "../models/InvoicePayments";
 
 interface Props {
   children: React.ReactNode;
@@ -12,48 +12,57 @@ interface Props {
 type nameDataType = {
   // Customer
   customerModel: Customer | undefined;
-  setCustomerModel:React.Dispatch<React.SetStateAction<Customer | undefined>>
+  setCustomerModel: React.Dispatch<React.SetStateAction<Customer | undefined>>;
   // Product
-  productModel : Product | undefined;
-  setProductModel:React.Dispatch<React.SetStateAction<Product | undefined>>
+  productModel: Product | undefined;
+  setProductModel: React.Dispatch<React.SetStateAction<Product | undefined>>;
   // Invoices Master
   invoiceMasterModel: InvoiceMaster | undefined;
-  setInvoiceMasterModel:React.Dispatch<React.SetStateAction<InvoiceMaster | undefined>>
+  setInvoiceMasterModel: React.Dispatch<React.SetStateAction<InvoiceMaster | undefined>>;
   // Invoice Details
-
+  invoiceDetailsArray: InvoiceDetails[] | undefined;
+  setInvoiceDetailsArray: React.Dispatch<React.SetStateAction<InvoiceDetails[] | undefined>>;
   // Invoice Payments
+  invoicePaymentsArray: InvoicePayments[] | undefined;
+  setInvoicePaymentsArray: React.Dispatch<React.SetStateAction<InvoicePayments[] | undefined>>;
 };
 
 const Context = React.createContext<nameDataType>({} as nameDataType);
 
 const DataProvider: React.FC<Props> = ({ children }) => {
-  const [customerModel, setCustomerModel] = useState<Customer | undefined>(undefined)
-  const [productModel, setProductModel] = useState<Product | undefined>(undefined)
-  // List of Models
-  const [invoiceMasterModel, setInvoiceMasterModel] = useState<InvoiceMaster | undefined>(undefined)
-  // const [invoiceDetailsModel, setInvoiceDetailsModel] = useState<InvoiceDetails | undefined>(undefined)
-  // const [invoicePaymentsArray, setInvoicePaymentsArray] = useState<[InvoicePayments] | undefined>(undefined)
+  // Customer
+  const [customerModel, setCustomerModel] = useState<Customer | undefined>(undefined);
+  //Product
+  const [productModel, setProductModel] = useState<Product | undefined>(undefined);
+  // Invoice Master
+  const [invoiceMasterModel, setInvoiceMasterModel] = useState<InvoiceMaster | undefined>(undefined);
+  // Invoice Details
+  const [invoiceDetailsArray, setInvoiceDetailsArray] = useState<InvoiceDetails[] | undefined>(undefined)
+  // Invoice Payments 
+  const [invoicePaymentsArray, setInvoicePaymentsArray] = useState<InvoicePayments[] | undefined>(undefined)
 
   return (
-      <Context.Provider
-        value={{
-          // Customer
-          customerModel,
-          setCustomerModel,
-          // Product
-          productModel, 
-          setProductModel,
-          // Invoices Master
-          invoiceMasterModel,
-          setInvoiceMasterModel,
-          // invoiceDetailsModel,
-          // setInvoiceDetailsModel,
-          // invoicePaymentsArray,
-          // setInvoicePaymentsArray
-        }}
-      >
-        {children}
-      </Context.Provider>
+    <Context.Provider
+      value={{
+        // Customer
+        customerModel,
+        setCustomerModel,
+        // Product
+        productModel,
+        setProductModel,
+        // Invoices Master
+        invoiceMasterModel,
+        setInvoiceMasterModel,
+        // Invoice Details
+        invoiceDetailsArray,
+        setInvoiceDetailsArray,
+        // Invoice Payments
+        invoicePaymentsArray,
+        setInvoicePaymentsArray
+      }}
+    >
+      {children}
+    </Context.Provider>
   );
 };
 
