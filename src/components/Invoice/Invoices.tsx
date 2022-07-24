@@ -118,39 +118,119 @@ export const Invoices = () => {
                 <div className="card">
                   <div className="card-body">
                     <div className="row">
-                        <div className="col-md-3">
-                        <label className="fw-bold">Invoice Id: {InvoiceId}</label>  
-                        </div>
-                        <div className="col-md-3">
-                        <label>  <span className="fw-bold">Invoice Date:</span> { new Date(StartDate).toDateString()} </label>
-                        </div>
-                        <div className="col-md-3">
-                        <label>  <span className="fw-bold">Invoice Closed:</span> { EndDate != null && new Date(EndDate).toDateString()} </label>
-                        </div>
+                      <div className="col-md-3">
+                        <label className="fw-bold">
+                          Invoice Id: {InvoiceId}
+                        </label>
+                      </div>
+                      <div className="col-md-3">
+                        <label>
+                          {" "}
+                          <span className="fw-bold">Invoice Date:</span>{" "}
+                          {new Date(StartDate).toDateString()}{" "}
+                        </label>
+                      </div>
+                      <div className="col-md-3">
+                        <label>
+                          {" "}
+                          <span className="fw-bold">Invoice Closed On:</span>{" "}
+                          {EndDate != null && new Date(EndDate).toDateString()}{" "}
+                        </label>
+                      </div>
                     </div>
                     <div className="row">
-                        <div className="col-md-3">
-                        <label> <span className="fw-bold">Name:</span> {CustomerName} {FirstName} {LastName}</label>  
-                        </div>
-                        <div className="col-md-3">
-                        <label> <span className="fw-bold">Total Amount:</span> {TotalAmount}</label>  
-                        </div>
-                        <div className="col-md-3">
-                        <label> <span className="fw-bold">Payed Amount:</span> {PayedAmount}</label>  
-                        </div>
-                        <div className="col-md-3">
-                        <label> <span className="fw-bold">Amount Diference:</span> {TotalAmount - PayedAmount}</label>  
-                        </div>
+                      <div className="col-md-3">
+                        <label>
+                          {" "}
+                          <span className="fw-bold">Name:</span> {CustomerName}{" "}
+                          {FirstName} {LastName}
+                        </label>
+                      </div>
+                      <div className="col-md-3">
+                        <label>
+                          {" "}
+                          <span className="fw-bold">Total Amount:</span>{" "}
+                          {TotalAmount}
+                        </label>
+                      </div>
+                      <div className="col-md-3">
+                        <label>
+                          {" "}
+                          <span className="fw-bold">Payed Amount:</span>{" "}
+                          {PayedAmount}
+                        </label>
+                      </div>
+                      <div className="col-md-3">
+                        <label>
+                          {" "}
+                          <span className="fw-bold">
+                            Amount Diference:
+                          </span>{" "}
+                          {TotalAmount - PayedAmount}
+                        </label>
+                      </div>
                     </div>
                     <div className="row">
-                        <div className="col-md-3">
-                        <label> <span className="fw-bold">Comments:</span> {Note} </label>  
-                        </div>
-
+                      <div className="col-md-3">
+                        <label>
+                          {" "}
+                          <span className="fw-bold">Comments:</span> {Note}{" "}
+                        </label>
+                      </div>
                     </div>
 
                     <hr />
-                    <h5>Invoice Details</h5>
+                    <label className="fw-bold">Invoice Details</label>
+                    <table className="table table-sm">
+                      <thead className="thead-dark">
+                        <tr>
+                          <th>Product Name</th>
+                          <th>Catalog Price</th>
+                          <th>Price</th>
+                          <th>Quantity</th>
+                          <th>Total</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {invoiceDetails
+                          .filter((obj) => obj.InvoiceId === InvoiceId)
+                          .map(
+                            ({
+                              InvoiceDetailsId,
+                              ProductName,
+                              CatalogPrice,
+                              Price,
+                              Quantity,
+                            }) => (
+                              <tr key={InvoiceDetailsId}>
+                                <td>{ProductName}</td>
+                                <td>{CatalogPrice}</td>
+                                <td>{Price}</td>
+                                <td>{Quantity}</td>
+                                <td>{Quantity * Price}</td>
+                                <td>
+                                  <span className="me-md-2 ">
+                                    <i
+                                      title="Edit Invoice Details"
+                                      className="bi bi-pencil-square cursor"
+                                      style={{ fontSize: 18 }}
+                                    ></i>
+                                  </span>
+                                  <span>
+                                    <i
+                                      title="Delete Invoice Details"
+                                      className="bi bi-trash cursor"
+                                      style={{ fontSize: 18 }}
+                                    ></i>
+                                  </span>
+                                </td>
+                              </tr>
+                            )
+                          )}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
