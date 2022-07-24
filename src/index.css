@@ -16,3 +16,8 @@ code {
 .cursor {
   cursor: pointer;
 }
+
+/* Class: Change incons backgroung color to Primary */
+.body {
+  color: #0d6efd;
+}

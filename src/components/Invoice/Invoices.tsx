@@ -162,15 +162,15 @@ export const Invoices = () => {
                       <div className="col-md-3">
                         <label>
                           {" "}
-                          <span className="fw-bold">Total Amount:</span>{" "}
-                          {TotalAmount}
+                          <span className="fw-bold">Total Amount:</span> {"$ "}
+                          {TotalAmount ?? 0}
                         </label>
                       </div>
                       <div className="col-md-3">
                         <label>
                           {" "}
-                          <span className="fw-bold">Payed Amount:</span>{" "}
-                          {PayedAmount}
+                          <span className="fw-bold">Payed Amount:</span> {"$ "}
+                          {PayedAmount ?? 0}
                         </label>
                       </div>
                       <div className="col-md-3">
@@ -179,7 +179,8 @@ export const Invoices = () => {
                           <span className="fw-bold">
                             Amount Diference:
                           </span>{" "}
-                          {TotalAmount - PayedAmount}
+                          {"$ "}
+                          {(TotalAmount ?? 0) - (PayedAmount ?? 0)}
                         </label>
                       </div>
                     </div>
@@ -200,7 +201,7 @@ export const Invoices = () => {
                         <tr>
                           <th>Product Name</th>
                           <th>Catalog Price</th>
-                          <th>Price</th>
+                          <th>Transaction Price</th>
                           <th>Quantity</th>
                           <th>Total</th>
                           <th>Action</th>
@@ -220,10 +221,17 @@ export const Invoices = () => {
                             }) => (
                               <tr key={InvoiceDetailsId}>
                                 <td>{ProductName}</td>
-                                <td>{CatalogPrice}</td>
-                                <td>{Price}</td>
-                                <td>{Quantity}</td>
-                                <td>{Quantity * Price}</td>
+                                <td>
+                                  {"$ "} {CatalogPrice ?? 0}
+                                </td>
+                                <td>
+                                  {"$ "} {Price ?? 0}
+                                </td>
+                                <td>{Quantity ?? 0}</td>
+                                <td>
+                                  {"$ "}
+                                  {(Quantity ?? 0) * (Price ?? 0)}
+                                </td>
                                 <td>
                                   <span className="me-md-2 ">
                                     <i
@@ -251,13 +259,21 @@ export const Invoices = () => {
             )
           )}
 
-          <div className="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
-            <button className="btn btn-primary me-md-2" onClick={prevPage}>
-              Previous
-            </button>
-            <button className="btn btn-primary" onClick={nextPage}>
-              Next
-            </button>
+          <div className="text-center mt-2">
+            <span className="me-md-2 cursor body">
+              <i
+                title="Previuos Page"
+                className="bi bi-arrow-left-circle-fill"
+                style={{ fontSize: 28 }}
+                onClick={prevPage}></i>
+            </span>
+            <span className="me-md-2 cursor body">
+              <i
+                title="Next Page"
+                className="bi bi-arrow-right-circle-fill"
+                style={{ fontSize: 28 }}
+                onClick={nextPage}></i>
+            </span>
           </div>
           {isLoading && <Loading />}
         </div>
