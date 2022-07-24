@@ -13,10 +13,16 @@ import { InvoiceMaster } from "../../models/InvoiceMaster";
 import { InvoiceDetails } from "../../models/InvoiceDetails";
 import { InvoicePayments } from "../../models/InvoicePayments";
 
+// Import InvoiceUpSert
+import { InvoiceUpsert } from "../Invoice/InvoiceUpsert";
+
 // Data Context
 import { useDataContext } from "../../context/DataContext";
 
 export const Invoices = () => {
+  // Import Data Context Properties
+  const { invoiceMasterModel, setInvoiceMasterModel } = useDataContext();
+  // Load Invoices
   const { isLoading, invoiceMaster, invoiceDetails, invoicePayments } =
     useInvoicesGet();
 
@@ -24,7 +30,6 @@ export const Invoices = () => {
   const [search, setSearch] = useState("");
 
   //#region "Methods"
-
   const navigate = useNavigate();
   const handleUpsertClick = () => {
     navigate("/invoiceUpsert");
@@ -32,11 +37,11 @@ export const Invoices = () => {
 
   // Redirect to Main Page
   function handleEditClick(invoiceId: Number) {
-    // setCustomerModel(
-    //   customers.filter((obj) => {
-    //     return obj.CustomerId === customerId;
-    //   })[0]
-    // );
+    setInvoiceMasterModel(
+      invoiceMaster.filter((obj) => {
+        return obj.InvoiceId === invoiceId;
+      })[0]
+    );
     if (invoiceId > 0) handleUpsertClick();
   }
 
@@ -141,11 +146,11 @@ export const Invoices = () => {
                       </div>
                       <div className="col-md-3">
                         <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-                          <button className="btn btn-primary btn-sm me-md-2">
-                            Payment
-                          </button>
-                          <button className="btn btn-primary btn-sm">
-                            Void Invoice
+                          <button
+                            className="btn btn-primary btn-sm me-md-2"
+                            onClick={() => handleEditClick(InvoiceId)}
+                          >
+                            Edit Invoice
                           </button>
                         </div>
                       </div>
@@ -195,6 +200,7 @@ export const Invoices = () => {
                     </div>
 
                     <hr />
+                    {/* Invoice Details */}
                     <label className="fw-bold">Invoice Details</label>
                     <table className="table table-sm">
                       <thead className="thead-dark">
@@ -265,17 +271,19 @@ export const Invoices = () => {
                 title="Previuos Page"
                 className="bi bi-arrow-left-circle-fill"
                 style={{ fontSize: 28 }}
-                onClick={prevPage}></i>
+                onClick={prevPage}
+              ></i>
             </span>
             <span className="me-md-2 cursor body">
               <i
                 title="Next Page"
                 className="bi bi-arrow-right-circle-fill"
                 style={{ fontSize: 28 }}
-                onClick={nextPage}></i>
+                onClick={nextPage}
+              ></i>
             </span>
           </div>
-          {isLoading && <Loading />}
+          <div className="row">{isLoading && <Loading />}</div>
         </div>
       </div>
     </>

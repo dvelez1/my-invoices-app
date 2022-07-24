@@ -9,6 +9,7 @@ import { InvoicesPage } from "./pages/InvoicesPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { CustomerUpsert } from "./components/Customers/CustomerUpsert";
 import { ProductUpsert } from "./components/Products/ProductUpsert";
+import {InvoiceUpsert} from "./components/Invoice/InvoiceUpsert"
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
             <Route path="/product" element={<ProductsPage />} />
             <Route path="/productUpsert" element={<ProductUpsert />} />
             <Route path="/invoice" element={<InvoicesPage />} />
+            <Route path="/invoiceUpsert" element={<InvoiceUpsert />} />
           </Routes>
         </div>
       </BrowserRouter>
