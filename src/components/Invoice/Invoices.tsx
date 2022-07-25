@@ -199,7 +199,7 @@ export const Invoices = () => {
                         <label>
                           {" "}
                           <span className="fw-bold">
-                            Amount Diference:
+                            Amount Difference:
                           </span>{" "}
                           {"$ "}
                           {(TotalAmount ?? 0) - (PayedAmount ?? 0)}

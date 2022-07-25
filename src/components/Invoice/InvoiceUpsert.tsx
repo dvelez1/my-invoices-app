@@ -74,7 +74,9 @@ export const InvoiceUpsert = () => {
       <div className="card">
         <h3 className="card-header">Invoice</h3>
         <div className="card-body">
-          <h5 className="card-title">{invoiceMasterModel === undefined ? "Create" : "Edit"} Invoice</h5>
+          <h5 className="card-title">
+            {invoiceMasterModel === undefined ? "Create" : "Edit"} Invoice
+          </h5>
           <hr />
 
           <div className="mt-2">
@@ -82,70 +84,80 @@ export const InvoiceUpsert = () => {
               <div className="card-body">
                 <div className="row">
                   <div className="col-md-3">
-                    <label className="fw-bold">
-                      Invoice Id: {invoiceMasterModel?.InvoiceId}
-                    </label>
+                    <label className="form-label fw-bold">Invoice Id</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="invoiceId"
+                      name="invoiceId"
+                      placeholder="Invoice Id"
+                    />
                   </div>
                   <div className="col-md-3">
-                    <label>
-                      {" "}
-                      <span className="fw-bold">Invoice Date:</span>{" "}
-                      {/* {new Date(invoiceMasterModel?.StartDate).toDateString()}{" "} */}
-                    </label>
+                    <label className="form-label fw-bold">Invoice Date</label>
+                    <input
+                      type="datetime-local"
+                      className="form-control"
+                      id="invoiceDate"
+                      name="invoiceDate"
+                      placeholder="Invoice Date"
+                    />
                   </div>
                   <div className="col-md-3">
-                    <label>
-                      {" "}
-                      <span className="fw-bold">Invoice Closed On:</span>{" "}
-                      {/* {invoiceMasterModel.EndDate != null &&
-                        new Date(
-                          invoiceMasterModel.EndDate
-                        ).toDateString()}{" "} */}
+                    <label className="form-label fw-bold">
+                      Invoice Closed On:
                     </label>
-                  </div>
-                  <div className="col-md-3">
-                    <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-                      <button className="btn btn-primary btn-sm me-md-2">
-                        Payment
-                      </button>
-                      <button className="btn btn-primary btn-sm">
-                        Void Invoice
-                      </button>
-                    </div>
+                    <input
+                      type="datetime-local"
+                      className="form-control"
+                      id="invoiceEndDate"
+                      name="invoiceEndDate"
+                      placeholder="Invoice Closed On"
+                    />
                   </div>
                 </div>
 
-                <div className="row">
+                <div className="row mt-2">
                   <div className="col-md-3">
-                    <label>
-                      {" "}
-                      <span className="fw-bold">Name:</span>{" "}
-                      {/* {invoiceMasterModel.CustomerName}{" "}
-                      {invoiceMasterModel.FirstName}{" "}
-                      {invoiceMasterModel.LastName} */}
-                    </label>
+                    <label className="form-label fw-bold">Customer Name:</label>
+                    <select
+                      className="form-select"
+                      aria-label="Select Customer"
+                    >
+                      <option selected>Select Customer</option>
+                    </select>
                   </div>
                   <div className="col-md-3">
-                    <label>
-                      {" "}
-                      <span className="fw-bold">Total Amount:</span> {"$ "}
-                      {/* {invoiceMasterModel.TotalAmount ?? 0} */}
-                    </label>
+                    <label className="form-label fw-bold">Total Amount:</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="totalAmount"
+                      name="totalAmount"
+                      placeholder="Total Amount"
+                    />
                   </div>
                   <div className="col-md-3">
-                    <label>
-                      {" "}
-                      <span className="fw-bold">Payed Amount:</span> {"$ "}
-                      {/* {invoiceMasterModel.PayedAmount ?? 0} */}
-                    </label>
+                    <label className="form-label fw-bold">Payed Amount:</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="payedAmount"
+                      name="payedAmount"
+                      placeholder="Payed Amount"
+                    />
                   </div>
                   <div className="col-md-3">
-                    <label>
-                      {" "}
-                      <span className="fw-bold">Amount Diference:</span> {"$ "}
-                      {/* {(invoiceMasterModel.TotalAmount ?? 0) -
-                        (invoiceMasterModel.PayedAmount ?? 0)} */}
+                    <label className="form-label fw-bold">
+                      Amount Difference:
                     </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="difference"
+                      name="difference"
+                      placeholder="Amount Difference"
+                    />
                   </div>
                 </div>
 
@@ -219,6 +231,19 @@ export const InvoiceUpsert = () => {
                       )} */}
                   </tbody>
                 </table>
+
+                <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+                  <button
+                    className="btn btn-primary btn-md me-md-2"
+                    onClick={handleUpsertClick}
+                  >
+                    Return
+                  </button>
+                  <button className="btn btn-primary btn-md me-md-2">
+                    Void
+                  </button>
+                  <button className="btn btn-primary btn-md">Submit</button>
+                </div>
               </div>
             </div>
           </div>
