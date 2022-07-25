@@ -74,7 +74,7 @@ export const InvoiceUpsert = () => {
       <div className="card">
         <h3 className="card-header">Invoice</h3>
         <div className="card-body">
-          <h5 className="card-title">Create / Edit Invoice</h5>
+          <h5 className="card-title">{invoiceMasterModel === undefined ? "Create" : "Edit"} Invoice</h5>
           <hr />
 
           <div className="mt-2">

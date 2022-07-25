@@ -35,7 +35,8 @@ export const Invoices = () => {
 
   //#region "Methods"
   const navigate = useNavigate();
-  const handleUpsertClick = () => {
+  const handleUpsertClick = (createOperation: boolean) => {
+    if (createOperation) setInvoiceMasterModel(undefined);
     navigate("/invoiceUpsert");
   };
 
@@ -58,8 +59,7 @@ export const Invoices = () => {
       })
     );
     //#endregion
-    
-    if (invoiceId > 0) handleUpsertClick();
+    if (invoiceId > 0) handleUpsertClick(false);
   }
 
   //#region "Filtering and Pagination"
@@ -116,7 +116,7 @@ export const Invoices = () => {
           <button
             type="button"
             className="btn btn-primary mt-2"
-            onClick={handleUpsertClick}
+            onClick={() => handleUpsertClick(true)}
           >
             Create New Invoice
           </button>
