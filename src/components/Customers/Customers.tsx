@@ -10,7 +10,7 @@ import { useDataContext } from "../../context/DataContext";
 import { Loading } from "../../components/shared/Loading";
 
 export const Customers = () => {
-  const { setCustomerModel, customerModel } = useDataContext();
+  const { setCustomerModel } = useDataContext();
   const { customers, isLoading } = useCustomersGet();
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");

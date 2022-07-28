@@ -13,6 +13,10 @@ import { InvoiceMaster } from "../../models/InvoiceMaster";
 import { InvoiceDetails } from "../../models/InvoiceDetails";
 import { InvoicePayments } from "../../models/InvoicePayments";
 
+// Master Files
+import { useCustomersGet } from "../../hooks/Customers/useCustomersGet";
+import { useProductsGet } from "../../hooks/Products/useProductsGet";
+
 // Data Context
 import { useDataContext } from "../../context/DataContext";
 
@@ -29,11 +33,25 @@ export const InvoiceUpsert = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
 
+  // For Select
+  const { customers } = useCustomersGet();
+  const { products } = useProductsGet();
+  const [customer, setCustomer] = useState("Select a Customer");
+  const [product, setProduct] = useState("Select a Product");
+
   //#region "Methods"
 
   const navigate = useNavigate();
   const handleUpsertClick = () => {
     navigate("/invoice");
+  };
+
+  const handleCustomerChange = (e: any) => {
+    setCustomer(e.target.value);
+  };
+
+  const handleProductChange = (e: any) => {
+    setProduct(e.target.value);
   };
 
   // Insert/Edit Operation
@@ -91,6 +109,7 @@ export const InvoiceUpsert = () => {
                       id="invoiceId"
                       name="invoiceId"
                       placeholder="Invoice Id"
+                      readOnly
                     />
                   </div>
                   <div className="col-md-3">
@@ -101,6 +120,7 @@ export const InvoiceUpsert = () => {
                       id="invoiceDate"
                       name="invoiceDate"
                       placeholder="Invoice Date"
+                      readOnly
                     />
                   </div>
                   <div className="col-md-3">
@@ -120,11 +140,22 @@ export const InvoiceUpsert = () => {
                 <div className="row mt-2">
                   <div className="col-md-3">
                     <label className="form-label fw-bold">Customer Name:</label>
+                    {/* {customer} */}
                     <select
-                      className="form-select"
-                      aria-label="Select Customer"
+                      className="form-control"
+                      aria-label="Floating label select example"
+                      onChange={handleCustomerChange}
                     >
-                      <option selected>Select Customer</option>
+                      <option value="Select a Customer">
+                        {" "}
+                        -- Select a Customer --{" "}
+                      </option>
+                      {customers.map((cust) => (
+                        <option value={cust.CustomerId}>
+                          ({cust.CustomerId}) - {cust.Name} {cust.FirstName}{" "}
+                          {cust.LastName}{" "}
+                        </option>
+                      ))}
                     </select>
                   </div>
                   <div className="col-md-3">
@@ -157,16 +188,24 @@ export const InvoiceUpsert = () => {
                       id="difference"
                       name="difference"
                       placeholder="Amount Difference"
+                      readOnly
                     />
                   </div>
                 </div>
 
                 <div className="row mt-2">
-                  <div className="col-md-3">
+                  <div className="col-md-12">
                     <label>
                       {" "}
                       <span className="fw-bold">Comments:</span>{" "}
-                      {/* {invoiceMasterModel.Note}{" "} */}
+                      <textarea
+                        className="form-control"
+                        id="notes"
+                        name="notes"
+                        placeholder="Comments"
+                        rows={3}
+                        cols={400}
+                      />
                     </label>
                   </div>
                 </div>
@@ -182,53 +221,84 @@ export const InvoiceUpsert = () => {
                       <th>Transaction Price</th>
                       <th>Quantity</th>
                       <th>Total</th>
-                      <th>Action</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
 
                   <tbody>
-                    {/* {invoiceDetails
-                      .filter((obj) => obj.InvoiceId === InvoiceId)
-                      .map(
-                        ({
-                          InvoiceDetailsId,
-                          ProductName,
-                          CatalogPrice,
-                          Price,
-                          Quantity,
-                        }) => (
-                          <tr key={InvoiceDetailsId}>
-                            <td>{ProductName}</td>
-                            <td>
-                              {"$ "} {CatalogPrice ?? 0}
-                            </td>
-                            <td>
-                              {"$ "} {Price ?? 0}
-                            </td>
-                            <td>{Quantity ?? 0}</td>
-                            <td>
-                              {"$ "}
-                              {(Quantity ?? 0) * (Price ?? 0)}
-                            </td>
-                            <td>
-                              <span className="me-md-2 ">
-                                <i
-                                  title="Edit Invoice Details"
-                                  className="bi bi-pencil-square cursor"
-                                  style={{ fontSize: 18 }}
-                                ></i>
-                              </span>
-                              <span>
-                                <i
-                                  title="Delete Invoice Details"
-                                  className="bi bi-trash cursor"
-                                  style={{ fontSize: 18 }}
-                                ></i>
-                              </span>
-                            </td>
-                          </tr>
-                        )
-                      )} */}
+                    <tr>
+                      <td>
+                        <select
+                          className="form-control"
+                          aria-label="Floating label select example"
+                          onChange={handleProductChange}
+                        >
+                          <option value="Select a Product">
+                            {" "}
+                            -- Select a Product --{" "}
+                          </option>
+                          {products.map((prod) => (
+                            <option value={prod.ProductId}>
+                              ({prod.ProductId}) - {prod.Name}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          className="form-control"
+                          id="masterPrice"
+                          name="masterPrice"
+                          placeholder="Catalog Price"
+                          readOnly
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          className="form-control"
+                          id="price"
+                          name="price"
+                          placeholder="Price"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          className="form-control"
+                          id="quantity"
+                          name="quantity"
+                          placeholder="Quantity"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          className="form-control"
+                          id="total"
+                          name="total"
+                          placeholder="Total"
+                          readOnly
+                        />
+                      </td>
+                      <td>
+                        <span className="me-md-2 ">
+                          <i
+                            title="Edit Customer"
+                            className="bi bi-pencil-square cursor"
+                            style={{ fontSize: 25 }}
+                          ></i>
+                        </span>
+                        <span>
+                          <i
+                            title="Delete Customer"
+                            className="bi bi-trash cursor"
+                            style={{ fontSize: 25 }}
+                          ></i>
+                        </span>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
 
