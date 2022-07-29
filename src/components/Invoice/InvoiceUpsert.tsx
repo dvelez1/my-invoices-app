@@ -109,6 +109,7 @@ export const InvoiceUpsert = () => {
                       id="invoiceId"
                       name="invoiceId"
                       placeholder="Invoice Id"
+                      defaultValue={invoiceMasterModel?.InvoiceId}
                       readOnly
                     />
                   </div>
@@ -128,11 +129,12 @@ export const InvoiceUpsert = () => {
                       Invoice Closed On:
                     </label>
                     <input
-                      type="datetime-local"
+                      type="date"
                       className="form-control"
                       id="invoiceEndDate"
                       name="invoiceEndDate"
                       placeholder="Invoice Closed On"
+                      defaultValue="08-12-2022"
                     />
                   </div>
                 </div>
@@ -151,7 +153,14 @@ export const InvoiceUpsert = () => {
                         -- Select a Customer --{" "}
                       </option>
                       {customers.map((cust) => (
-                        <option value={cust.CustomerId}>
+                        <option
+                          value={cust.CustomerId}
+                          selected={
+                            invoiceMasterModel?.CustomerId === cust.CustomerId
+                              ? true
+                              : false
+                          }
+                        >
                           ({cust.CustomerId}) - {cust.Name} {cust.FirstName}{" "}
                           {cust.LastName}{" "}
                         </option>
@@ -166,6 +175,7 @@ export const InvoiceUpsert = () => {
                       id="totalAmount"
                       name="totalAmount"
                       placeholder="Total Amount"
+                      defaultValue={invoiceMasterModel?.TotalAmount}
                     />
                   </div>
                   <div className="col-md-3">
@@ -176,6 +186,7 @@ export const InvoiceUpsert = () => {
                       id="payedAmount"
                       name="payedAmount"
                       placeholder="Payed Amount"
+                      defaultValue={invoiceMasterModel?.PayedAmount}
                     />
                   </div>
                   <div className="col-md-3">
@@ -188,6 +199,10 @@ export const InvoiceUpsert = () => {
                       id="difference"
                       name="difference"
                       placeholder="Amount Difference"
+                      defaultValue={
+                        (invoiceMasterModel?.TotalAmount ?? 0) -
+                        (invoiceMasterModel?.PayedAmount ?? 0)
+                      }
                       readOnly
                     />
                   </div>
@@ -205,6 +220,7 @@ export const InvoiceUpsert = () => {
                         placeholder="Comments"
                         rows={3}
                         cols={400}
+                        defaultValue={invoiceMasterModel?.Note}
                       />
                     </label>
                   </div>
@@ -225,81 +241,100 @@ export const InvoiceUpsert = () => {
                     </tr>
                   </thead>
 
-                  <tbody>
-                    <tr>
-                      <td>
-                        <select
-                          className="form-control"
-                          aria-label="Floating label select example"
-                          onChange={handleProductChange}
-                        >
-                          <option value="Select a Product">
-                            {" "}
-                            -- Select a Product --{" "}
-                          </option>
-                          {products.map((prod) => (
-                            <option value={prod.ProductId}>
-                              ({prod.ProductId}) - {prod.Name}
+                  {invoiceDetailsArray?.map(
+                    ({
+                      InvoiceDetailsId,
+                      InvoiceId,
+                      ProductId,
+                      ProductName,
+                      CatalogPrice,
+                      Price,
+                      Quantity,
+                    }) => (
+                      <tr key={InvoiceDetailsId}>
+                        <td>
+                          <select
+                            className="form-control"
+                            aria-label="Floating label select example"
+                            onChange={handleProductChange}
+                          >
+                            <option value="Select a Product">
+                              {" "}
+                              -- Select a Product --{" "}
                             </option>
-                          ))}
-                        </select>
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          className="form-control"
-                          id="masterPrice"
-                          name="masterPrice"
-                          placeholder="Catalog Price"
-                          readOnly
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          className="form-control"
-                          id="price"
-                          name="price"
-                          placeholder="Price"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          className="form-control"
-                          id="quantity"
-                          name="quantity"
-                          placeholder="Quantity"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          className="form-control"
-                          id="total"
-                          name="total"
-                          placeholder="Total"
-                          readOnly
-                        />
-                      </td>
-                      <td>
-                        <span className="me-md-2 ">
-                          <i
-                            title="Edit Customer"
-                            className="bi bi-pencil-square cursor"
-                            style={{ fontSize: 25 }}
-                          ></i>
-                        </span>
-                        <span>
-                          <i
-                            title="Delete Customer"
-                            className="bi bi-trash cursor"
-                            style={{ fontSize: 25 }}
-                          ></i>
-                        </span>
-                      </td>
-                    </tr>
-                  </tbody>
+                            {products.map((prod) => (
+                              <option
+                                value={prod.ProductId}
+                                selected={prod.ProductId === ProductId ? true : false}
+                              >
+                                ({prod.ProductId}) - {prod.Name}
+                              </option>
+                            ))}
+                          </select>
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            className="form-control"
+                            id="masterPrice"
+                            name="masterPrice"
+                            placeholder="Catalog Price"
+                            defaultValue={CatalogPrice}
+                            readOnly
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            className="form-control"
+                            id="price"
+                            name="price"
+                            placeholder="Price"
+                            defaultValue={Price}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            className="form-control"
+                            id="quantity"
+                            name="quantity"
+                            placeholder="Quantity"
+                            defaultValue={Quantity}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            className="form-control"
+                            id="total"
+                            name="total"
+                            placeholder="Total"
+                            defaultValue={(Price ?? 0) * (Quantity ?? 0)}
+                            readOnly
+                          />
+                        </td>
+                        <td>
+                          <span className="me-md-2 ">
+                            <i
+                              title="Edit Customer"
+                              className="bi bi-pencil-square cursor"
+                              style={{ fontSize: 25 }}
+                            ></i>
+                          </span>
+                          <span>
+                            <i
+                              title="Delete Customer"
+                              className="bi bi-trash cursor"
+                              style={{ fontSize: 25 }}
+                            ></i>
+                          </span>
+                        </td>
+                      </tr>
+                    )
+                  )}
+
+                  <tbody></tbody>
                 </table>
 
                 <div className="d-grid gap-2 d-md-flex justify-content-md-end">
