@@ -19,6 +19,7 @@ import { useProductsGet } from "../../hooks/Products/useProductsGet";
 
 // Data Context
 import { useDataContext } from "../../context/DataContext";
+import { Product } from "../../models/product";
 
 export const InvoiceUpsert = () => {
   // Import Data Context Properties
@@ -38,6 +39,7 @@ export const InvoiceUpsert = () => {
   const { products } = useProductsGet();
   const [customer, setCustomer] = useState("Select a Customer");
   const [product, setProduct] = useState("Select a Product");
+  const [productPrice, setProductPrice] = useState<number | null>(null);
 
   //#region "Methods"
 
@@ -151,7 +153,7 @@ export const InvoiceUpsert = () => {
                           Customer Name:
                         </label>
                         {/* {customer} */}
-                        <select
+                        {/* <select
                           className="form-control"
                           aria-label="Floating label select example"
                           onChange={handleCustomerChange}
@@ -174,7 +176,7 @@ export const InvoiceUpsert = () => {
                               {cust.LastName}{" "}
                             </option>
                           ))}
-                        </select>
+                        </select> */}
                       </div>
                       <div className="col-md-3">
                         <label className="form-label fw-bold">
@@ -249,21 +251,22 @@ export const InvoiceUpsert = () => {
                     <div className="row">
                       <div className="col-md-3">
                         <label className="form-label fw-bold">Product</label>
-                        <select
+                        {/* <select
                           className="form-control"
                           aria-label="Floating label select example"
-                          // onChange={handleProductMasterChange}
+                          onChange={(e)=>setProductPrice(products.filter((obj)=>{ return obj.ProductId == Number(e.target.value)})[0].Price)}
                         >
                           <option value="Select a Product">
                             {" "}
                             -- Select a Product --{" "}
                           </option>
                           {products.map((prod) => (
-                            <option>
-                              ({prod.ProductId}) - {prod.Name}
+                            // <option key={prod.ProductId} value={prod.ProductId}>
+                             <option>
+                              ({prod.ProductId}) - {prod.Name} 
                             </option>
                           ))}
-                        </select>
+                        </select> */}
                       </div>
                       <div className="col-md-2">
                         <label className="form-label fw-bold">
@@ -275,6 +278,7 @@ export const InvoiceUpsert = () => {
                           id="masterPrice"
                           name="masterPrice"
                           placeholder="Catalog Price"
+                          // value={Number(productPrice)}
                           readOnly
                         />
                       </div>
