@@ -240,12 +240,12 @@ export const InvoiceUpsert = () => {
                     </div>
                   </div>
                 </div>
-
+                {/* DETAILS */}
                 <div className="card mt-2" style={{ width: "100" }}>
                   <div className="card-body">
                     <h5 className="card-title">Details</h5>
 
-                    {/* <label className="fw-bold mb-2">Details</label> */}
+                    <label className="fw-bold mb-2">Add detail to the Invoice:</label>
                     <div className="row">
                       <div className="col-md-3">
                         <label className="form-label fw-bold">Product</label>
@@ -299,10 +299,13 @@ export const InvoiceUpsert = () => {
                         />
                       </div>
                       <div className="col-md-3">
-                        <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <div className="d-grid gap-2 d-md-flex mt-2">
                         <label className="form-label fw-bold"></label>
-                          <button className="btn btn-primary btn-md">
+                          <button className="btn btn-primary btn-md mt-4">
                             Add
+                          </button>
+                          <button className="btn btn-primary btn-md mt-4">
+                            Clear
                           </button>
                         </div>
                       </div>
@@ -423,6 +426,7 @@ export const InvoiceUpsert = () => {
 
                   </div>
                 </div>
+
                 <div className="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
                       <button
                         className="btn btn-primary btn-md me-md-2"
