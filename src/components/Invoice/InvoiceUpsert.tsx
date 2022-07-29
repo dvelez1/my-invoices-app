@@ -100,255 +100,341 @@ export const InvoiceUpsert = () => {
           <div className="mt-2">
             <div className="card">
               <div className="card-body">
-                <div className="row">
-                  <div className="col-md-3">
-                    <label className="form-label fw-bold">Invoice Id</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="invoiceId"
-                      name="invoiceId"
-                      placeholder="Invoice Id"
-                      defaultValue={invoiceMasterModel?.InvoiceId}
-                      readOnly
-                    />
-                  </div>
-                  <div className="col-md-3">
-                    <label className="form-label fw-bold">Invoice Date</label>
-                    <input
-                      type="datetime-local"
-                      className="form-control"
-                      id="invoiceDate"
-                      name="invoiceDate"
-                      placeholder="Invoice Date"
-                      readOnly
-                    />
-                  </div>
-                  <div className="col-md-3">
-                    <label className="form-label fw-bold">
-                      Invoice Closed On:
-                    </label>
-                    <input
-                      type="date"
-                      className="form-control"
-                      id="invoiceEndDate"
-                      name="invoiceEndDate"
-                      placeholder="Invoice Closed On"
-                      defaultValue="08-12-2022"
-                    />
-                  </div>
-                </div>
+                <div className="card" style={{ width: "100" }}>
+                  <div className="card-body">
+                    <h5 className="card-title">Master</h5>
 
-                <div className="row mt-2">
-                  <div className="col-md-3">
-                    <label className="form-label fw-bold">Customer Name:</label>
-                    {/* {customer} */}
-                    <select
-                      className="form-control"
-                      aria-label="Floating label select example"
-                      onChange={handleCustomerChange}
-                    >
-                      <option value="Select a Customer">
-                        {" "}
-                        -- Select a Customer --{" "}
-                      </option>
-                      {customers.map((cust) => (
-                        <option
-                          value={cust.CustomerId}
-                          selected={
-                            invoiceMasterModel?.CustomerId === cust.CustomerId
-                              ? true
-                              : false
-                          }
+                    <div className="row">
+                      <div className="col-md-3">
+                        <label className="form-label fw-bold">Invoice Id</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="invoiceId"
+                          name="invoiceId"
+                          placeholder="Invoice Id"
+                          defaultValue={invoiceMasterModel?.InvoiceId}
+                          readOnly
+                        />
+                      </div>
+                      <div className="col-md-3">
+                        <label className="form-label fw-bold">
+                          Invoice Date
+                        </label>
+                        <input
+                          type="datetime-local"
+                          className="form-control"
+                          id="invoiceDate"
+                          name="invoiceDate"
+                          placeholder="Invoice Date"
+                          readOnly
+                        />
+                      </div>
+                      <div className="col-md-3">
+                        <label className="form-label fw-bold">
+                          Invoice Closed On:
+                        </label>
+                        <input
+                          type="date"
+                          className="form-control"
+                          id="invoiceEndDate"
+                          name="invoiceEndDate"
+                          placeholder="Invoice Closed On"
+                          defaultValue="08-12-2022"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="row mt-2">
+                      <div className="col-md-3">
+                        <label className="form-label fw-bold">
+                          Customer Name:
+                        </label>
+                        {/* {customer} */}
+                        <select
+                          className="form-control"
+                          aria-label="Floating label select example"
+                          onChange={handleCustomerChange}
                         >
-                          ({cust.CustomerId}) - {cust.Name} {cust.FirstName}{" "}
-                          {cust.LastName}{" "}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="col-md-3">
-                    <label className="form-label fw-bold">Total Amount:</label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      id="totalAmount"
-                      name="totalAmount"
-                      placeholder="Total Amount"
-                      defaultValue={invoiceMasterModel?.TotalAmount}
-                    />
-                  </div>
-                  <div className="col-md-3">
-                    <label className="form-label fw-bold">Payed Amount:</label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      id="payedAmount"
-                      name="payedAmount"
-                      placeholder="Payed Amount"
-                      defaultValue={invoiceMasterModel?.PayedAmount}
-                    />
-                  </div>
-                  <div className="col-md-3">
-                    <label className="form-label fw-bold">
-                      Amount Difference:
-                    </label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      id="difference"
-                      name="difference"
-                      placeholder="Amount Difference"
-                      defaultValue={
-                        (invoiceMasterModel?.TotalAmount ?? 0) -
-                        (invoiceMasterModel?.PayedAmount ?? 0)
-                      }
-                      readOnly
-                    />
-                  </div>
-                </div>
-
-                <div className="row mt-2">
-                  <div className="col-md-12">
-                    <label>
-                      {" "}
-                      <span className="fw-bold">Comments:</span>{" "}
-                      <textarea
-                        className="form-control"
-                        id="notes"
-                        name="notes"
-                        placeholder="Comments"
-                        rows={3}
-                        cols={400}
-                        defaultValue={invoiceMasterModel?.Note}
-                      />
-                    </label>
-                  </div>
-                </div>
-
-                <hr />
-                {/* Invoice Details */}
-                <label className="fw-bold">Invoice Details</label>
-                <table className="table table-sm">
-                  <thead className="thead-dark">
-                    <tr>
-                      <th>Product Name</th>
-                      <th>Catalog Price</th>
-                      <th>Transaction Price</th>
-                      <th>Quantity</th>
-                      <th>Total</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-
-                  {invoiceDetailsArray?.map(
-                    ({
-                      InvoiceDetailsId,
-                      InvoiceId,
-                      ProductId,
-                      ProductName,
-                      CatalogPrice,
-                      Price,
-                      Quantity,
-                    }) => (
-                      <tr key={InvoiceDetailsId}>
-                        <td>
-                          <select
-                            className="form-control"
-                            aria-label="Floating label select example"
-                            onChange={handleProductChange}
-                          >
-                            <option value="Select a Product">
-                              {" "}
-                              -- Select a Product --{" "}
+                          <option value="Select a Customer">
+                            {" "}
+                            -- Select a Customer --{" "}
+                          </option>
+                          {customers.map((cust) => (
+                            <option
+                              value={cust.CustomerId}
+                              selected={
+                                invoiceMasterModel?.CustomerId ===
+                                cust.CustomerId
+                                  ? true
+                                  : false
+                              }
+                            >
+                              ({cust.CustomerId}) - {cust.Name} {cust.FirstName}{" "}
+                              {cust.LastName}{" "}
                             </option>
-                            {products.map((prod) => (
-                              <option
-                                value={prod.ProductId}
-                                selected={prod.ProductId === ProductId ? true : false}
-                              >
-                                ({prod.ProductId}) - {prod.Name}
-                              </option>
-                            ))}
-                          </select>
-                        </td>
-                        <td>
-                          <input
-                            type="number"
-                            className="form-control"
-                            id="masterPrice"
-                            name="masterPrice"
-                            placeholder="Catalog Price"
-                            defaultValue={CatalogPrice}
-                            readOnly
-                          />
-                        </td>
-                        <td>
-                          <input
-                            type="number"
-                            className="form-control"
-                            id="price"
-                            name="price"
-                            placeholder="Price"
-                            defaultValue={Price}
-                          />
-                        </td>
-                        <td>
-                          <input
-                            type="number"
-                            className="form-control"
-                            id="quantity"
-                            name="quantity"
-                            placeholder="Quantity"
-                            defaultValue={Quantity}
-                          />
-                        </td>
-                        <td>
-                          <input
-                            type="number"
-                            className="form-control"
-                            id="total"
-                            name="total"
-                            placeholder="Total"
-                            defaultValue={(Price ?? 0) * (Quantity ?? 0)}
-                            readOnly
-                          />
-                        </td>
-                        <td>
-                          <span className="me-md-2 ">
-                            <i
-                              title="Edit Customer"
-                              className="bi bi-pencil-square cursor"
-                              style={{ fontSize: 25 }}
-                            ></i>
-                          </span>
-                          <span>
-                            <i
-                              title="Delete Customer"
-                              className="bi bi-trash cursor"
-                              style={{ fontSize: 25 }}
-                            ></i>
-                          </span>
-                        </td>
-                      </tr>
-                    )
-                  )}
+                          ))}
+                        </select>
+                      </div>
+                      <div className="col-md-3">
+                        <label className="form-label fw-bold">
+                          Total Amount:
+                        </label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          id="totalAmount"
+                          name="totalAmount"
+                          placeholder="Total Amount"
+                          defaultValue={invoiceMasterModel?.TotalAmount}
+                        />
+                      </div>
+                      <div className="col-md-3">
+                        <label className="form-label fw-bold">
+                          Payed Amount:
+                        </label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          id="payedAmount"
+                          name="payedAmount"
+                          placeholder="Payed Amount"
+                          defaultValue={invoiceMasterModel?.PayedAmount}
+                        />
+                      </div>
+                      <div className="col-md-3">
+                        <label className="form-label fw-bold">
+                          Amount Difference:
+                        </label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          id="difference"
+                          name="difference"
+                          placeholder="Amount Difference"
+                          defaultValue={
+                            (invoiceMasterModel?.TotalAmount ?? 0) -
+                            (invoiceMasterModel?.PayedAmount ?? 0)
+                          }
+                          readOnly
+                        />
+                      </div>
+                    </div>
 
-                  <tbody></tbody>
-                </table>
-
-                <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-                  <button
-                    className="btn btn-primary btn-md me-md-2"
-                    onClick={handleUpsertClick}
-                  >
-                    Return
-                  </button>
-                  <button className="btn btn-primary btn-md me-md-2">
-                    Void
-                  </button>
-                  <button className="btn btn-primary btn-md">Submit</button>
+                    <div className="row mt-2">
+                      <div className="col-md-12">
+                        <label>
+                          {" "}
+                          <span className="fw-bold">Comments:</span>{" "}
+                          <textarea
+                            className="form-control"
+                            id="notes"
+                            name="notes"
+                            placeholder="Comments"
+                            rows={3}
+                            cols={400}
+                            defaultValue={invoiceMasterModel?.Note}
+                          />
+                        </label>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+
+                <div className="card mt-2" style={{ width: "100" }}>
+                  <div className="card-body">
+                    <h5 className="card-title">Details</h5>
+
+                    {/* <label className="fw-bold mb-2">Details</label> */}
+                    <div className="row">
+                      <div className="col-md-3">
+                        <label className="form-label fw-bold">Product</label>
+                        <select
+                          className="form-control"
+                          aria-label="Floating label select example"
+                          // onChange={handleProductMasterChange}
+                        >
+                          <option value="Select a Product">
+                            {" "}
+                            -- Select a Product --{" "}
+                          </option>
+                          {products.map((prod) => (
+                            <option>
+                              ({prod.ProductId}) - {prod.Name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="col-md-2">
+                        <label className="form-label fw-bold">
+                          Catalog Price
+                        </label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          id="masterPrice"
+                          name="masterPrice"
+                          placeholder="Catalog Price"
+                          readOnly
+                        />
+                      </div>
+                      <div className="col-md-2">
+                        <label className="form-label fw-bold">Price</label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          id="price"
+                          name="price"
+                          placeholder="Price"
+                        />
+                      </div>
+                      <div className="col-md-2">
+                        <label className="form-label fw-bold">Quantity</label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          id="quantity"
+                          name="quantity"
+                          placeholder="Quantity"
+                        />
+                      </div>
+                      <div className="col-md-3">
+                        <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <label className="form-label fw-bold"></label>
+                          <button className="btn btn-primary btn-md">
+                            Add
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <hr />
+                    <table className="table table-sm mt-2">
+                      <thead className="thead-dark">
+                        <tr>
+                          <th>Product Name</th>
+                          <th>Catalog Price</th>
+                          <th>Transaction Price</th>
+                          <th>Quantity</th>
+                          <th>Total</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+
+                      {invoiceDetailsArray?.map(
+                        ({
+                          InvoiceDetailsId,
+                          InvoiceId,
+                          ProductId,
+                          ProductName,
+                          CatalogPrice,
+                          Price,
+                          Quantity,
+                        }) => (
+                          <tr key={InvoiceDetailsId}>
+                            <td>
+                              <select
+                                className="form-control"
+                                aria-label="Floating label select example"
+                                onChange={handleProductChange}
+                              >
+                                <option value="Select a Product">
+                                  {" "}
+                                  -- Select a Product --{" "}
+                                </option>
+                                {products.map((prod) => (
+                                  <option
+                                    value={prod.ProductId}
+                                    selected={
+                                      prod.ProductId === ProductId
+                                        ? true
+                                        : false
+                                    }
+                                  >
+                                    ({prod.ProductId}) - {prod.Name}
+                                  </option>
+                                ))}
+                              </select>
+                            </td>
+                            <td>
+                              <input
+                                type="number"
+                                className="form-control"
+                                id="masterPrice"
+                                name="masterPrice"
+                                placeholder="Catalog Price"
+                                defaultValue={CatalogPrice}
+                                readOnly
+                              />
+                            </td>
+                            <td>
+                              <input
+                                type="number"
+                                className="form-control"
+                                id="price"
+                                name="price"
+                                placeholder="Price"
+                                defaultValue={Price}
+                              />
+                            </td>
+                            <td>
+                              <input
+                                type="number"
+                                className="form-control"
+                                id="quantity"
+                                name="quantity"
+                                placeholder="Quantity"
+                                defaultValue={Quantity}
+                              />
+                            </td>
+                            <td>
+                              <input
+                                type="number"
+                                className="form-control"
+                                id="total"
+                                name="total"
+                                placeholder="Total"
+                                defaultValue={(Price ?? 0) * (Quantity ?? 0)}
+                                readOnly
+                              />
+                            </td>
+                            <td>
+                              <span className="me-md-2 ">
+                                <i
+                                  title="Edit Customer"
+                                  className="bi bi-pencil-square cursor"
+                                  style={{ fontSize: 25 }}
+                                ></i>
+                              </span>
+                              <span>
+                                <i
+                                  title="Delete Customer"
+                                  className="bi bi-trash cursor"
+                                  style={{ fontSize: 25 }}
+                                ></i>
+                              </span>
+                            </td>
+                          </tr>
+                        )
+                      )}
+
+                      <tbody></tbody>
+                    </table>
+
+                  </div>
+                </div>
+                <div className="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
+                      <button
+                        className="btn btn-primary btn-md me-md-2"
+                        onClick={handleUpsertClick}
+                      >
+                        Return
+                      </button>
+                      <button className="btn btn-primary btn-md me-md-2">
+                        Void
+                      </button>
+                      <button className="btn btn-primary btn-md">Submit</button>
+                    </div>
               </div>
             </div>
           </div>
