@@ -21,6 +21,13 @@ import { useProductsGet } from "../../hooks/Products/useProductsGet";
 import { useDataContext } from "../../context/DataContext";
 import { Product } from "../../models/product";
 
+// Helpers
+import {
+  dateFormatter,
+  setDateValue,
+  currentDate,
+} from "../../helper/dateFormatter";
+
 export const InvoiceUpsert = () => {
   // Import Data Context Properties
   const {
@@ -124,12 +131,14 @@ export const InvoiceUpsert = () => {
                           Invoice Date
                         </label>
                         <input
-                          type="datetime-local"
+                          type="date"
                           className="form-control"
                           id="invoiceDate"
                           name="invoiceDate"
                           placeholder="Invoice Date"
-                          readOnly
+                          defaultValue={setDateValue(
+                            invoiceMasterModel?.StartDate
+                          )}
                         />
                       </div>
                       <div className="col-md-3">
@@ -142,7 +151,9 @@ export const InvoiceUpsert = () => {
                           id="invoiceEndDate"
                           name="invoiceEndDate"
                           placeholder="Invoice Closed On"
-                          defaultValue="08-12-2022"
+                          defaultValue={setDateValue(
+                            invoiceMasterModel?.EndDate
+                          )}
                         />
                       </div>
                     </div>
@@ -153,7 +164,7 @@ export const InvoiceUpsert = () => {
                           Customer Name:
                         </label>
                         {/* {customer} */}
-                        {/* <select
+                        <select
                           className="form-control"
                           aria-label="Floating label select example"
                           onChange={handleCustomerChange}
@@ -164,6 +175,7 @@ export const InvoiceUpsert = () => {
                           </option>
                           {customers.map((cust) => (
                             <option
+                              key={cust.CustomerId}
                               value={cust.CustomerId}
                               selected={
                                 invoiceMasterModel?.CustomerId ===
@@ -172,11 +184,10 @@ export const InvoiceUpsert = () => {
                                   : false
                               }
                             >
-                              ({cust.CustomerId}) - {cust.Name} {cust.FirstName}{" "}
-                              {cust.LastName}{" "}
+                              {cust.Name} {cust.FirstName} {cust.LastName}
                             </option>
                           ))}
-                        </select> */}
+                        </select>
                       </div>
                       <div className="col-md-3">
                         <label className="form-label fw-bold">
@@ -242,31 +253,39 @@ export const InvoiceUpsert = () => {
                     </div>
                   </div>
                 </div>
-                {/* DETAILS */}
+
+                {/* Add to DETAILS */}
                 <div className="card mt-2" style={{ width: "100" }}>
                   <div className="card-body">
                     <h5 className="card-title">Details</h5>
 
-                    <label className="fw-bold mb-2">Add detail to the Invoice:</label>
+                    <label className="fw-bold mb-2">
+                      Add detail to the Invoice:
+                    </label>
                     <div className="row">
                       <div className="col-md-3">
                         <label className="form-label fw-bold">Product</label>
-                        {/* <select
+                        <select
                           className="form-control"
                           aria-label="Floating label select example"
-                          onChange={(e)=>setProductPrice(products.filter((obj)=>{ return obj.ProductId == Number(e.target.value)})[0].Price)}
+                          onChange={(e) =>
+                            setProductPrice(
+                              products.filter((obj) => {
+                                return obj.ProductId == Number(e.target.value);
+                              })[0].Price
+                            )
+                          }
                         >
                           <option value="Select a Product">
                             {" "}
                             -- Select a Product --{" "}
                           </option>
                           {products.map((prod) => (
-                            // <option key={prod.ProductId} value={prod.ProductId}>
-                             <option>
-                              ({prod.ProductId}) - {prod.Name} 
+                            <option key={prod.ProductId} value={prod.ProductId}>
+                              {prod.Name}
                             </option>
                           ))}
-                        </select> */}
+                        </select>
                       </div>
                       <div className="col-md-2">
                         <label className="form-label fw-bold">
@@ -278,7 +297,7 @@ export const InvoiceUpsert = () => {
                           id="masterPrice"
                           name="masterPrice"
                           placeholder="Catalog Price"
-                          // value={Number(productPrice)}
+                          value={productPrice ?? 0}
                           readOnly
                         />
                       </div>
@@ -304,7 +323,7 @@ export const InvoiceUpsert = () => {
                       </div>
                       <div className="col-md-3">
                         <div className="d-grid gap-2 d-md-flex mt-2">
-                        <label className="form-label fw-bold"></label>
+                          <label className="form-label fw-bold"></label>
                           <button className="btn btn-primary btn-md mt-4">
                             Add
                           </button>
@@ -315,6 +334,7 @@ export const InvoiceUpsert = () => {
                       </div>
                     </div>
 
+                    {/* Detais */}
                     <hr />
                     <table className="table table-sm mt-2">
                       <thead className="thead-dark">
@@ -427,22 +447,21 @@ export const InvoiceUpsert = () => {
 
                       <tbody></tbody>
                     </table>
-
                   </div>
                 </div>
 
                 <div className="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
-                      <button
-                        className="btn btn-primary btn-md me-md-2"
-                        onClick={handleUpsertClick}
-                      >
-                        Return
-                      </button>
-                      <button className="btn btn-primary btn-md me-md-2">
-                        Void
-                      </button>
-                      <button className="btn btn-primary btn-md">Submit</button>
-                    </div>
+                  <button
+                    className="btn btn-primary btn-md me-md-2"
+                    onClick={handleUpsertClick}
+                  >
+                    Return
+                  </button>
+                  <button className="btn btn-primary btn-md me-md-2">
+                    Void
+                  </button>
+                  <button className="btn btn-primary btn-md">Submit</button>
+                </div>
               </div>
             </div>
           </div>
