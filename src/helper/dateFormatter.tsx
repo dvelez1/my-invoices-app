@@ -15,8 +15,8 @@ export const dateFormatter = (_date: any) => {
   return month + "/" + day + "/" + year;
 };
 
-export const setDateValue = (_date: any) :string => {
-  if (!_date) return '';
+export const setDateValue = (_date: any): string => {
+  if (!_date) return "";
 
   const tempDate = new Date(_date).toISOString().slice(0, -1);
 
@@ -32,11 +32,11 @@ export const setDateValue = (_date: any) :string => {
   return year + "-" + month + "-" + day;
 };
 
-export const currentDate = () => {
+export const currentDate = (): Date => {
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, "0");
   var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
   var yyyy = today.getFullYear();
 
-  return mm + "/" + dd + "/" + yyyy;
+  return new Date(mm + "/" + dd + "/" + yyyy);
 };
