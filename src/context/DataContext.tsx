@@ -20,8 +20,8 @@ type nameDataType = {
   invoiceMasterModel: InvoiceMaster | undefined;
   setInvoiceMasterModel: React.Dispatch<React.SetStateAction<InvoiceMaster | undefined>>;
   // Invoice Details
-  invoiceDetailsArray: InvoiceDetails[] | undefined;
-  setInvoiceDetailsArray: React.Dispatch<React.SetStateAction<InvoiceDetails[] | undefined>>;
+  invoiceDetailsArray: InvoiceDetails[];
+  setInvoiceDetailsArray: React.Dispatch<React.SetStateAction<InvoiceDetails[]>>;
   // Invoice Payments
   invoicePaymentsArray: InvoicePayments[] | undefined;
   setInvoicePaymentsArray: React.Dispatch<React.SetStateAction<InvoicePayments[] | undefined>>;
@@ -37,7 +37,7 @@ const DataProvider: React.FC<Props> = ({ children }) => {
   // Invoice Master
   const [invoiceMasterModel, setInvoiceMasterModel] = useState<InvoiceMaster | undefined>(undefined);
   // Invoice Details
-  const [invoiceDetailsArray, setInvoiceDetailsArray] = useState<InvoiceDetails[] | undefined>(undefined)
+  const [invoiceDetailsArray, setInvoiceDetailsArray] = useState<InvoiceDetails[]>([])
   // Invoice Payments 
   const [invoicePaymentsArray, setInvoicePaymentsArray] = useState<InvoicePayments[] | undefined>(undefined)
 

@@ -96,6 +96,30 @@ export const InvoiceUpsert = () => {
 
   //#endregion "Methods"
 
+  // Submit Event
+  const handleAddInvoiceDetailsSubmit = (event: any) => {
+    event.preventDefault();
+    // console.log(event.target.elements.name.value); // from elements property
+    // console.log(event.target.name.value); // or directly
+
+    const formData: InvoiceDetails = {
+      InvoiceDetailsId: 0,
+      InvoiceId: invoiceMasterModel?.InvoiceId ?? 0,
+      ProductId: Number(event.target.productId.value),
+      ProductName: products.filter((obj) => {
+        return obj.ProductId == Number(event.target.productId.value);
+      })[0].Name,
+      CatalogPrice: Number(event.target.catalogPrice.value),
+      Price: Number(event.target.price.value),
+      RemovedTransaction: false,
+      RemovedDate: null,
+      Quantity: Number(event.target.quantity.value),
+    };
+
+    setInvoiceDetailsArray(current => [...current, formData]);
+    
+  };
+
   return (
     <>
       <div className="card">
@@ -262,77 +286,87 @@ export const InvoiceUpsert = () => {
                     <label className="fw-bold mb-2">
                       Add detail to the Invoice:
                     </label>
-                    <div className="row">
-                      <div className="col-md-3">
-                        <label className="form-label fw-bold">Product</label>
-                        <select
-                          className="form-control"
-                          aria-label="Floating label select example"
-                          onChange={(e) =>
-                            setProductPrice(
-                              products.filter((obj) => {
-                                return obj.ProductId == Number(e.target.value);
-                              })[0].Price
-                            )
-                          }
-                        >
-                          <option value="Select a Product">
-                            {" "}
-                            -- Select a Product --{" "}
-                          </option>
-                          {products.map((prod) => (
-                            <option key={prod.ProductId} value={prod.ProductId}>
-                              {prod.Name}
+                    <form onSubmit={handleAddInvoiceDetailsSubmit}>
+                      <div className="row">
+                        <div className="col-md-3">
+                          <label className="form-label fw-bold">Product</label>
+                          <select
+                            name="productId"
+                            className="form-control"
+                            aria-label="Floating label select example"
+                            onChange={(e) =>
+                              setProductPrice(
+                                products.filter((obj) => {
+                                  return (
+                                    obj.ProductId == Number(e.target.value)
+                                  );
+                                })[0].Price
+                              )
+                            }
+                          >
+                            <option value="Select a Product">
+                              {" "}
+                              -- Select a Product --{" "}
                             </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="col-md-2">
-                        <label className="form-label fw-bold">
-                          Catalog Price
-                        </label>
-                        <input
-                          type="number"
-                          className="form-control"
-                          id="masterPrice"
-                          name="masterPrice"
-                          placeholder="Catalog Price"
-                          value={productPrice ?? 0}
-                          readOnly
-                        />
-                      </div>
-                      <div className="col-md-2">
-                        <label className="form-label fw-bold">Price</label>
-                        <input
-                          type="number"
-                          className="form-control"
-                          id="price"
-                          name="price"
-                          placeholder="Price"
-                        />
-                      </div>
-                      <div className="col-md-2">
-                        <label className="form-label fw-bold">Quantity</label>
-                        <input
-                          type="number"
-                          className="form-control"
-                          id="quantity"
-                          name="quantity"
-                          placeholder="Quantity"
-                        />
-                      </div>
-                      <div className="col-md-3">
-                        <div className="d-grid gap-2 d-md-flex mt-2">
-                          <label className="form-label fw-bold"></label>
-                          <button className="btn btn-primary btn-md mt-4">
-                            Add
-                          </button>
-                          <button className="btn btn-primary btn-md mt-4">
-                            Clear
-                          </button>
+                            {products.map((prod) => (
+                              <option
+                                key={prod.ProductId}
+                                value={prod.ProductId}
+                              >
+                                {prod.Name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div className="col-md-2">
+                          <label className="form-label fw-bold">
+                            Catalog Price
+                          </label>
+                          <input
+                            type="number"
+                            step=".01"
+                            className="form-control"
+                            name="catalogPrice"
+                            placeholder="Catalog Price"
+                            value={productPrice ?? 0}
+                            readOnly
+                          />
+                        </div>
+                        <div className="col-md-2">
+                          <label className="form-label fw-bold">Price</label>
+                          <input
+                            type="number"
+                            step=".01"
+                            className="form-control"
+                            name="price"
+                            placeholder="Price"
+                          />
+                        </div>
+                        <div className="col-md-2">
+                          <label className="form-label fw-bold">Quantity</label>
+                          <input
+                            type="number"
+                            className="form-control"
+                            name="quantity"
+                            placeholder="Quantity"
+                          />
+                        </div>
+                        <div className="col-md-3">
+                          <div className="d-grid gap-2 d-md-flex mt-2">
+                            <label className="form-label fw-bold"></label>
+                            <button
+                              className="btn btn-primary btn-md mt-4"
+                              type="submit"
+                            >
+                              Add
+                            </button>
+                            <button className="btn btn-primary btn-md mt-4">
+                              Clear
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </form>
 
                     {/* Detais */}
                     <hr />
