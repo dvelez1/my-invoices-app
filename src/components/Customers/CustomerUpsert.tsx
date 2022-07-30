@@ -1,3 +1,5 @@
+// Note: We are using ref for submit Data
+
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
