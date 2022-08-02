@@ -1,4 +1,4 @@
-// Note: Implemeneted with Form for handleSubmit
+// Note: Implemeneted with Form for handleSubmit ans change event
 //#region Imports
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation, Route } from "react-router-dom";
@@ -24,47 +24,47 @@ import { currentDate } from "../../helper/dateFormatter";
 //#endregion Imports
 
 export const ProductUpsert = () => {
-  // Data Context
-  // const { productModel, setProductModel } = useDataContext();
 
-  // Note: We are sending and Object of Product Type as Parameter on Route Navigation
+  // Note: We are sending from Product and Object of Product Type as Parameter on the Route Navigation event
   const location = useLocation();
-  const [product, setProduct] = useState<Product>(location.state as Product);
+  const initialFormData = Object.freeze(location.state as Product);
+  const [product, setProduct] = React.useState<Product>(initialFormData);
   const [isLoading, setIsLoading] = useState(false);
+  const [isPending, setIsPending] = useState(false);
+  
+  console.log(product)
+
 
   //#region "Methods"
 
   // Navigate (Route)
   const navigate = useNavigate();
   const handleUpsertClick = () => {
-    // setTimeout(() => {
-    //   navigate("/product");
-    // }, 4000)
     navigate("/product");
+  };
+
+  // We will update our post model with their respective setter
+  const handleChange = (e: any) => {
+    setProduct({
+      ...product,
+
+      // Trimming any whitespace
+      [e.target.name]: e.target.value.trim(),
+    });
   };
 
   // Submit Event
   const handleSubmit = (event: any) => {
+    setIsPending(true);
     event.preventDefault();
     // console.log(event.target.elements.name.value); // from elements property
     // console.log(event.target.name.value); // or directly
 
-    const formData: Product = {
-      ProductId: !product ? 0 : product.ProductId,
-      Name: event.target.name.value,
-      Price: Number(event.target.price.value),
-      StartDate: currentDate(),
-      EndDate: null,
-    };
-
     //Insert / Update Operation
-    if (formData.ProductId === 0) {
-      //PUT (Create)
-      saveEventResultMessageHandler(Boolean(createProduct(formData)));
-    } else if (formData.ProductId > 0) {
-      // Post (Update)
-      saveEventResultMessageHandler(Boolean(updateProduct(formData)));
-    }
+    if (product.ProductId === 0)
+      saveEventResultMessageHandler(Boolean(createProduct(product)));
+    else if (product.ProductId > 0)
+      saveEventResultMessageHandler(Boolean(updateProduct(product)));
 
     setIsLoading(false);
   };
@@ -73,6 +73,7 @@ export const ProductUpsert = () => {
   const saveEventResultMessageHandler = (successResponse: boolean) => {
     if (successResponse) {
       successToastTransaction("Success Transaction!");
+      setIsPending(false);
       handleUpsertClick();
     } else errorToastTransaction("Failed Transaction!");
   };
@@ -93,9 +94,10 @@ export const ProductUpsert = () => {
                 <input
                   type="text"
                   className="form-control"
-                  name="name"
+                  name="Name"
                   placeholder="Name"
                   defaultValue={product?.Name}
+                  onChange={handleChange}
                 />
               </div>
               <div className="col-md-3">
@@ -103,10 +105,11 @@ export const ProductUpsert = () => {
                 <input
                   type="number"
                   className="form-control"
-                  name="price"
-                  placeholder="Middle Name"
+                  name="Price"
+                  placeholder="Price"
                   step=".01"
                   defaultValue={product?.Price}
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -115,9 +118,20 @@ export const ProductUpsert = () => {
 
             <div className="card-footer text-muted mt-4">
               <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button className="btn btn-primary me-md-2" type="submit">
-                  Save
-                </button>
+                {!isPending && (
+                  <button className="btn btn-primary me-md-2" type="submit">
+                    Save
+                  </button>
+                )}
+                {isPending && (
+                  <button
+                    className="btn btn-primary me-md-2"
+                    disabled
+                    type="submit"
+                  >
+                    Saving
+                  </button>
+                )}
                 <button
                   className="btn btn-primary"
                   type="button"
