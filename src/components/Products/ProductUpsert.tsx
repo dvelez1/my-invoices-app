@@ -1,7 +1,7 @@
-// Note: Implemeneted with Form for handleSubmit 
+// Note: Implemeneted with Form for handleSubmit
 //#region Imports
-import React, { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation, Route } from "react-router-dom";
 // Product Interface
 import { Product } from "../../models/product";
 // Import Spinner
@@ -26,6 +26,10 @@ import { currentDate } from "../../helper/dateFormatter";
 export const ProductUpsert = () => {
   // Data Context
   const { productModel, setProductModel } = useDataContext();
+
+  const location = useLocation();
+  // Note: We are sending and Object of Product Type as Parameter on Route Navigation
+  const [product, setProduct] = useState<Product>(location.state as Product);
   const [isLoading, setIsLoading] = useState(false);
 
   //#region "Methods"

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { createSearchParams, useNavigate } from "react-router-dom";
 
 import { Product } from "../../models/product";
 
@@ -25,19 +25,23 @@ export const Products = () => {
 
   // Page Redirection
   const navigate = useNavigate();
-  const handleUpsertClick = () => {
-    navigate("/productUpsert");
-  };
+  const handleUpsertClick = (productId: Number) => {
+    // Send and Object as Parameter
+    const product = products.filter((obj) => {
+      return obj.ProductId === productId;
+    })[0];
 
-  // Redirect to Main Page
-  function handleEditClick(productId: Number) {
+    // TODO: Delete
     setProductModel(
       products.filter((obj) => {
         return obj.ProductId === productId;
       })[0]
     );
-    if (productId > 0) handleUpsertClick();
-  }
+
+    navigate("/productUpsert", {
+      state: product,
+    });
+  };
 
   //#region "Filtering and Pagination"
   const filteredProduct = (): Product[] => {
@@ -91,7 +95,7 @@ export const Products = () => {
           <button
             type="button"
             className="btn btn-primary mt-2"
-            onClick={handleUpsertClick}
+            onClick={() => handleUpsertClick(0)}
           >
             Create New Product
           </button>
@@ -117,7 +121,7 @@ export const Products = () => {
                         title="Edit Product"
                         className="bi bi-pencil-square cursor"
                         style={{ fontSize: 25 }}
-                        onClick={() => handleEditClick(ProductId)}
+                        onClick={() => handleUpsertClick(ProductId)}
                       ></i>
                     </span>
                   </td>
