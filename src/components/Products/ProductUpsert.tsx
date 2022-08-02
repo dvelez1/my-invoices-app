@@ -7,7 +7,7 @@ import { Product } from "../../models/product";
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";
 // Data Context
-import { useDataContext } from "../../context/DataContext";
+// import { useDataContext } from "../../context/DataContext";
 // Methods for Insert
 import { createProduct, updateProduct } from "../../api/Products/upsertEvents";
 // Import Toast components (react-toastify) -> Note: Was implemented a custom solution
@@ -25,10 +25,10 @@ import { currentDate } from "../../helper/dateFormatter";
 
 export const ProductUpsert = () => {
   // Data Context
-  const { productModel, setProductModel } = useDataContext();
+  // const { productModel, setProductModel } = useDataContext();
 
-  const location = useLocation();
   // Note: We are sending and Object of Product Type as Parameter on Route Navigation
+  const location = useLocation();
   const [product, setProduct] = useState<Product>(location.state as Product);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -37,7 +37,9 @@ export const ProductUpsert = () => {
   // Navigate (Route)
   const navigate = useNavigate();
   const handleUpsertClick = () => {
-    setProductModel(undefined);
+    // setTimeout(() => {
+    //   navigate("/product");
+    // }, 4000)
     navigate("/product");
   };
 
@@ -48,10 +50,7 @@ export const ProductUpsert = () => {
     // console.log(event.target.name.value); // or directly
 
     const formData: Product = {
-      ProductId:
-        productModel === undefined || productModel.ProductId === 0
-          ? 0
-          : productModel.ProductId,
+      ProductId: !product ? 0 : product.ProductId,
       Name: event.target.name.value,
       Price: Number(event.target.price.value),
       StartDate: currentDate(),
@@ -85,7 +84,7 @@ export const ProductUpsert = () => {
       <form onSubmit={handleSubmit}>
         <div className="card">
           <h3 className="card-header">
-            {productModel === undefined ? "Edit Product" : "Create Product"}
+            {product ? "Edit Product" : "Create Product"}
           </h3>
           <div className="card-body">
             <div className="row">
@@ -96,7 +95,7 @@ export const ProductUpsert = () => {
                   className="form-control"
                   name="name"
                   placeholder="Name"
-                  defaultValue={productModel?.Name}
+                  defaultValue={product?.Name}
                 />
               </div>
               <div className="col-md-3">
@@ -107,7 +106,7 @@ export const ProductUpsert = () => {
                   name="price"
                   placeholder="Middle Name"
                   step=".01"
-                  defaultValue={productModel?.Price}
+                  defaultValue={product?.Price}
                 />
               </div>
             </div>
