@@ -3,17 +3,12 @@ import { createSearchParams, useNavigate } from "react-router-dom";
 
 import { Product } from "../../models/product";
 
-// Data Context
-import { useDataContext } from "../../context/DataContext";
-
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";
 import { useProductsGet } from "../../hooks/Products/useProductsGet";
+import { ProductsRows } from "../Products/ProductsRows";
 
 export const Products = () => {
-  // Add DataContext
-  const { productModel, setProductModel } = useDataContext();
-
   // Get Product and execute Loading Spinner
   const { products, isLoading } = useProductsGet();
 
@@ -22,24 +17,26 @@ export const Products = () => {
   const [search, setSearch] = useState("");
 
   //#region "Methods"
-
   // Page Redirection
   const navigate = useNavigate();
+  // Note: The Implementation is sending an Object as Parameter on the Navigate Instruction
   const handleUpsertClick = (productId: Number) => {
-    // Send and Object as Parameter
-    const product = products.filter((obj) => {
+    // Define a Default Implementation if the Model is Null
+    const productDefaultInitialization: Product = {
+      ProductId: 0,
+      Name: "",
+      Price: 0,
+      StartDate: new Date(),
+      EndDate: null,
+    };
+
+    // Retrieve the object from Products based on ProductId
+    let product = products.filter((obj) => {
       return obj.ProductId === productId;
     })[0];
 
-    // TODO: Delete
-    setProductModel(
-      products.filter((obj) => {
-        return obj.ProductId === productId;
-      })[0]
-    );
-
     navigate("/productUpsert", {
-      state: product,
+      state: product ?? productDefaultInitialization,
     });
   };
 
@@ -110,22 +107,14 @@ export const Products = () => {
             </thead>
 
             <tbody>
+              {/* Row list implementation */}
               {filteredProduct().map(({ ProductId, Name, Price }) => (
-                <tr key={ProductId}>
-                  <td>{ProductId}</td>
-                  <td>{Name}</td>
-                  <td>{Price}</td>
-                  <td>
-                    <span className="me-md-2 ">
-                      <i
-                        title="Edit Product"
-                        className="bi bi-pencil-square cursor"
-                        style={{ fontSize: 25 }}
-                        onClick={() => handleUpsertClick(ProductId)}
-                      ></i>
-                    </span>
-                  </td>
-                </tr>
+                <ProductsRows
+                  ProductId={ProductId}
+                  Name={Name}
+                  Price={Price}
+                  handleUpsertClick={handleUpsertClick}
+                />
               ))}
             </tbody>
           </table>

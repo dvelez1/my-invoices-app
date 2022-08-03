@@ -27,7 +27,7 @@ export const ProductUpsert = () => {
 
   // Note: We are sending from Product and Object of Product Type as Parameter on the Route Navigation event
   const location = useLocation();
-  const initialFormData = Object.freeze(location.state as Product);
+  var initialFormData = Object.freeze(location.state as Product);
   const [product, setProduct] = React.useState<Product>(initialFormData);
   const [isLoading, setIsLoading] = useState(false);
   const [isPending, setIsPending] = useState(false);
@@ -85,7 +85,7 @@ export const ProductUpsert = () => {
       <form onSubmit={handleSubmit}>
         <div className="card">
           <h3 className="card-header">
-            {product ? "Edit Product" : "Create Product"}
+            {product && product.ProductId > 0 ? "Edit Product" : "Create Product"}
           </h3>
           <div className="card-body">
             <div className="row">
