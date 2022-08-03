@@ -29,6 +29,7 @@ import {
 } from "../../helper/dateFormatter";
 import { InvoiceUpserMaster } from "./InvoiceUpserMaster";
 import { InvoiceUpsertDetailsAddToList } from "./InvoiceUpsertDetailsAddToList";
+import { InvoiceUpsertDetails } from "./InvoiceUpsertDetails";
 
 export const InvoiceUpsert = () => {
   // Import Data Context Properties
@@ -113,7 +114,6 @@ export const InvoiceUpsert = () => {
                   customers={customers}
                 />
 
-                {/* Add to DETAILS */}
                 <div className="card mt-2" style={{ width: "100" }}>
                   <div className="card-body">
                     <h5 className="card-title">Details</h5>
@@ -131,119 +131,12 @@ export const InvoiceUpsert = () => {
                         </form>
                       </div>
                     </div>
-                    {/* Detais */}
+
                     <hr />
-                    <table className="table table-sm mt-2">
-                      <thead className="thead-dark">
-                        <tr>
-                          <th>Product Name</th>
-                          <th>Catalog Price</th>
-                          <th>Transaction Price</th>
-                          <th>Quantity</th>
-                          <th>Total</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-
-                      {invoiceDetailsArray?.map(
-                        ({
-                          InvoiceDetailsId,
-                          InvoiceId,
-                          ProductId,
-                          ProductName,
-                          CatalogPrice,
-                          Price,
-                          Quantity,
-                        }) => (
-                          <tr key={InvoiceDetailsId}>
-                            <td>
-                              <select
-                                className="form-control"
-                                aria-label="Floating label select example"
-                                onChange={handleProductChange}
-                              >
-                                <option value="Select a Product">
-                                  {" "}
-                                  -- Select a Product --{" "}
-                                </option>
-                                {products.map((prod) => (
-                                  <option
-                                    value={prod.ProductId}
-                                    selected={
-                                      prod.ProductId === ProductId
-                                        ? true
-                                        : false
-                                    }
-                                  >
-                                    ({prod.ProductId}) - {prod.Name}
-                                  </option>
-                                ))}
-                              </select>
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                className="form-control"
-                                id="masterPrice"
-                                name="masterPrice"
-                                placeholder="Catalog Price"
-                                defaultValue={CatalogPrice}
-                                readOnly
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                className="form-control"
-                                id="price"
-                                name="price"
-                                placeholder="Price"
-                                defaultValue={Price}
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                className="form-control"
-                                id="quantity"
-                                name="quantity"
-                                placeholder="Quantity"
-                                defaultValue={Quantity}
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                className="form-control"
-                                id="total"
-                                name="total"
-                                placeholder="Total"
-                                defaultValue={(Price ?? 0) * (Quantity ?? 0)}
-                                readOnly
-                              />
-                            </td>
-                            <td>
-                              <span className="me-md-2 ">
-                                <i
-                                  title="Edit Customer"
-                                  className="bi bi-pencil-square cursor"
-                                  style={{ fontSize: 25 }}
-                                ></i>
-                              </span>
-                              <span>
-                                <i
-                                  title="Delete Customer"
-                                  className="bi bi-trash cursor"
-                                  style={{ fontSize: 25 }}
-                                ></i>
-                              </span>
-                            </td>
-                          </tr>
-                        )
-                      )}
-
-                      <tbody></tbody>
-                    </table>
+                    <InvoiceUpsertDetails
+                      handleProductChange={handleProductChange}
+                      products={products}
+                    />
                   </div>
                 </div>
 
