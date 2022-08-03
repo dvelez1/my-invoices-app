@@ -1,7 +1,8 @@
-// Note: Implemeneted with Form for handleSubmit ans change event
 //#region Imports
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation, Route } from "react-router-dom";
+// Date Formatter
+import { currentDate } from "../../helper/dateFormatter";
 // Product Interface
 import { Product } from "../../models/product";
 // Import Spinner
@@ -17,9 +18,9 @@ import {
   errorToastTransaction,
 } from "../../helper/toastMessages";
 import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
+import { ProductUpsertSave } from "./ProductUpsertSave";
 
-// Date Formatter
-import { currentDate } from "../../helper/dateFormatter";
+
 
 //#endregion Imports
 
@@ -32,9 +33,6 @@ export const ProductUpsert = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isPending, setIsPending] = useState(false);
   
-  console.log(product)
-
-
   //#region "Methods"
 
   // Navigate (Route)
@@ -115,32 +113,7 @@ export const ProductUpsert = () => {
             </div>
 
             {isLoading && <Loading />}
-
-            <div className="card-footer text-muted mt-4">
-              <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-                {!isPending && (
-                  <button className="btn btn-primary me-md-2" type="submit">
-                    Save
-                  </button>
-                )}
-                {isPending && (
-                  <button
-                    className="btn btn-primary me-md-2"
-                    disabled
-                    type="submit"
-                  >
-                    Saving
-                  </button>
-                )}
-                <button
-                  className="btn btn-primary"
-                  type="button"
-                  onClick={handleUpsertClick}
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
+            <ProductUpsertSave isPending={isPending} handleUpsertClick={handleUpsertClick}/>
             <ToastContainerImplementation />
           </div>
         </div>
