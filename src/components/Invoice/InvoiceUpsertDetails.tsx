@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { InvoiceDetails } from "../../models/InvoiceDetails";
 import { useDataContext } from "../../context/DataContext";
 
-export const InvoiceUpsertDetails = (props:any) => {
-    const {
-        invoiceDetailsArray,
-        setInvoiceDetailsArray,
-      } = useDataContext();
+export const InvoiceUpsertDetails = (props: any) => {
+  const { invoiceDetailsArray, setInvoiceDetailsArray } = useDataContext();
+
+  const isCreateOperation = (InvoiceId: number): boolean => {
+    if (InvoiceId && InvoiceId > 0) return true;
+    else return false;
+  };
+
   return (
     <>
       <table className="table table-sm mt-2">
@@ -32,8 +35,8 @@ export const InvoiceUpsertDetails = (props:any) => {
               Quantity,
             }) => (
               <tr key={InvoiceDetailsId}>
-                <td>
-                  <select
+                <td >
+                  <select   
                     className="form-control"
                     aria-label="Floating label select example"
                     onChange={props.handleProductChange}
@@ -42,7 +45,7 @@ export const InvoiceUpsertDetails = (props:any) => {
                       {" "}
                       -- Select a Product --{" "}
                     </option>
-                    {props.products.map((prod:any) => (
+                    {props.products.map((prod: any) => (
                       <option
                         value={prod.ProductId}
                         selected={prod.ProductId === ProductId ? true : false}
@@ -71,6 +74,7 @@ export const InvoiceUpsertDetails = (props:any) => {
                     name="price"
                     placeholder="Price"
                     defaultValue={Price}
+                    readOnly={isCreateOperation(InvoiceId)}
                   />
                 </td>
                 <td>
@@ -81,6 +85,7 @@ export const InvoiceUpsertDetails = (props:any) => {
                     name="quantity"
                     placeholder="Quantity"
                     defaultValue={Quantity}
+                    readOnly={isCreateOperation(InvoiceId)}
                   />
                 </td>
                 <td>
@@ -95,13 +100,6 @@ export const InvoiceUpsertDetails = (props:any) => {
                   />
                 </td>
                 <td>
-                  <span className="me-md-2 ">
-                    <i
-                      title="Edit Customer"
-                      className="bi bi-pencil-square cursor"
-                      style={{ fontSize: 25 }}
-                    ></i>
-                  </span>
                   <span>
                     <i
                       title="Delete Customer"

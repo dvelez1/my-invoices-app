@@ -120,7 +120,7 @@ export const InvoiceUpsert = () => {
                 <div className="card mt-2" style={{ width: "100" }}>
                   <div className="card-body">
                     <h5 className="card-title">Details</h5>
-
+                    <hr />
                     <form onSubmit={handleAddInvoiceDetailsSubmit}>
                       {!invoiceMasterModel && (
                         <InvoiceUpsertDetailsAddToList
@@ -130,7 +130,7 @@ export const InvoiceUpsert = () => {
                         />
                       )}
                     </form>
-                    
+                   
                     <InvoiceUpsertDetails
                       handleProductChange={handleProductChange}
                       products={products}

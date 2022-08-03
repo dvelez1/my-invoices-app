@@ -11,7 +11,7 @@ export const InvoiceUpserMaster = (props:any) => {
       <div className="card" style={{ width: "100" }}>
         <div className="card-body">
           <h5 className="card-title">Master</h5>
-
+          <hr />
           <div className="row">
             <div className="col-md-3">
               <label className="form-label fw-bold">Invoice Id</label>

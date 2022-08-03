@@ -76,7 +76,7 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
         </div>
       </div>
 
-      <hr />
+      
     </>
   );
 };
