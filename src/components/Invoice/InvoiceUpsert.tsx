@@ -27,6 +27,8 @@ import {
   setDateValue,
   currentDate,
 } from "../../helper/dateFormatter";
+import { InvoiceUpserMaster } from "./InvoiceUpserMaster";
+import { InvoiceUpsertDetailsAddToList } from "./InvoiceUpsertDetailsAddToList";
 
 export const InvoiceUpsert = () => {
   // Import Data Context Properties
@@ -64,33 +66,7 @@ export const InvoiceUpsert = () => {
   };
 
   // Insert/Edit Operation
-  const handleSaveClick = () => {
-    // setIsLoading(true);
-    // // Prepare formData for Post/Put
-    // const formData: Customer = {
-    //   CustomerId: customerModel == undefined ? 0 : customerModel.CustomerId,
-    //   Name: String(Name.current?.value),
-    //   MiddleName: String(MiddleName.current?.value),
-    //   FirstName: String(FirstName.current?.value),
-    //   LastName: String(LastName.current?.value),
-    //   Address1: String(Address1.current?.value),
-    //   Address2: String(Address2.current?.value),
-    //   City: String(City.current?.value),
-    //   State: String(State.current?.value),
-    //   ZipCode: String(ZipCode.current?.value),
-    //   StartDate: new Date(),
-    //   EndDate: null,
-    // };
-    // //Insert / Update Operation
-    // if (formData.CustomerId === 0) {
-    //   //PUT (Create)
-    //   saveEventResultMessageHandler(Boolean(createCustomer(formData)));
-    // } else if (formData.CustomerId > 0) {
-    //   // Post (Update)
-    //   saveEventResultMessageHandler(Boolean(updateCustomer(formData)));
-    // }
-    // setIsLoading(false);
-  };
+  const handleSaveClick = () => {};
 
   //#endregion "Filtering and Pagination"
 
@@ -132,150 +108,10 @@ export const InvoiceUpsert = () => {
           <div className="mt-2">
             <div className="card">
               <div className="card-body">
-                <div className="card" style={{ width: "100" }}>
-                  <div className="card-body">
-                    <h5 className="card-title">Master</h5>
-
-                    <div className="row">
-                      <div className="col-md-3">
-                        <label className="form-label fw-bold">Invoice Id</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="invoiceId"
-                          name="invoiceId"
-                          placeholder="Invoice Id"
-                          defaultValue={invoiceMasterModel?.InvoiceId}
-                          readOnly
-                        />
-                      </div>
-                      <div className="col-md-3">
-                        <label className="form-label fw-bold">
-                          Invoice Date
-                        </label>
-                        <input
-                          type="date"
-                          className="form-control"
-                          id="invoiceDate"
-                          name="invoiceDate"
-                          placeholder="Invoice Date"
-                          defaultValue={setDateValue(
-                            invoiceMasterModel?.StartDate
-                          )}
-                        />
-                      </div>
-                      <div className="col-md-3">
-                        <label className="form-label fw-bold">
-                          Invoice Closed On:
-                        </label>
-                        <input
-                          type="date"
-                          className="form-control"
-                          id="invoiceEndDate"
-                          name="invoiceEndDate"
-                          placeholder="Invoice Closed On"
-                          defaultValue={setDateValue(
-                            invoiceMasterModel?.EndDate
-                          )}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="row mt-2">
-                      <div className="col-md-3">
-                        <label className="form-label fw-bold">
-                          Customer Name:
-                        </label>
-                        {/* {customer} */}
-                        <select
-                          className="form-control"
-                          aria-label="Floating label select example"
-                          onChange={handleCustomerChange}
-                        >
-                          <option value="Select a Customer">
-                            {" "}
-                            -- Select a Customer --{" "}
-                          </option>
-                          {customers.map((cust) => (
-                            <option
-                              key={cust.CustomerId}
-                              value={cust.CustomerId}
-                              selected={
-                                invoiceMasterModel?.CustomerId ===
-                                cust.CustomerId
-                                  ? true
-                                  : false
-                              }
-                            >
-                              {cust.Name} {cust.FirstName} {cust.LastName}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="col-md-3">
-                        <label className="form-label fw-bold">
-                          Total Amount:
-                        </label>
-                        <input
-                          type="number"
-                          className="form-control"
-                          id="totalAmount"
-                          name="totalAmount"
-                          placeholder="Total Amount"
-                          defaultValue={invoiceMasterModel?.TotalAmount}
-                        />
-                      </div>
-                      <div className="col-md-3">
-                        <label className="form-label fw-bold">
-                          Payed Amount:
-                        </label>
-                        <input
-                          type="number"
-                          className="form-control"
-                          id="payedAmount"
-                          name="payedAmount"
-                          placeholder="Payed Amount"
-                          defaultValue={invoiceMasterModel?.PayedAmount}
-                        />
-                      </div>
-                      <div className="col-md-3">
-                        <label className="form-label fw-bold">
-                          Amount Difference:
-                        </label>
-                        <input
-                          type="number"
-                          className="form-control"
-                          id="difference"
-                          name="difference"
-                          placeholder="Amount Difference"
-                          defaultValue={
-                            (invoiceMasterModel?.TotalAmount ?? 0) -
-                            (invoiceMasterModel?.PayedAmount ?? 0)
-                          }
-                          readOnly
-                        />
-                      </div>
-                    </div>
-
-                    <div className="row mt-2">
-                      <div className="col-md-12">
-                        <label>
-                          {" "}
-                          <span className="fw-bold">Comments:</span>{" "}
-                          <textarea
-                            className="form-control"
-                            id="notes"
-                            name="notes"
-                            placeholder="Comments"
-                            rows={3}
-                            cols={400}
-                            defaultValue={invoiceMasterModel?.Note}
-                          />
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <InvoiceUpserMaster
+                  invoiceMasterModel={invoiceMasterModel}
+                  customers={customers}
+                />
 
                 {/* Add to DETAILS */}
                 <div className="card mt-2" style={{ width: "100" }}>
@@ -287,91 +123,11 @@ export const InvoiceUpsert = () => {
                           Add detail to the Invoice:
                         </label>
                         <form onSubmit={handleAddInvoiceDetailsSubmit}>
-                          <div className="row">
-                            <div className="col-md-3">
-                              <label className="form-label fw-bold">
-                                Product
-                              </label>
-                              <select
-                                name="productId"
-                                className="form-control"
-                                aria-label="Floating label select example"
-                                onChange={(e) =>
-                                  setProductPrice(
-                                    products.filter((obj) => {
-                                      return (
-                                        obj.ProductId == Number(e.target.value)
-                                      );
-                                    })[0].Price
-                                  )
-                                }
-                              >
-                                <option value="Select a Product">
-                                  {" "}
-                                  -- Select a Product --{" "}
-                                </option>
-                                {products.map((prod) => (
-                                  <option
-                                    key={prod.ProductId}
-                                    value={prod.ProductId}
-                                  >
-                                    {prod.Name}
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-                            <div className="col-md-2">
-                              <label className="form-label fw-bold">
-                                Catalog Price
-                              </label>
-                              <input
-                                type="number"
-                                step=".01"
-                                className="form-control"
-                                name="catalogPrice"
-                                placeholder="Catalog Price"
-                                value={productPrice ?? 0}
-                                readOnly
-                              />
-                            </div>
-                            <div className="col-md-2">
-                              <label className="form-label fw-bold">
-                                Price
-                              </label>
-                              <input
-                                type="number"
-                                step=".01"
-                                className="form-control"
-                                name="price"
-                                placeholder="Price"
-                              />
-                            </div>
-                            <div className="col-md-2">
-                              <label className="form-label fw-bold">
-                                Quantity
-                              </label>
-                              <input
-                                type="number"
-                                className="form-control"
-                                name="quantity"
-                                placeholder="Quantity"
-                              />
-                            </div>
-                            <div className="col-md-3">
-                              <div className="d-grid gap-2 d-md-flex mt-2">
-                                <label className="form-label fw-bold"></label>
-                                <button
-                                  className="btn btn-primary btn-md mt-4"
-                                  type="submit"
-                                >
-                                  Add
-                                </button>
-                                <button className="btn btn-primary btn-md mt-4">
-                                  Clear
-                                </button>
-                              </div>
-                            </div>
-                          </div>
+                          <InvoiceUpsertDetailsAddToList
+                            setProductPrice={setProductPrice}
+                            products={products}
+                            productPrice={productPrice}
+                          />
                         </form>
                       </div>
                     </div>
