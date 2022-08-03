@@ -54,7 +54,10 @@ export const InvoiceUpsert = () => {
   //#region "Methods"
 
   const navigate = useNavigate();
-  const handleUpsertClick = () => {
+  const handleUpsertReturnClick = () => {
+    setInvoiceMasterModel(undefined);
+    setInvoiceDetailsArray([]);
+    setInvoicePaymentsArray(undefined);
     navigate("/invoice");
   };
 
@@ -117,22 +120,17 @@ export const InvoiceUpsert = () => {
                 <div className="card mt-2" style={{ width: "100" }}>
                   <div className="card-body">
                     <h5 className="card-title">Details</h5>
-                    <div className="card mt-2" style={{ width: "100" }}>
-                      <div className="card-body">
-                        <label className="fw-bold mb-2">
-                          Add detail to the Invoice:
-                        </label>
-                        <form onSubmit={handleAddInvoiceDetailsSubmit}>
-                          <InvoiceUpsertDetailsAddToList
-                            setProductPrice={setProductPrice}
-                            products={products}
-                            productPrice={productPrice}
-                          />
-                        </form>
-                      </div>
-                    </div>
 
-                    <hr />
+                    <form onSubmit={handleAddInvoiceDetailsSubmit}>
+                      {!invoiceMasterModel && (
+                        <InvoiceUpsertDetailsAddToList
+                          setProductPrice={setProductPrice}
+                          products={products}
+                          productPrice={productPrice}
+                        />
+                      )}
+                    </form>
+                    
                     <InvoiceUpsertDetails
                       handleProductChange={handleProductChange}
                       products={products}
@@ -143,7 +141,7 @@ export const InvoiceUpsert = () => {
                 <div className="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
                   <button
                     className="btn btn-primary btn-md me-md-2"
-                    onClick={handleUpsertClick}
+                    onClick={handleUpsertReturnClick}
                   >
                     Return
                   </button>

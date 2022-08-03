@@ -33,7 +33,7 @@ export const InvoiceUpserMaster = (props:any) => {
                 id="invoiceDate"
                 name="invoiceDate"
                 placeholder="Invoice Date"
-                defaultValue={setDateValue(props.nvoiceMasterModel?.StartDate)}
+                defaultValue={setDateValue(props.invoiceMasterModel?.StartDate)}
               />
             </div>
             <div className="col-md-3">
