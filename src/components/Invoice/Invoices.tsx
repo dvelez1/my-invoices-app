@@ -18,6 +18,7 @@ import { InvoiceUpsert } from "../Invoice/InvoiceUpsert";
 
 // Data Context
 import { useDataContext } from "../../context/DataContext";
+import { InvoicesDetailsRows } from "./InvoicesDetailsRows";
 
 export const Invoices = () => {
   // Import Data Context Properties
@@ -242,36 +243,12 @@ export const Invoices = () => {
                               Price,
                               Quantity,
                             }) => (
-                              <tr key={InvoiceDetailsId}>
-                                <td>{ProductName}</td>
-                                <td>
-                                  {"$ "} {CatalogPrice ?? 0}
-                                </td>
-                                <td>
-                                  {"$ "} {Price ?? 0}
-                                </td>
-                                <td>{Quantity ?? 0}</td>
-                                <td>
-                                  {"$ "}
-                                  {(Quantity ?? 0) * (Price ?? 0)}
-                                </td>
-                                <td>
-                                  <span className="me-md-2 ">
-                                    <i
-                                      title="Edit Invoice Details"
-                                      className="bi bi-pencil-square cursor"
-                                      style={{ fontSize: 18 }}
-                                    ></i>
-                                  </span>
-                                  <span>
-                                    <i
-                                      title="Delete Invoice Details"
-                                      className="bi bi-trash cursor"
-                                      style={{ fontSize: 18 }}
-                                    ></i>
-                                  </span>
-                                </td>
-                              </tr>
+                              <InvoicesDetailsRows
+                                ProductName={ProductName}
+                                CatalogPrice={CatalogPrice}
+                                Price={Price}
+                                Quantity={Quantity}
+                              />
                             )
                           )}
                       </tbody>
