@@ -5,10 +5,6 @@ import { useNavigate, useLocation, Route } from "react-router-dom";
 import { currentDate } from "../../helper/dateFormatter";
 // Product Interface
 import { Product } from "../../models/product";
-// Import Spinner
-import { Loading } from "../../components/shared/Loading";
-// Data Context
-// import { useDataContext } from "../../context/DataContext";
 // Methods for Insert
 import { createProduct, updateProduct } from "../../api/Products/upsertEvents";
 // Import Toast components (react-toastify) -> Note: Was implemented a custom solution
@@ -17,15 +13,17 @@ import {
   successToastTransaction,
   errorToastTransaction,
 } from "../../helper/toastMessages";
-import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
-import { ProductUpsertSave } from "./ProductUpsertSave";
 
+// Components
+import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
+import { Loading } from "../../components/shared/Loading";
+import { ProductUpsertSave } from "./ProductUpsertSave";
+import { ProductUpsertBody } from "./ProductUpsertBody";
 
 
 //#endregion Imports
 
 export const ProductUpsert = () => {
-
   // Note: We are sending from Product and Object of Product Type as Parameter on the Route Navigation event
   const location = useLocation();
   var initialFormData = Object.freeze(location.state as Product);
@@ -86,32 +84,7 @@ export const ProductUpsert = () => {
             {product && product.ProductId > 0 ? "Edit Product" : "Create Product"}
           </h3>
           <div className="card-body">
-            <div className="row">
-              <div className="col-md-3">
-                <label className="form-label">Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="Name"
-                  placeholder="Name"
-                  defaultValue={product?.Name}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="col-md-3">
-                <label className="form-label">Price</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  name="Price"
-                  placeholder="Price"
-                  step=".01"
-                  defaultValue={product?.Price}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-
+            <ProductUpsertBody product={product} handleChange={handleChange}/>
             {isLoading && <Loading />}
             <ProductUpsertSave isPending={isPending} handleUpsertClick={handleUpsertClick}/>
             <ToastContainerImplementation />
