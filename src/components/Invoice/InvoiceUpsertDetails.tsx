@@ -35,20 +35,22 @@ export const InvoiceUpsertDetails = (props: any) => {
               Quantity,
             }) => (
               <tr key={InvoiceDetailsId}>
-                <td >
-                  <select   
+                <td>
+                  <select
                     className="form-control"
                     aria-label="Floating label select example"
                     onChange={props.handleProductChange}
+                    defaultValue = {ProductId || ""}
                   >
-                    <option value="Select a Product">
+                    <option value="" disabled>
                       {" "}
                       -- Select a Product --{" "}
                     </option>
                     {props.products.map((prod: any) => (
                       <option
+                        key={prod.ProductId}
                         value={prod.ProductId}
-                        selected={prod.ProductId === ProductId ? true : false}
+                        // selected={prod.ProductId === ProductId ? true : false}
                       >
                         ({prod.ProductId}) - {prod.Name}
                       </option>

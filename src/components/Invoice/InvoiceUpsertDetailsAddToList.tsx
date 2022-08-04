@@ -20,8 +20,9 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
                     })[0].Price
                   )
                 }
+                defaultValue = {""}
               >
-                <option value="Select a Product">
+                <option value="" disabled>
                   {" "}
                   -- Select a Product --{" "}
                 </option>
@@ -75,8 +76,6 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
           </div>
         </div>
       </div>
-
-      
     </>
   );
 };

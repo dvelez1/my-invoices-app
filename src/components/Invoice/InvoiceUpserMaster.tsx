@@ -1,16 +1,17 @@
 import React from "react";
 import {
-    dateFormatter,
-    setDateValue,
-    currentDate,
-  } from "../../helper/dateFormatter";
+  dateFormatter,
+  setDateValue,
+  currentDate,
+} from "../../helper/dateFormatter";
 
-export const InvoiceUpserMaster = (props:any) => {
+export const InvoiceUpserMaster = (props: any) => {
   return (
     <>
       <div className="card" style={{ width: "100" }}>
         <div className="card-body">
           <h5 className="card-title">Master</h5>
+
           <hr />
           <div className="row">
             <div className="col-md-3">
@@ -57,20 +58,21 @@ export const InvoiceUpserMaster = (props:any) => {
                 className="form-control"
                 aria-label="Floating label select example"
                 onChange={props.handleCustomerChange}
+                defaultValue={props.invoiceMasterModel?.CustomerId || ""}
               >
-                <option value="Select a Customer">
+                <option value="" disabled>
                   {" "}
                   -- Select a Customer --{" "}
                 </option>
-                {props.customers.map((cust:any) => (
+                {props.customers.map((cust: any) => (
                   <option
                     key={cust.CustomerId}
                     value={cust.CustomerId}
-                    selected={
-                        props.invoiceMasterModel?.CustomerId === cust.CustomerId
-                        ? true
-                        : false
-                    }
+                    // selected={
+                    //     props.invoiceMasterModel?.CustomerId === cust.CustomerId
+                    //     ? true
+                    //     : false
+                    // }
                   >
                     {cust.Name} {cust.FirstName} {cust.LastName}
                   </option>

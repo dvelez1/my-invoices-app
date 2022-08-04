@@ -1,3 +1,4 @@
+//#region Methods and Imports
 import React, { useState } from "react";
 // Used for routing
 import { useNavigate } from "react-router-dom";
@@ -30,6 +31,8 @@ import {
 import { InvoiceUpserMaster } from "./InvoiceUpserMaster";
 import { InvoiceUpsertDetailsAddToList } from "./InvoiceUpsertDetailsAddToList";
 import { InvoiceUpsertDetails } from "./InvoiceUpsertDetails";
+
+//#endregion
 
 export const InvoiceUpsert = () => {
   // Import Data Context Properties
@@ -108,7 +111,7 @@ export const InvoiceUpsert = () => {
             {invoiceMasterModel === undefined ? "Create" : "Edit"} Invoice
           </h5>
           <hr />
-
+          
           <div className="mt-2">
             <div className="card">
               <div className="card-body">
@@ -130,7 +133,7 @@ export const InvoiceUpsert = () => {
                         />
                       )}
                     </form>
-                   
+
                     <InvoiceUpsertDetails
                       handleProductChange={handleProductChange}
                       products={products}
