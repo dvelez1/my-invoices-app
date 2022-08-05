@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 // Data Context
 import { useDataContext } from "../../context/DataContext";
 import { InvoiceDetails } from "../../models/InvoiceDetails";
 import { Product } from "../../models/product";
 
 export const InvoiceUpsertDetailsAddToList = (props: any) => {
+  // Import DataContext
   const { invoiceMasterModel, invoiceDetailsArray, setInvoiceDetailsArray } =
     useDataContext();
 
+  // Add Elements to Array (InvoiceDetails - Only Create Operation
   const handleAddInvoiceDetailsSubmit = (event: any) => {
     event.preventDefault();
     // console.log(event.target.elements.name.value); // from elements property
@@ -29,6 +31,8 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
 
     setInvoiceDetailsArray((current) => [...current, formData]);
   };
+
+  const handleClearClick = () => {};
 
   return (
     <>
@@ -100,7 +104,12 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
                   <button className="btn btn-primary btn-md mt-4" type="submit">
                     Add
                   </button>
-                  <button className="btn btn-primary btn-md mt-4">Clear</button>
+                  <button
+                    className="btn btn-primary btn-md mt-4"
+                    onClick={() => handleClearClick()}
+                  >
+                    Clear
+                  </button>
                 </div>
               </div>
             </div>
