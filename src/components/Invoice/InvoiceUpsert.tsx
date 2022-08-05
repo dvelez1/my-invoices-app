@@ -79,28 +79,6 @@ export const InvoiceUpsert = () => {
 
   //#endregion "Methods"
 
-  // Submit Event
-  const handleAddInvoiceDetailsSubmit = (event: any) => {
-    event.preventDefault();
-    // console.log(event.target.elements.name.value); // from elements property
-    // console.log(event.target.name.value); // or directly
-
-    const formData: InvoiceDetails = {
-      InvoiceDetailsId: invoiceDetailsArray.length + 1,
-      InvoiceId: invoiceMasterModel?.InvoiceId ?? 0,
-      ProductId: Number(event.target.productId.value),
-      ProductName: products.filter((obj) => {
-        return obj.ProductId == Number(event.target.productId.value);
-      })[0].Name,
-      CatalogPrice: Number(event.target.catalogPrice.value),
-      Price: Number(event.target.price.value),
-      RemovedTransaction: false,
-      RemovedDate: null,
-      Quantity: Number(event.target.quantity.value),
-    };
-
-    setInvoiceDetailsArray((current) => [...current, formData]);
-  };
 
   return (
     <>
@@ -124,7 +102,7 @@ export const InvoiceUpsert = () => {
                   <div className="card-body">
                     <h5 className="card-title">Details</h5>
                     <hr />
-                    <form onSubmit={handleAddInvoiceDetailsSubmit}>
+                    
                       {!invoiceMasterModel && (
                         <InvoiceUpsertDetailsAddToList
                           setProductPrice={setProductPrice}
@@ -132,7 +110,7 @@ export const InvoiceUpsert = () => {
                           productPrice={productPrice}
                         />
                       )}
-                    </form>
+                   
 
                     <InvoiceUpsertDetails
                       handleProductChange={handleProductChange}
