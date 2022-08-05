@@ -86,7 +86,7 @@ export const InvoiceUpsert = () => {
     // console.log(event.target.name.value); // or directly
 
     const formData: InvoiceDetails = {
-      InvoiceDetailsId: 0,
+      InvoiceDetailsId: invoiceDetailsArray.length + 1,
       InvoiceId: invoiceMasterModel?.InvoiceId ?? 0,
       ProductId: Number(event.target.productId.value),
       ProductName: products.filter((obj) => {

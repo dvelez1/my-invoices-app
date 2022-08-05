@@ -10,6 +10,14 @@ export const InvoiceUpsertDetails = (props: any) => {
     else return false;
   };
 
+  const handleRemoveClick = (id: number) => {
+    setInvoiceDetailsArray((current) =>
+      current.filter((invDetails) => {
+        return invDetails.InvoiceDetailsId != id;
+      })
+    );
+  };
+
   return (
     <>
       <table className="table table-sm mt-2">
@@ -40,18 +48,14 @@ export const InvoiceUpsertDetails = (props: any) => {
                     className="form-control"
                     aria-label="Floating label select example"
                     onChange={props.handleProductChange}
-                    defaultValue = {ProductId || ""}
+                    defaultValue={ProductId || ""}
                   >
                     <option value="" disabled>
                       {" "}
                       -- Select a Product --{" "}
                     </option>
                     {props.products.map((prod: any) => (
-                      <option
-                        key={prod.ProductId}
-                        value={prod.ProductId}
-                        // selected={prod.ProductId === ProductId ? true : false}
-                      >
+                      <option key={prod.ProductId} value={prod.ProductId}>
                         ({prod.ProductId}) - {prod.Name}
                       </option>
                     ))}
@@ -102,11 +106,18 @@ export const InvoiceUpsertDetails = (props: any) => {
                   />
                 </td>
                 <td>
-                  <span>
+                  <span
+                    style={{
+                      visibility: !isCreateOperation(InvoiceId)
+                        ? "visible"
+                        : "hidden",
+                    }}
+                  >
                     <i
                       title="Delete Customer"
                       className="bi bi-trash cursor"
                       style={{ fontSize: 25 }}
+                      onClick={() => handleRemoveClick(InvoiceDetailsId)}
                     ></i>
                   </span>
                 </td>
