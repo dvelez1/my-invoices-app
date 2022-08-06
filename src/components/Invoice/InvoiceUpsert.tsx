@@ -1,34 +1,14 @@
 //#region Imports
 
-import React, { useState } from "react";
-// Used for routing
-import { useNavigate } from "react-router-dom";
-
-// Import Spinner
-import { Loading } from "../shared/Loading";
-
-// Custom hook with mhy models
-import { useInvoicesGet } from "../../hooks/Invoice/useInvoicesGet";
-
-// Models
-import { InvoiceMaster } from "../../models/InvoiceMaster";
-import { InvoiceDetails } from "../../models/InvoiceDetails";
-import { InvoicePayments } from "../../models/InvoicePayments";
-
 // Master Files
 import { useCustomersGet } from "../../hooks/Customers/useCustomersGet";
 import { useProductsGet } from "../../hooks/Products/useProductsGet";
 
 // Data Context
 import { useDataContext } from "../../context/DataContext";
-import { Product } from "../../models/product";
+import { InvoiceUpsertSave } from "./InvoiceUpsertSave";
 
 // Helpers
-import {
-  dateFormatter,
-  setDateValue,
-  currentDate,
-} from "../../helper/dateFormatter";
 import { InvoiceUpserMaster } from "./InvoiceUpserMaster";
 import { InvoiceUpsertDetailsAddToList } from "./InvoiceUpsertDetailsAddToList";
 import { InvoiceUpsertDetails } from "./InvoiceUpsertDetails";
@@ -37,14 +17,7 @@ import { InvoiceUpsertDetails } from "./InvoiceUpsertDetails";
 
 export const InvoiceUpsert = () => {
   // Import Data Context Properties
-  const {
-    invoiceMasterModel,
-    setInvoiceMasterModel,
-    setInvoiceDetailsArray,
-    setInvoicePaymentsArray,
-  } = useDataContext();
-  const [currentPage, setCurrentPage] = useState(0);
-  const [search, setSearch] = useState("");
+  const { invoiceMasterModel } = useDataContext();
 
   // For Select
   const { customers } = useCustomersGet();
@@ -52,16 +25,11 @@ export const InvoiceUpsert = () => {
 
   //#region "Methods"
 
-  const navigate = useNavigate();
-  const handleUpsertReturnClick = () => {
-    setInvoiceMasterModel(null!);
-    setInvoiceDetailsArray([]);
-    setInvoicePaymentsArray(undefined);
-    navigate("/invoice");
+  const isCreateEvent = (): boolean => {
+    return (
+      invoiceMasterModel === undefined || invoiceMasterModel?.InvoiceId === 0
+    );
   };
-
-  // Insert/Edit Operation
-  const handleSaveClick = () => {};
 
   //#endregion "Methods"
 
@@ -71,7 +39,7 @@ export const InvoiceUpsert = () => {
         <h3 className="card-header">Invoice</h3>
         <div className="card-body">
           <h5 className="card-title">
-            {invoiceMasterModel === undefined ? "Create" : "Edit"} Invoice
+            {isCreateEvent() ? "Create" : "Edit"} Invoice
           </h5>
           <hr />
 
@@ -92,25 +60,7 @@ export const InvoiceUpsert = () => {
                     <InvoiceUpsertDetails products={products} />
                   </div>
                 </div>
-
-                <div className="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
-                  <button
-                    className="btn btn-primary btn-md me-md-2"
-                    onClick={handleUpsertReturnClick}
-                  >
-                    Return
-                  </button>
-                  <button className="btn btn-primary btn-md me-md-2">
-                    Void
-                  </button>
-                  <button
-                    className="btn btn-primary btn-md"
-                    type="submit"
-                    onClick={handleSaveClick}
-                  >
-                    Submit
-                  </button>
-                </div>
+                <InvoiceUpsertSave />
               </div>
             </div>
           </div>
