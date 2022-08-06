@@ -9,7 +9,6 @@ import { useDataContext } from "../../context/DataContext";
 
 export const InvoiceUpserMaster = (props: any) => {
   const { invoiceMasterModel, setInvoiceMasterModel } = useDataContext();
-  const [customer, setCustomer] = useState("");
 
   const handleChange = (e: any) => {
     setInvoiceMasterModel({

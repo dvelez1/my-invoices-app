@@ -38,7 +38,21 @@ export const Invoices = () => {
   //#region "Methods"
   const navigate = useNavigate();
   const handleUpsertClick = (createOperation: boolean) => {
-    if (createOperation) setInvoiceMasterModel(null!);
+    if (createOperation)
+      setInvoiceMasterModel({
+        InvoiceId: 0,
+        CustomerId: 0,
+        CustomerName: "",
+        FirstName: "",
+        LastName: "",
+        TransactionActive: false,
+        TotalAmount: 0,
+        PayedAmount: 0,
+        Note: "",
+        Void: false,
+        StartDate: new Date(),
+        EndDate: null,
+      });
     navigate("/invoiceUpsert");
   };
 
@@ -151,7 +165,7 @@ export const Invoices = () => {
                       handleEditClick={handleEditClick}
                     />
                     <hr />
-       
+
                     <label className="fw-bold">Invoice Details</label>
                     <table className="table table-sm">
                       <thead className="thead-dark">
