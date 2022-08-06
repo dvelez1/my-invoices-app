@@ -8,8 +8,6 @@ import { useInvoicesGet } from "../../hooks/Invoice/useInvoicesGet";
 
 // Interfaces
 import { InvoiceMaster } from "../../models/InvoiceMaster";
-import { InvoiceDetails } from "../../models/InvoiceDetails";
-import { InvoicePayments } from "../../models/InvoicePayments";
 
 // Data Context
 import { useDataContext } from "../../context/DataContext";
@@ -187,12 +185,14 @@ export const Invoices = () => {
                               CatalogPrice,
                               Price,
                               Quantity,
+                             InvoiceDetailsId
                             }) => (
                               <InvoicesDetailsRows
                                 ProductName={ProductName}
                                 CatalogPrice={CatalogPrice}
                                 Price={Price}
                                 Quantity={Quantity}
+                                key={InvoiceDetailsId}
                               />
                             )
                           )}

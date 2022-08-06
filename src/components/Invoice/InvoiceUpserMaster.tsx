@@ -117,10 +117,6 @@ export const InvoiceUpserMaster = (props: any) => {
                 className="form-control"
                 name="difference"
                 placeholder="Amount Difference"
-                defaultValue={
-                  (invoiceMasterModel?.TotalAmount ?? 0) -
-                  (invoiceMasterModel?.PayedAmount ?? 0)
-                }
                 value={
                   (invoiceMasterModel?.TotalAmount ?? 0) -
                   (invoiceMasterModel?.PayedAmount ?? 0)
