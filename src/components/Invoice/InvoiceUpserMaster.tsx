@@ -1,11 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   dateFormatter,
   setDateValue,
   currentDate,
 } from "../../helper/dateFormatter";
 
+import { useDataContext } from "../../context/DataContext";
+
 export const InvoiceUpserMaster = (props: any) => {
+  const { invoiceMasterModel, setInvoiceMasterModel } = useDataContext();
+  const [customer, setCustomer] = useState("");
+
+  const handleChange = (e: any) => {
+    setInvoiceMasterModel({
+      ...invoiceMasterModel,
+
+      // Trimming any whitespace
+      [e.target.name]: e.target.value.trim(),
+    });
+  };
+
+  const handleCustomerChange = (e: any) => {
+    console.log(e.target.value);
+  };
+
   return (
     <>
       <div className="card" style={{ width: "100" }}>
@@ -19,10 +37,10 @@ export const InvoiceUpserMaster = (props: any) => {
               <input
                 type="text"
                 className="form-control"
-                id="invoiceId"
-                name="invoiceId"
+                name="InvoiceId"
                 placeholder="Invoice Id"
-                defaultValue={props.invoiceMasterModel?.InvoiceId}
+                defaultValue={invoiceMasterModel?.InvoiceId}
+                onChange={handleChange}
                 readOnly
               />
             </div>
@@ -31,10 +49,10 @@ export const InvoiceUpserMaster = (props: any) => {
               <input
                 type="date"
                 className="form-control"
-                id="invoiceDate"
-                name="invoiceDate"
+                name="StartDate"
                 placeholder="Invoice Date"
-                defaultValue={setDateValue(props.invoiceMasterModel?.StartDate)}
+                onChange={handleChange}
+                defaultValue={setDateValue(invoiceMasterModel?.StartDate)}
               />
             </div>
             <div className="col-md-3">
@@ -42,10 +60,10 @@ export const InvoiceUpserMaster = (props: any) => {
               <input
                 type="date"
                 className="form-control"
-                id="invoiceEndDate"
-                name="invoiceEndDate"
+                name="EndDate"
                 placeholder="Invoice Closed On"
-                defaultValue={setDateValue(props.invoiceMasterModel?.EndDate)}
+                onChange={handleChange}
+                defaultValue={setDateValue(invoiceMasterModel?.EndDate)}
               />
             </div>
           </div>
@@ -53,27 +71,19 @@ export const InvoiceUpserMaster = (props: any) => {
           <div className="row mt-2">
             <div className="col-md-3">
               <label className="form-label fw-bold">Customer Name:</label>
-              {/* {customer} */}
               <select
                 className="form-control"
                 aria-label="Floating label select example"
-                onChange={props.handleCustomerChange}
-                defaultValue={props.invoiceMasterModel?.CustomerId || ""}
+                name="CustomerId"
+                onChange={handleChange}
+                defaultValue={invoiceMasterModel?.CustomerId || ""}
               >
                 <option value="" disabled>
                   {" "}
                   -- Select a Customer --{" "}
                 </option>
                 {props.customers.map((cust: any) => (
-                  <option
-                    key={cust.CustomerId}
-                    value={cust.CustomerId}
-                    // selected={
-                    //     props.invoiceMasterModel?.CustomerId === cust.CustomerId
-                    //     ? true
-                    //     : false
-                    // }
-                  >
+                  <option key={cust.CustomerId} value={cust.CustomerId}>
                     {cust.Name} {cust.FirstName} {cust.LastName}
                   </option>
                 ))}
@@ -84,10 +94,10 @@ export const InvoiceUpserMaster = (props: any) => {
               <input
                 type="number"
                 className="form-control"
-                id="totalAmount"
-                name="totalAmount"
+                name="TotalAmount"
                 placeholder="Total Amount"
-                defaultValue={props.invoiceMasterModel?.TotalAmount}
+                onChange={handleChange}
+                defaultValue={invoiceMasterModel?.TotalAmount}
               />
             </div>
             <div className="col-md-3">
@@ -95,10 +105,10 @@ export const InvoiceUpserMaster = (props: any) => {
               <input
                 type="number"
                 className="form-control"
-                id="payedAmount"
-                name="payedAmount"
+                name="PayedAmount"
                 placeholder="Payed Amount"
-                defaultValue={props.invoiceMasterModel?.PayedAmount}
+                onChange={handleChange}
+                defaultValue={invoiceMasterModel?.PayedAmount}
               />
             </div>
             <div className="col-md-3">
@@ -106,12 +116,15 @@ export const InvoiceUpserMaster = (props: any) => {
               <input
                 type="number"
                 className="form-control"
-                id="difference"
                 name="difference"
                 placeholder="Amount Difference"
                 defaultValue={
-                  (props.invoiceMasterModel?.TotalAmount ?? 0) -
-                  (props.invoiceMasterModel?.PayedAmount ?? 0)
+                  (invoiceMasterModel?.TotalAmount ?? 0) -
+                  (invoiceMasterModel?.PayedAmount ?? 0)
+                }
+                value={
+                  (invoiceMasterModel?.TotalAmount ?? 0) -
+                  (invoiceMasterModel?.PayedAmount ?? 0)
                 }
                 readOnly
               />
@@ -125,12 +138,12 @@ export const InvoiceUpserMaster = (props: any) => {
                 <span className="fw-bold">Comments:</span>{" "}
                 <textarea
                   className="form-control"
-                  id="notes"
-                  name="notes"
+                  name="Note"
                   placeholder="Comments"
                   rows={3}
                   cols={400}
-                  defaultValue={props.invoiceMasterModel?.Note}
+                  onChange={handleChange}
+                  defaultValue={invoiceMasterModel?.Note}
                 />
               </label>
             </div>

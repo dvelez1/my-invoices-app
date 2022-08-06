@@ -18,9 +18,9 @@ type nameDataType = {
   productModel: Product | undefined;
   setProductModel: React.Dispatch<React.SetStateAction<Product | undefined>>;
   // Invoices Master
-  invoiceMasterModel: InvoiceMaster | undefined;
+  invoiceMasterModel: InvoiceMaster;
   setInvoiceMasterModel: React.Dispatch<
-    React.SetStateAction<InvoiceMaster | undefined>
+    React.SetStateAction<InvoiceMaster>
   >;
   // Invoice Details
   invoiceDetailsArray: InvoiceDetails[];
@@ -54,8 +54,8 @@ const DataProvider: React.FC<Props> = ({ children }) => {
   );
   // Invoice Master
   const [invoiceMasterModel, setInvoiceMasterModel] = useState<
-    InvoiceMaster | undefined
-  >(undefined);
+    InvoiceMaster
+  >(null!);
   // Invoice Details
   const [invoiceDetailsArray, setInvoiceDetailsArray] = useState<
     InvoiceDetails[]

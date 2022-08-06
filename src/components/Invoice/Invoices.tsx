@@ -38,7 +38,7 @@ export const Invoices = () => {
   //#region "Methods"
   const navigate = useNavigate();
   const handleUpsertClick = (createOperation: boolean) => {
-    if (createOperation) setInvoiceMasterModel(undefined);
+    if (createOperation) setInvoiceMasterModel(null!);
     navigate("/invoiceUpsert");
   };
 

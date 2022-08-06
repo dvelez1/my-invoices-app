@@ -11,7 +11,7 @@ export const InvoiceUpsertDetails = (props: any) => {
     else return false;
   };
 
-  // Handle Product Change
+  //#region OnChange Methods
   const handleProductChange = (e: any, invoiceDetailsId: number) => {
     setProduct(e.target.value);
 
@@ -31,7 +31,6 @@ export const InvoiceUpsertDetails = (props: any) => {
     );
   };
 
-  // Handle change event
   const handleCatPriceChange = (e: any, invoiceDetailsId: number) => {
     setInvoiceDetailsArray((current) =>
       current.map((obj) => {
@@ -72,6 +71,7 @@ export const InvoiceUpsertDetails = (props: any) => {
       })
     );
   };
+//#endregion
 
   return (
     <>

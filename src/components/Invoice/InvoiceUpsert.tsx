@@ -41,9 +41,7 @@ export const InvoiceUpsert = () => {
   const {
     invoiceMasterModel,
     setInvoiceMasterModel,
-    invoiceDetailsArray,
     setInvoiceDetailsArray,
-    invoicePaymentsArray,
     setInvoicePaymentsArray,
   } = useDataContext();
   const [currentPage, setCurrentPage] = useState(0);
@@ -52,13 +50,13 @@ export const InvoiceUpsert = () => {
   // For Select
   const { customers } = useCustomersGet();
   const { products } = useProductsGet();
-  const [customer, setCustomer] = useState("");
+
   
   //#region "Methods"
 
   const navigate = useNavigate();
   const handleUpsertReturnClick = () => {
-    setInvoiceMasterModel(undefined);
+    setInvoiceMasterModel(null!);
     setInvoiceDetailsArray([]);
     setInvoicePaymentsArray(undefined);
     navigate("/invoice");
@@ -83,7 +81,6 @@ export const InvoiceUpsert = () => {
             <div className="card">
               <div className="card-body">
                 <InvoiceUpserMaster
-                  invoiceMasterModel={invoiceMasterModel}
                   customers={customers}
                 />
 
