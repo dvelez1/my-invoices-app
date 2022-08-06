@@ -25,7 +25,7 @@ export const InvoiceUpsert = () => {
 
   //#region "Methods"
 
-  const isCreateEvent = (): boolean => {
+  const isCreateInvoiceEvent = (): boolean => {
     return (
       invoiceMasterModel === undefined || invoiceMasterModel?.InvoiceId === 0
     );
@@ -39,7 +39,7 @@ export const InvoiceUpsert = () => {
         <h3 className="card-header">Invoice</h3>
         <div className="card-body">
           <h5 className="card-title">
-            {isCreateEvent() ? "Create" : "Edit"} Invoice
+            {isCreateInvoiceEvent() ? "Create" : "Edit"} Invoice
           </h5>
           <hr />
 

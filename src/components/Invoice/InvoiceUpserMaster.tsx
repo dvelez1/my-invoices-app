@@ -23,6 +23,12 @@ export const InvoiceUpserMaster = (props: any) => {
     console.log(e.target.value);
   };
 
+  const isCreateInvoiceEvent = (): boolean => {
+    return (
+      invoiceMasterModel === undefined || invoiceMasterModel?.InvoiceId === 0
+    );
+  };
+
   return (
     <>
       <div className="card" style={{ width: "100" }}>
@@ -97,6 +103,7 @@ export const InvoiceUpserMaster = (props: any) => {
                 placeholder="Total Amount"
                 onChange={handleChange}
                 defaultValue={invoiceMasterModel?.TotalAmount}
+                readOnly={!isCreateInvoiceEvent()}
               />
             </div>
             <div className="col-md-3">
