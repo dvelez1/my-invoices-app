@@ -1,4 +1,3 @@
-
 //#region Imports
 
 import React, { useState } from "react";
@@ -51,7 +50,6 @@ export const InvoiceUpsert = () => {
   const { customers } = useCustomersGet();
   const { products } = useProductsGet();
 
-  
   //#region "Methods"
 
   const navigate = useNavigate();
@@ -80,24 +78,18 @@ export const InvoiceUpsert = () => {
           <div className="mt-2">
             <div className="card">
               <div className="card-body">
-                <InvoiceUpserMaster
-                  customers={customers}
-                />
+                <InvoiceUpserMaster customers={customers} />
 
                 <div className="card mt-2" style={{ width: "100" }}>
                   <div className="card-body">
                     <h5 className="card-title">Details</h5>
                     <hr />
 
-                    {!invoiceMasterModel && (
-                      <InvoiceUpsertDetailsAddToList
-                        products={products}
-                      />
+                    {invoiceMasterModel?.InvoiceId === 0 && (
+                      <InvoiceUpsertDetailsAddToList products={products} />
                     )}
 
-                    <InvoiceUpsertDetails
-                      products={products}
-                    />
+                    <InvoiceUpsertDetails products={products} />
                   </div>
                 </div>
 

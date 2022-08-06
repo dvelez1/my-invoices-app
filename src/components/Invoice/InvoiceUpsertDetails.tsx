@@ -125,7 +125,7 @@ export const InvoiceUpsertDetails = (props: any) => {
                     id="masterPrice"
                     name="masterPrice"
                     placeholder="Catalog Price"
-                    defaultValue={CatalogPrice}
+                    value={CatalogPrice}
                     onChange={(e) => {
                       handleCatPriceChange(e, InvoiceDetailsId);
                     }}
