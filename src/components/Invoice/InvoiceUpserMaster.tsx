@@ -29,6 +29,13 @@ export const InvoiceUpserMaster = (props: any) => {
     );
   };
 
+  const amountDifference = (): number => {
+    return (
+      (invoiceMasterModel?.TotalAmount ?? 0) -
+      (invoiceMasterModel?.PayedAmount ?? 0)
+    );
+  };
+
   return (
     <>
       <div className="card" style={{ width: "100" }}>
@@ -96,40 +103,48 @@ export const InvoiceUpserMaster = (props: any) => {
             </div>
             <div className="col-md-3">
               <label className="form-label fw-bold">Total Amount:</label>
-              <input
-                type="number"
-                className="form-control"
-                name="TotalAmount"
-                placeholder="Total Amount"
-                onChange={handleChange}
-                defaultValue={invoiceMasterModel?.TotalAmount}
-                readOnly={!isCreateInvoiceEvent()}
-              />
+              <div className="input-group mb-3">
+                <span className="input-group-text">$</span>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="TotalAmount"
+                  placeholder="Total Amount"
+                  onChange={handleChange}
+                  defaultValue={invoiceMasterModel?.TotalAmount}
+                  readOnly={!isCreateInvoiceEvent()}
+                />
+              </div>
             </div>
+
             <div className="col-md-3">
               <label className="form-label fw-bold">Payed Amount:</label>
-              <input
-                type="number"
-                className="form-control"
-                name="PayedAmount"
-                placeholder="Payed Amount"
-                onChange={handleChange}
-                defaultValue={invoiceMasterModel?.PayedAmount}
-              />
+              <div className="input-group mb-3">
+                <span className="input-group-text">$</span>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="PayedAmount"
+                  placeholder="Payed Amount"
+                  onChange={handleChange}
+                  defaultValue={invoiceMasterModel?.PayedAmount}
+                />
+              </div>
             </div>
+
             <div className="col-md-3">
               <label className="form-label fw-bold">Amount Difference:</label>
-              <input
-                type="number"
-                className="form-control"
-                name="difference"
-                placeholder="Amount Difference"
-                value={
-                  (invoiceMasterModel?.TotalAmount ?? 0) -
-                  (invoiceMasterModel?.PayedAmount ?? 0)
-                }
-                readOnly
-              />
+              <div className="input-group mb-3">
+                <span className="input-group-text">$</span>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="difference"
+                  placeholder="Amount Difference"
+                  value={amountDifference()}
+                  readOnly
+                />
+              </div>
             </div>
           </div>
 

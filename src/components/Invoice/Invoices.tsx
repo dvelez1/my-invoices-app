@@ -43,7 +43,7 @@ export const Invoices = () => {
         CustomerName: "",
         FirstName: "",
         LastName: "",
-        TransactionActive: false,
+        TransactionActive: true,
         TotalAmount: 0,
         PayedAmount: 0,
         Note: "",
