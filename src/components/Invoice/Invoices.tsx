@@ -1,3 +1,4 @@
+//#region "Imports"
 import React, { useState } from "react";
 // Used for routing
 import { useNavigate } from "react-router-dom";
@@ -31,6 +32,8 @@ export const Invoices = () => {
 
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
+
+  //#endregion
 
   //#region "Methods"
   const navigate = useNavigate();

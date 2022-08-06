@@ -3,11 +3,66 @@ import { InvoiceDetails } from "../../models/InvoiceDetails";
 import { useDataContext } from "../../context/DataContext";
 
 export const InvoiceUpsertDetails = (props: any) => {
-  const { invoiceDetailsArray, setInvoiceDetailsArray } = useDataContext();
-
+  const { invoiceMasterModel, invoiceDetailsArray, setInvoiceDetailsArray } =
+    useDataContext();
+  const [product, setProduct] = useState("");
   const isCreateOperation = (InvoiceId: number): boolean => {
     if (InvoiceId && InvoiceId > 0) return true;
     else return false;
+  };
+
+  // Handle Product Change
+  const handleProductChange = (e: any, invoiceDetailsId: number) => {
+    setProduct(e.target.value);
+
+    setInvoiceDetailsArray((current) =>
+      current.map((obj) => {
+        if (obj.InvoiceDetailsId === invoiceDetailsId) {
+          return {
+            ...obj,
+            ProductId: e.target.value,
+            CatalogPrice: props.products.filter((obj: any) => {
+              return obj.ProductId == Number(e.target.value);
+            })[0].Price,
+          };
+        }
+        return obj;
+      })
+    );
+  };
+
+  // Handle change event
+  const handleCatPriceChange = (e: any, invoiceDetailsId: number) => {
+    setInvoiceDetailsArray((current) =>
+      current.map((obj) => {
+        if (obj.InvoiceDetailsId === invoiceDetailsId) {
+          return { ...obj, CatalogPrice: Number(e.target.value) };
+        }
+        return obj;
+      })
+    );
+  };
+
+  const handlePriceChange = (e: any, invoiceDetailsId: number) => {
+    setInvoiceDetailsArray((current) =>
+      current.map((obj) => {
+        if (obj.InvoiceDetailsId === invoiceDetailsId) {
+          return { ...obj, Price: Number(e.target.value) };
+        }
+        return obj;
+      })
+    );
+  };
+
+  const handleQuantityChange = (e: any, invoiceDetailsId: number) => {
+    setInvoiceDetailsArray((current) =>
+      current.map((obj) => {
+        if (obj.InvoiceDetailsId === invoiceDetailsId) {
+          return { ...obj, Quantity: Number(e.target.value) };
+        }
+        return obj;
+      })
+    );
   };
 
   const handleRemoveClick = (id: number) => {
@@ -47,7 +102,9 @@ export const InvoiceUpsertDetails = (props: any) => {
                   <select
                     className="form-control"
                     aria-label="Floating label select example"
-                    onChange={props.handleProductChange}
+                    onChange={(e) => {
+                      handleProductChange(e, InvoiceDetailsId);
+                    }}
                     defaultValue={ProductId || ""}
                   >
                     <option value="" disabled>
@@ -69,6 +126,9 @@ export const InvoiceUpsertDetails = (props: any) => {
                     name="masterPrice"
                     placeholder="Catalog Price"
                     defaultValue={CatalogPrice}
+                    onChange={(e) => {
+                      handleCatPriceChange(e, InvoiceDetailsId);
+                    }}
                     readOnly
                   />
                 </td>
@@ -80,6 +140,9 @@ export const InvoiceUpsertDetails = (props: any) => {
                     name="price"
                     placeholder="Price"
                     defaultValue={Price}
+                    onChange={(e) => {
+                      handlePriceChange(e, InvoiceDetailsId);
+                    }}
                     readOnly={isCreateOperation(InvoiceId)}
                   />
                 </td>
@@ -91,6 +154,9 @@ export const InvoiceUpsertDetails = (props: any) => {
                     name="quantity"
                     placeholder="Quantity"
                     defaultValue={Quantity}
+                    onChange={(e) => {
+                      handleQuantityChange(e, InvoiceDetailsId);
+                    }}
                     readOnly={isCreateOperation(InvoiceId)}
                   />
                 </td>

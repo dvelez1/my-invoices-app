@@ -1,4 +1,6 @@
-//#region Methods and Imports
+
+//#region Imports
+
 import React, { useState } from "react";
 // Used for routing
 import { useNavigate } from "react-router-dom";
@@ -50,10 +52,8 @@ export const InvoiceUpsert = () => {
   // For Select
   const { customers } = useCustomersGet();
   const { products } = useProductsGet();
-  const [customer, setCustomer] = useState("Select a Customer");
-  const [product, setProduct] = useState("Select a Product");
-  const [productPrice, setProductPrice] = useState<number | null>(null);
-
+  const [customer, setCustomer] = useState("");
+  
   //#region "Methods"
 
   const navigate = useNavigate();
@@ -64,21 +64,10 @@ export const InvoiceUpsert = () => {
     navigate("/invoice");
   };
 
-  const handleCustomerChange = (e: any) => {
-    setCustomer(e.target.value);
-  };
-
-  const handleProductChange = (e: any) => {
-    setProduct(e.target.value);
-  };
-
   // Insert/Edit Operation
   const handleSaveClick = () => {};
 
-  //#endregion "Filtering and Pagination"
-
   //#endregion "Methods"
-
 
   return (
     <>
@@ -89,7 +78,7 @@ export const InvoiceUpsert = () => {
             {invoiceMasterModel === undefined ? "Create" : "Edit"} Invoice
           </h5>
           <hr />
-          
+
           <div className="mt-2">
             <div className="card">
               <div className="card-body">
@@ -102,18 +91,14 @@ export const InvoiceUpsert = () => {
                   <div className="card-body">
                     <h5 className="card-title">Details</h5>
                     <hr />
-                    
-                      {!invoiceMasterModel && (
-                        <InvoiceUpsertDetailsAddToList
-                          setProductPrice={setProductPrice}
-                          products={products}
-                          productPrice={productPrice}
-                        />
-                      )}
-                   
+
+                    {!invoiceMasterModel && (
+                      <InvoiceUpsertDetailsAddToList
+                        products={products}
+                      />
+                    )}
 
                     <InvoiceUpsertDetails
-                      handleProductChange={handleProductChange}
                       products={products}
                     />
                   </div>
@@ -129,7 +114,13 @@ export const InvoiceUpsert = () => {
                   <button className="btn btn-primary btn-md me-md-2">
                     Void
                   </button>
-                  <button className="btn btn-primary btn-md">Submit</button>
+                  <button
+                    className="btn btn-primary btn-md"
+                    type="submit"
+                    onClick={handleSaveClick}
+                  >
+                    Submit
+                  </button>
                 </div>
               </div>
             </div>

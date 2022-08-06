@@ -9,6 +9,8 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
   const { invoiceMasterModel, invoiceDetailsArray, setInvoiceDetailsArray } =
     useDataContext();
 
+  const [productPrice, setProductPrice] = useState<number | null>(null);
+
   // Add Elements to Array (InvoiceDetails - Only Create Operation
   const handleAddInvoiceDetailsSubmit = (event: any) => {
     event.preventDefault();
@@ -48,7 +50,7 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
                   className="form-control"
                   aria-label="Floating label select example"
                   onChange={(e) =>
-                    props.setProductPrice(
+                    setProductPrice(
                       props.products.filter((obj: any) => {
                         return obj.ProductId == Number(e.target.value);
                       })[0].Price
@@ -75,7 +77,7 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
                   className="form-control"
                   name="catalogPrice"
                   placeholder="Catalog Price"
-                  value={props.productPrice ?? 0}
+                  value={productPrice ?? 0}
                   readOnly
                 />
               </div>

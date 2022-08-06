@@ -19,13 +19,15 @@ class InvoiceDataService {
       );
       if (resp.status === 200) {
         const invoiceId = resp.data[0].Id;
-
-        invoiceDetails.forEach((element) => {
-          element.InvoiceId = invoiceId;
-          if (!this.createInvoiceInvoiceDetails(element)) {
-            // Hubo un error. Delete all records associated to the Invoice
-          }
-        });
+        if (
+          await !this.createInvoiceInvoiceDetails(
+            invoiceDetails.map((obj) => {
+              return { ...obj, InvoiceId: invoiceId };
+            })
+          )
+        ) {
+          // Hubo un error. Delete all records associated to the Invoice
+        }
       } else return false;
     } catch (error) {
       console.error(error);
@@ -34,14 +36,33 @@ class InvoiceDataService {
   };
 
   createInvoiceInvoiceDetails = async (
-    invoiceDetails: InvoiceDetails
+    invoiceDetails: InvoiceDetails[]
   ): Promise<boolean> => {
     try {
-      const resp = await axiosInterface.put(
-        "invoiceDetails/createInvoiceDetails",
-        invoiceDetails
-      );
-      successResult = resp.status === 200;
+      // Example 1
+      // const promises = invoiceDetails.map(async (obj) => {
+      //   const result = await axiosInterface.put(
+      //     "invoiceDetails/createInvoiceDetails",
+      //     obj
+      //   );
+      //   return result;
+      // });
+
+      // const responses = await Promise.all(promises);
+      // console.log("respuesta", responses);
+
+      // Example 1
+      const promises = invoiceDetails.map(async (obj) => {
+        const result = await axiosInterface.put(
+          "invoiceDetails/createInvoiceDetails",
+          obj
+        );
+        return result;
+      });
+
+      const res = await Promise.all(promises);
+      const data = res.map((res) => res.data);
+      console.log(data.flat());
     } catch (error) {
       console.error(error);
     }
