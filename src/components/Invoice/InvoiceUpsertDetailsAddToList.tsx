@@ -31,14 +31,25 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
       Quantity: Number(event.target.quantity.value),
     };
 
+    //Update Context
     setInvoiceDetailsArray((current) => [...current, formData]);
+    clearForm(event);
   };
 
-  const handleClearClick = () => {};
+  const clearForm = (event: any) => {
+    event.preventDefault();
+    // Reset Form
+    event.target.reset();
+    setProductPrice(0);
+  };
 
   return (
     <>
-      <form onSubmit={handleAddInvoiceDetailsSubmit}>
+      <form
+        onSubmit={handleAddInvoiceDetailsSubmit}
+        id="add-invoice-details"
+        name="add-invoice-details"
+      >
         <div className="card mt-2" style={{ width: "100" }}>
           <div className="card-body">
             <label className="fw-bold mb-2">Add detail to the Invoice:</label>
@@ -106,12 +117,7 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
                   <button className="btn btn-primary btn-md mt-4" type="submit">
                     Add
                   </button>
-                  <button
-                    className="btn btn-primary btn-md mt-4"
-                    onClick={() => handleClearClick()}
-                  >
-                    Clear
-                  </button>
+                  <button className="btn btn-primary btn-md mt-4">Clear</button>
                 </div>
               </div>
             </div>
