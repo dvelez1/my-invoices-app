@@ -1,10 +1,22 @@
-import React from "react";
+//#region Imports
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDataContext } from "../../context/DataContext";
+import {
+  dateFormatter,
+  setDateValue,
+  currentDate,
+} from "../../helper/dateFormatter";
+
+import InvoiceDataService from "../../api/Invoice/upsertEvents";
+
+//#endregion Imports
 
 export const InvoiceUpsertSave = () => {
   const {
     invoiceMasterModel,
+    invoiceDetailsArray,
+    invoicePaymentsArray,
     setInvoiceMasterModel,
     setInvoiceDetailsArray,
     setInvoicePaymentsArray,
@@ -14,11 +26,11 @@ export const InvoiceUpsertSave = () => {
   const handleUpsertReturnClick = () => {
     setInvoiceMasterModel(null!);
     setInvoiceDetailsArray([]);
-    setInvoicePaymentsArray(undefined);
+    setInvoicePaymentsArray(null!);
     navigate("/invoice");
   };
 
-  const handleVoidClick  = () => {};
+  const [successResult, setSuccessResult] = useState<boolean>(false);
 
   const isCreateEvent = (): boolean => {
     return (
@@ -28,6 +40,13 @@ export const InvoiceUpsertSave = () => {
 
   // Insert/Edit Operation
   const handleSaveClick = () => {
+    if (isCreateEvent()) {
+      handleCreateEvent();
+    } else handleEditEvent();
+
+    if (successResult) alert("success");
+    else alert("failed");
+
     /* 
     1 If Payed Amount >= Total Amount and Invoice Closed On ==> null. 
     PROCEED TO Add CurrentDate to Invoice Closed On
@@ -39,6 +58,40 @@ export const InvoiceUpsertSave = () => {
     3 - Edit
       1 - Only we will Update Invoice Master and Invoice Payment
     */
+  };
+
+  const handleVoidClick = () => {
+    InvoiceDataService.deleteInvoiceMaster(
+      invoiceMasterModel,
+      invoiceMasterModel.InvoiceId
+    ).then((value) => {
+      console.log("Edit Result", value);
+
+      if (value) alert("success");
+      else alert("failed");
+    });
+  };
+
+  const handleCreateEvent = (): boolean => {
+    const promiseResult = InvoiceDataService.createInvoice(
+      invoiceMasterModel,
+      invoiceDetailsArray,
+      invoicePaymentsArray[0]
+    );
+
+    promiseResult.then((value) => {
+      console.log("Create Result", value);
+      return value;
+    });
+
+    return false;
+  };
+
+  const handleEditEvent = (): boolean => {
+    InvoiceDataService.updateInvoiceMaster(invoiceMasterModel).then((value) => {
+      return value;
+    });
+    return false;
   };
 
   return (
@@ -58,7 +111,9 @@ export const InvoiceUpsertSave = () => {
         Submit
       </button>
       {!isCreateEvent() && (
-        <button className="btn btn-danger btn-md " onClick={handleVoidClick}>Void</button>
+        <button className="btn btn-danger btn-md " onClick={handleVoidClick}>
+          Void
+        </button>
       )}
     </div>
   );

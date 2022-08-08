@@ -28,9 +28,9 @@ type nameDataType = {
     React.SetStateAction<InvoiceDetails[]>
   >;
   // Invoice Payments
-  invoicePaymentsArray: InvoicePayments[] | undefined;
+  invoicePaymentsArray: InvoicePayments[];
   setInvoicePaymentsArray: React.Dispatch<
-    React.SetStateAction<InvoicePayments[] | undefined>
+    React.SetStateAction<InvoicePayments[]>
   >;
 
   //#region Example for Login
@@ -62,8 +62,8 @@ const DataProvider: React.FC<Props> = ({ children }) => {
   >([]);
   // Invoice Payments
   const [invoicePaymentsArray, setInvoicePaymentsArray] = useState<
-    InvoicePayments[] | undefined
-  >(undefined);
+    InvoicePayments[]
+  >(null!);
 
   //#region Examples for Loging
 
