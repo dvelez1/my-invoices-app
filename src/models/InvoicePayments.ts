@@ -4,7 +4,6 @@ export interface InvoicePayments {
     Payment: number;
     TransactionDate: Date;
     RemovedTransactionDate: Date | null;
-    TransactionActive: boolean;
     RemovedTransaction: boolean;
   }
   

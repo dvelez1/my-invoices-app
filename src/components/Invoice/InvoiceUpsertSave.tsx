@@ -1,5 +1,5 @@
 //#region Imports
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDataContext } from "../../context/DataContext";
 import {
@@ -9,9 +9,9 @@ import {
 } from "../../helper/dateFormatter";
 
 import InvoiceDataService from "../../api/Invoice/upsertEvents";
+import { InvoicePayments } from "../../models/InvoicePayments";
 
 //#endregion Imports
-
 export const InvoiceUpsertSave = () => {
   const {
     invoiceMasterModel,
@@ -30,7 +30,26 @@ export const InvoiceUpsertSave = () => {
     navigate("/invoice");
   };
 
-  const [successResult, setSuccessResult] = useState<boolean>(false);
+  const invPaymentInitialInitialization = {
+    InvoiceId: invoiceMasterModel.InvoiceId,
+    InvoicePaiymentsId: 0,
+    RemovedTransaction: false,
+    RemovedTransactionDate: null,
+    TransactionDate: currentDate(),
+    Payment: 0,
+  } as InvoicePayments;
+  const [invoicePayment, setInvoicePayment] = useState<InvoicePayments>(
+    invPaymentInitialInitialization
+  );
+  const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (submitted) {
+      if (isCreateEvent()) handleCreateEvent();
+      else handleEditEvent();
+      setSubmitted(false);
+    }
+  }, [invoicePayment]);
 
   const isCreateEvent = (): boolean => {
     return (
@@ -40,58 +59,63 @@ export const InvoiceUpsertSave = () => {
 
   // Insert/Edit Operation
   const handleSaveClick = () => {
-    if (isCreateEvent()) {
-      handleCreateEvent();
-    } else handleEditEvent();
+    setSubmitted(true);
+    setInvoicePayment({
+      ...invoicePayment,
+      Payment: Number(invoiceMasterModel?.PayedAmount),
+      RemovedTransaction: invoiceMasterModel?.EndDate ? true : false,
+    });
 
-    if (successResult) alert("success");
-    else alert("failed");
-
-    /* 
-    1 If Payed Amount >= Total Amount and Invoice Closed On ==> null. 
-    PROCEED TO Add CurrentDate to Invoice Closed On
-
-    2 - Create
-      1 - Submit Special Method Create Event. Note: If Fail, remove all transaction
-      with the InvoiceId
-      
-    3 - Edit
-      1 - Only we will Update Invoice Master and Invoice Payment
-    */
+    // Note: We are submitting the transaction with use effect. The following condition need to be completed: Change of invoicePayment and submitted equal to true
   };
 
   const handleVoidClick = () => {
     InvoiceDataService.deleteInvoiceMaster(
       invoiceMasterModel,
       invoiceMasterModel.InvoiceId
-    ).then((value) => {
-      console.log("Edit Result", value);
-
-      if (value) alert("success");
+    ).then((successTransaction) => {
+      if (successTransaction === true) alert("success");
       else alert("failed");
     });
   };
 
-  const handleCreateEvent = (): boolean => {
-    const promiseResult = InvoiceDataService.createInvoice(
+  const handleCreateEvent = () => {
+    InvoiceDataService.createInvoice(
       invoiceMasterModel,
       invoiceDetailsArray,
-      invoicePaymentsArray[0]
-    );
-
-    promiseResult.then((value) => {
-      console.log("Create Result", value);
-      return value;
+      invoicePayment
+    ).then((successResult) => {
+      if (successResult === false) {
+        // Delete all part of the Invoice by InvoiceId
+        InvoiceDataService.deleteInvoiceAllByInvoiceId(
+          invoiceMasterModel?.InvoiceId
+        );
+        alert("Failed ");
+      } else alert("Success");
     });
-
-    return false;
   };
 
-  const handleEditEvent = (): boolean => {
-    InvoiceDataService.updateInvoiceMaster(invoiceMasterModel).then((value) => {
-      return value;
-    });
-    return false;
+  const handleEditEvent = () => {
+    InvoiceDataService.updateInvoiceMaster(invoiceMasterModel).then(
+      (successTransaction) => {
+        if (successTransaction === true) {
+          // Create transaction on InvoicePayments Table
+          InvoiceDataService.createInvoicePayments(invoicePayment).then(
+            (paymentTransactionSuccessResponse) => {
+              if (paymentTransactionSuccessResponse === true) {
+                alert("Success ");
+              } else {
+                // error Invoice Payment
+                alert("Failed Invoice Payment");
+              }
+            }
+          );
+        } else {
+          //error Invoice Master}
+          alert("Failed Invoice Master");
+        }
+      }
+    );
   };
 
   return (

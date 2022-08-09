@@ -1,15 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // Data Context
 import { useDataContext } from "../../context/DataContext";
 import { InvoiceDetails } from "../../models/InvoiceDetails";
 import { Product } from "../../models/product";
+import { InvoiceUpserMaster } from "./InvoiceUpserMaster";
 
 export const InvoiceUpsertDetailsAddToList = (props: any) => {
   // Import DataContext
-  const { invoiceMasterModel, invoiceDetailsArray, setInvoiceDetailsArray } =
-    useDataContext();
+  const {
+    invoiceMasterModel,
+    invoiceDetailsArray,
+    setInvoiceDetailsArray,
+    setInvoiceMasterModel,
+  } = useDataContext();
 
   const [productPrice, setProductPrice] = useState<number | null>(null);
+
+  // When a Item is added to invoiceDetailsArray, proceed to update invoiceMasterModel
+  useEffect(() => {
+    setInvoiceMasterModel({
+      ...invoiceMasterModel,
+      TotalAmount: Number(returnTotalAmountFromList()),
+    });
+  }, [invoiceDetailsArray]);
+  
+  // Get Total Amount From List
+  const returnTotalAmountFromList = () => {
+    let totalPrice: number = 0;
+    invoiceDetailsArray.forEach(
+      (element) => (totalPrice += element.Price * element.Quantity)
+    );
+    return totalPrice;
+  };
 
   // Add Elements to Array (InvoiceDetails - Only Create Operation
   const handleAddInvoiceDetailsSubmit = (event: any) => {
@@ -33,6 +55,7 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
 
     //Update Context
     setInvoiceDetailsArray((current) => [...current, formData]);
+
     clearForm(event);
   };
 

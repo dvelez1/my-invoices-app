@@ -5,11 +5,13 @@ import {
 } from "../../helper/dateFormatter";
 
 import { useDataContext } from "../../context/DataContext";
+import { useEffect } from "react";
 
 export const InvoiceUpserMaster = (props: any) => {
-  const { invoiceMasterModel, setInvoiceMasterModel } = useDataContext();
 
-  const handleChange = (e: any) => {
+
+  const { invoiceMasterModel, setInvoiceMasterModel } = useDataContext();
+   const handleChange = (e: any) => {
     setInvoiceMasterModel({
       ...invoiceMasterModel,
 
@@ -100,6 +102,7 @@ export const InvoiceUpserMaster = (props: any) => {
                 ))}
               </select>
             </div>
+            
             <div className="col-md-3">
               <label className="form-label fw-bold">Total Amount:</label>
               <div className="input-group mb-3">
@@ -110,8 +113,8 @@ export const InvoiceUpserMaster = (props: any) => {
                   name="TotalAmount"
                   placeholder="Total Amount"
                   onChange={handleChange}
-                  defaultValue={invoiceMasterModel?.TotalAmount}
-                  readOnly={!isCreateInvoiceEvent()}
+                  value={invoiceMasterModel?.TotalAmount}
+                  readOnly
                 />
               </div>
             </div>

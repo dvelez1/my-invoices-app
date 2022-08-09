@@ -5,14 +5,15 @@ import { InvoicePayments } from "../../models/InvoicePayments";
 
 var successResult = false;
 
-enum InvoiceUrls {
+enum Urls {
   CreateInvoiceMaster = "invoiceMaster/createInvoiceMaster",
   CreateInvoiceDetails = "invoiceDetails/createInvoiceDetails",
   CreateInvoicePayment = "invoicePayments/createInvoicePayment",
   EditInvoiceMaster = "invoiceMaster/updateInvoiceMaster",
   DeleteInvoiceMaster = "invoiceMaster/deleteInvoiceMaster/:Id",
+  DeleteInvoiceAllByInvoiceId = "invoiceMaster/deleteInvoiceAllByInvoiceId/:Id",
   DeleteInvoiceDetails = "invoiceDetails/deleteInvoiceDetails/:Id",
-  DeleteInvoicePayment = "invoicePayments/deleteInvoicePayments/:Id",
+  DeleteInvoicePayment = "invoiceMaster/deleteInvoicePayments/:Id",
 }
 
 class InvoiceDataService {
@@ -25,10 +26,10 @@ class InvoiceDataService {
   ): Promise<boolean> => {
     try {
       const resp = await axiosInterface.put(
-        "invoiceMaster/createInvoiceMaster",
+        Urls.CreateInvoiceMaster,
         invoiceMaster
       );
-        
+
       if (resp.status === 200) {
         // Invoice Master Success Response
         const invoiceId = resp.data[0].Id;
@@ -42,12 +43,14 @@ class InvoiceDataService {
         ) {
           // Create Invoice Payment
           if (await this.createInvoicePayments(invoicePayments)) {
-            successResult = true;
+            return true;
+          } else {
+            // Invoice Payment failed
+            return false;
           }
         } else {
           // Invoice Details Failed
-          // Delete by InvoiceId (Invoice Master and InvoiceDetails(Array))
-          successResult = false;
+          return false;
         }
       } else {
         // Invoice Master failed
@@ -55,8 +58,8 @@ class InvoiceDataService {
       }
     } catch (error) {
       console.error(error);
+      return false;
     }
-    return successResult;
   };
 
   createInvoiceInvoiceDetails = async (
@@ -77,10 +80,7 @@ class InvoiceDataService {
 
       // Example 1
       const promises = invoiceDetails.map(async (obj) => {
-        const result = await axiosInterface.put(
-          InvoiceUrls.CreateInvoiceDetails,
-          obj
-        );
+        const result = await axiosInterface.put(Urls.CreateInvoiceDetails, obj);
         return result;
       });
 
@@ -100,15 +100,14 @@ class InvoiceDataService {
   ): Promise<boolean> => {
     try {
       const resp = await axiosInterface.put(
-        InvoiceUrls.CreateInvoicePayment,
+        Urls.CreateInvoicePayment,
         invoicePayments
       );
-      successResult = (resp.status === 200);
+      return resp.status === 200;
     } catch (error) {
       console.error(error);
+      return false;
     }
-
-    return successResult;
   };
 
   //#endregion Create Events
@@ -118,63 +117,73 @@ class InvoiceDataService {
     invoiceMaster: InvoiceMaster
   ): Promise<boolean> => {
     try {
-      console.log("InvoiceModel", invoiceMaster)
-      console.log(InvoiceUrls.EditInvoiceMaster)
-      console.log("Entre al post")
       const resp = await axiosInterface.post(
-        InvoiceUrls.EditInvoiceMaster,
+        Urls.EditInvoiceMaster,
         invoiceMaster
       );
-      successResult = (resp.status === 200);
+      successResult = resp.status === 200;
+      return successResult;
     } catch (error) {
-      console.error(error);
+      console.error("CatchError", error);
+      return false;
     }
-    return successResult;
   };
+
   //#endregion Edit Events
 
   //#region Delete Events
+
+  // Delete All Transaction associated to an InvoiceId
+  deleteInvoiceAllByInvoiceId = async (Id: Number): Promise<boolean> => {
+    try {
+      const resp = await axiosInterface.delete(
+        Urls.DeleteInvoiceAllByInvoiceId + "/" + Id.toString()
+      );
+      return resp.status === 200;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+
   deleteInvoiceMaster = async (
     invoiceMaster: InvoiceMaster,
     Id: Number
   ): Promise<boolean> => {
     try {
       const resp = await axiosInterface.delete(
-        InvoiceUrls.DeleteInvoiceMaster + "/" + Id.toString(),
+        Urls.DeleteInvoiceMaster + "/" + Id.toString(),
         { data: invoiceMaster }
       );
-      successResult = (resp.status === 200);
+      return resp.status === 200;
     } catch (error) {
       console.error(error);
+      return false;
     }
-
-    return successResult;
   };
 
   deleteInvoiceDetails = async (Id: Number): Promise<boolean> => {
     try {
       const resp = await axiosInterface.delete(
-        InvoiceUrls.DeleteInvoiceDetails + "/" + Id.toString()
+        Urls.DeleteInvoiceDetails + "/" + Id.toString()
       );
-      successResult = (resp.status === 200);
+      return resp.status === 200;
     } catch (error) {
       console.error(error);
+      return false;
     }
-
-    return successResult;
   };
 
   deleteInvoicePayment = async (Id: Number): Promise<boolean> => {
     try {
       const resp = await axiosInterface.delete(
-        InvoiceUrls.DeleteInvoicePayment + "/" + Id.toString()
+        Urls.DeleteInvoicePayment + "/" + Id.toString()
       );
-      successResult = (resp.status === 200);
+      return resp.status === 200;
     } catch (error) {
       console.error(error);
+      return false;
     }
-
-    return successResult;
   };
   //#endregion Delete Events
 }
