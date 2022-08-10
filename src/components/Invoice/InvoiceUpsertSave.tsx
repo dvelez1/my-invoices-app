@@ -82,8 +82,8 @@ export const InvoiceUpsertSave = () => {
   const handleCreateEvent = () => {
     InvoiceDataService.createInvoice(
       invoiceMasterModel,
-      invoiceDetailsArray,
-      invoicePayment
+      // invoiceDetailsArray,
+      // invoicePayment
     ).then((successResult) => {
       if (successResult === false) {
         // Delete all part of the Invoice by InvoiceId
@@ -91,7 +91,7 @@ export const InvoiceUpsertSave = () => {
           invoiceMasterModel?.InvoiceId
         );
         alert("Failed ");
-      } else alert("Success");
+      } else {alert("Success"); handleUpsertReturnClick()};
     });
   };
 
