@@ -128,15 +128,8 @@ class InvoiceDataService {
     // invoicePayments: InvoicePayments
   ): Promise<boolean> => {
     try {
-       this.createInvoiceMaster(invoiceMaster)
-        .then((invoiceMasterResult) => {
-          if (!(invoiceMasterResult === 0)) {
-            return true;
-          } else {
-            return false;
-          }
-        })
 
+        return false;
       // const resp = await axiosInterface.put(
       //   Urls.CreateInvoiceMaster,
       //   invoiceMaster

@@ -81,7 +81,7 @@ export const InvoiceUpsertSave = () => {
 
   const handleCreateEvent = () => {
     InvoiceDataService.createInvoice(
-      invoiceMasterModel,
+      invoiceMasterModel
       // invoiceDetailsArray,
       // invoicePayment
     ).then((successResult) => {
@@ -91,9 +91,28 @@ export const InvoiceUpsertSave = () => {
           invoiceMasterModel?.InvoiceId
         );
         alert("Failed ");
-      } else {alert("Success"); handleUpsertReturnClick()};
+      } else {
+        alert("Success");
+        handleUpsertReturnClick();
+      }
     });
   };
+
+  // const handleCreateEvent = () => {
+  //   InvoiceDataService.createInvoiceMaster(invoiceMasterModel).then(
+  //     (successResult) => {
+  //       if (!(successResult === 0)) {
+  //         // Invoice Details
+
+  //         // Invoice Payment
+
+  //       } else {
+  //         alert("failed");
+  //         handleUpsertReturnClick();
+  //       }
+  //     }
+  //   );
+  // };
 
   const handleEditEvent = () => {
     InvoiceDataService.updateInvoiceMaster(invoiceMasterModel).then(
