@@ -9,7 +9,7 @@ import { InvoicePayments } from "../../models/InvoicePayments";
 
 //#endregion Imports
 
-export const InvoiceUpsertSave = ({handlePostOperationResult}:any) => {
+export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
   // DataContext
   const {
     invoiceMasterModel,
@@ -76,8 +76,12 @@ export const InvoiceUpsertSave = ({handlePostOperationResult}:any) => {
       invoiceMasterModel,
       invoiceMasterModel.InvoiceId
     ).then((successTransaction) => {
-      if (successTransaction === true) handlePostOperationResult(true);
-      handlePostOperationResult(false);
+      if (successTransaction === true) {
+        handlePostOperationResult(true);
+      } else {
+        handlePostOperationResult(false);
+        handleUpsertReturnClick();
+      }
     });
   };
 
@@ -106,20 +110,20 @@ export const InvoiceUpsertSave = ({handlePostOperationResult}:any) => {
                 InvoiceId: invoiceId,
               }).then((successResponseInvoicePayment) => {
                 if (successResponseInvoicePayment === true) {
-                  handlePostOperationResult(true)
+                  handlePostOperationResult(true);
                   handleUpsertReturnClick();
                 } else {
-                  handlePostOperationResult(false)
+                  handlePostOperationResult(false);
                 }
               });
             } else {
-              handlePostOperationResult(false)
+              handlePostOperationResult(false);
             }
           });
 
           // Invoice Payment
         } else {
-          handlePostOperationResult(false)
+          handlePostOperationResult(false);
         }
       }
     );
@@ -135,6 +139,7 @@ export const InvoiceUpsertSave = ({handlePostOperationResult}:any) => {
             (paymentTransactionSuccessResponse) => {
               if (paymentTransactionSuccessResponse === true) {
                 handlePostOperationResult(true);
+                handleUpsertReturnClick();
               } else {
                 // error Invoice Payment
                 handlePostOperationResult(false);
