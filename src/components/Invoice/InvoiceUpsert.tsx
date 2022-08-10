@@ -12,6 +12,13 @@ import { InvoiceUpsertSave } from "./InvoiceUpsertSave";
 import { InvoiceUpserMaster } from "./InvoiceUpserMaster";
 import { InvoiceUpsertDetailsAddToList } from "./InvoiceUpsertDetailsAddToList";
 import { InvoiceUpsertDetails } from "./InvoiceUpsertDetails";
+// Import Toast components (react-toastify) -> Note: Was implemented a custom solution
+import "react-toastify/dist/ReactToastify.css";
+import {
+  successToastTransaction,
+  errorToastTransaction,
+} from "../../helper/toastMessages";
+import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
 
 //#endregion
 
@@ -25,10 +32,17 @@ export const InvoiceUpsert = () => {
 
   //#region "Methods"
 
+  // Evaluate if it's a Create or Edit Event
   const isCreateInvoiceEvent = (): boolean => {
     return (
       invoiceMasterModel === undefined || invoiceMasterModel?.InvoiceId === 0
     );
+  };
+
+ // Evaluate Post Response to Trigger the Toast
+  const handlePostOperationResult = (successResult: boolean) => {
+    if (successResult) successToastTransaction("Transaction was executed successfully!");
+    else errorToastTransaction("Transaction Failed! Please, contact your IT Team.");
   };
 
   //#endregion "Methods"
@@ -42,7 +56,6 @@ export const InvoiceUpsert = () => {
             {isCreateInvoiceEvent() ? "Create" : "Edit"} Invoice
           </h5>
           <hr />
-
           <div className="mt-2">
             <div className="card">
               <div className="card-body">
@@ -60,11 +73,14 @@ export const InvoiceUpsert = () => {
                     <InvoiceUpsertDetails products={products} />
                   </div>
                 </div>
-                <InvoiceUpsertSave />
+                <InvoiceUpsertSave
+                  handlePostOperationResult={handlePostOperationResult}
+                />
               </div>
             </div>
           </div>
         </div>
+        <ToastContainerImplementation />
       </div>
     </>
   );

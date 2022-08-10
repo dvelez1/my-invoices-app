@@ -43,7 +43,6 @@ export const ProductUpsert = () => {
   const handleChange = (e: any) => {
     setProduct({
       ...product,
-
       // Trimming any whitespace
       [e.target.name]: e.target.value.trim(),
     });

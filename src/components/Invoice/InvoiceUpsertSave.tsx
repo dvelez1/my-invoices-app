@@ -2,17 +2,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDataContext } from "../../context/DataContext";
-import {
-  dateFormatter,
-  setDateValue,
-  currentDate,
-} from "../../helper/dateFormatter";
+import { currentDate } from "../../helper/dateFormatter";
 
 import InvoiceDataService from "../../api/Invoice/upsertEvents";
 import { InvoicePayments } from "../../models/InvoicePayments";
 
 //#endregion Imports
-export const InvoiceUpsertSave = () => {
+
+export const InvoiceUpsertSave = ({handlePostOperationResult}:any) => {
+  // DataContext
   const {
     invoiceMasterModel,
     invoiceDetailsArray,
@@ -22,6 +20,7 @@ export const InvoiceUpsertSave = () => {
     setInvoicePaymentsArray,
   } = useDataContext();
 
+  // Redirect to another Page / Reset the Contect during redirection
   const navigate = useNavigate();
   const handleUpsertReturnClick = () => {
     setInvoiceMasterModel(null!);
@@ -43,11 +42,13 @@ export const InvoiceUpsertSave = () => {
   );
   const [submitted, setSubmitted] = useState(false);
 
+  // Usse Effect created to trigger when invoicePayment and submitted is true
+  // This useEffect will trigger in the Save Click Event
   useEffect(() => {
     if (submitted) {
+      setSubmitted(false);
       if (isCreateEvent()) handleCreateEvent();
       else handleEditEvent();
-      setSubmitted(false);
     }
   }, [invoicePayment]);
 
@@ -57,7 +58,7 @@ export const InvoiceUpsertSave = () => {
     );
   };
 
-  // Insert/Edit Operation
+  // Insert/Edit Click Event
   const handleSaveClick = () => {
     setSubmitted(true);
     setInvoicePayment({
@@ -69,51 +70,62 @@ export const InvoiceUpsertSave = () => {
     // Note: We are submitting the transaction with use effect. The following condition need to be completed: Change of invoicePayment and submitted equal to true
   };
 
+  // Void Invoice Click Event
   const handleVoidClick = () => {
     InvoiceDataService.deleteInvoiceMaster(
       invoiceMasterModel,
       invoiceMasterModel.InvoiceId
     ).then((successTransaction) => {
-      if (successTransaction === true) alert("success");
-      else alert("failed");
+      if (successTransaction === true) handlePostOperationResult(true);
+      handlePostOperationResult(false);
     });
   };
 
+  // Create Invoice
   const handleCreateEvent = () => {
-    InvoiceDataService.createInvoice(
-      invoiceMasterModel
-      // invoiceDetailsArray,
-      // invoicePayment
-    ).then((successResult) => {
-      if (successResult === false) {
-        // Delete all part of the Invoice by InvoiceId
-        InvoiceDataService.deleteInvoiceAllByInvoiceId(
-          invoiceMasterModel?.InvoiceId
-        );
-        alert("Failed ");
-      } else {
-        alert("Success");
-        handleUpsertReturnClick();
+    // Create: Invoice Master
+    InvoiceDataService.createInvoiceMaster(invoiceMasterModel).then(
+      (invoiceId) => {
+        setInvoicePayment({
+          ...invoicePayment,
+          InvoiceId: Number(invoiceId),
+        });
+
+        if (!(invoiceId === 0)) {
+          // Create: Invoice Details
+          // We are sending invoiceDetailsArray as parameter with their corresponding InvoiceId
+          InvoiceDataService.createInvoiceInvoiceDetails(
+            invoiceDetailsArray.map((obj) => {
+              return { ...obj, InvoiceId: invoiceId };
+            })
+          ).then((successResponseInvoiceDetails) => {
+            if (successResponseInvoiceDetails === true) {
+              // Create: Invoice Payment
+              InvoiceDataService.createInvoicePayments({
+                ...invoicePayment,
+                InvoiceId: invoiceId,
+              }).then((successResponseInvoicePayment) => {
+                if (successResponseInvoicePayment === true) {
+                  handlePostOperationResult(true)
+                  handleUpsertReturnClick();
+                } else {
+                  handlePostOperationResult(false)
+                }
+              });
+            } else {
+              handlePostOperationResult(false)
+            }
+          });
+
+          // Invoice Payment
+        } else {
+          handlePostOperationResult(false)
+        }
       }
-    });
+    );
   };
 
-  // const handleCreateEvent = () => {
-  //   InvoiceDataService.createInvoiceMaster(invoiceMasterModel).then(
-  //     (successResult) => {
-  //       if (!(successResult === 0)) {
-  //         // Invoice Details
-
-  //         // Invoice Payment
-
-  //       } else {
-  //         alert("failed");
-  //         handleUpsertReturnClick();
-  //       }
-  //     }
-  //   );
-  // };
-
+  // Edit Invoice
   const handleEditEvent = () => {
     InvoiceDataService.updateInvoiceMaster(invoiceMasterModel).then(
       (successTransaction) => {
@@ -122,16 +134,16 @@ export const InvoiceUpsertSave = () => {
           InvoiceDataService.createInvoicePayments(invoicePayment).then(
             (paymentTransactionSuccessResponse) => {
               if (paymentTransactionSuccessResponse === true) {
-                alert("Success ");
+                handlePostOperationResult(true);
               } else {
                 // error Invoice Payment
-                alert("Failed Invoice Payment");
+                handlePostOperationResult(false);
               }
             }
           );
         } else {
           //error Invoice Master}
-          alert("Failed Invoice Master");
+          handlePostOperationResult(false);
         }
       }
     );
