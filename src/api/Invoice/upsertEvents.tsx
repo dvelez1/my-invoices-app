@@ -39,17 +39,35 @@ class InvoiceDataService {
     invoiceDetails: InvoiceDetails[]
   ): Promise<boolean> => {
     try {
-
-      console.log("invoiceDetails")
-      const res = await Promise.all(invoiceDetails.map((obj) => {
-        const result = axiosInterface.put(Urls.CreateInvoiceDetails, obj);
+      const promises = invoiceDetails.map(async (obj) => {
+        const result = await axiosInterface.put(Urls.CreateInvoiceDetails, obj);
+        console.log("result", result);
         return result;
-      }));
+      });
 
-      const statusArray = res.map((res) => res.status);
+      const res = await Promise.all(promises);
+
+      return res.map((res) => res.status).every((currentValue) => currentValue === 200)
+
+        // const statusArray = res.map((res) => res.status);
+        // return statusArray.every((currentValue) => currentValue === 200);
+
+
+      // Example 1
+
+      // const res = await Promise.all(
+      //   invoiceDetails.map((obj) => {
+      //     const result = axiosInterface.put(Urls.CreateInvoiceDetails, obj);
+      //     return result;
+      //   })
+      // );
+
+      // const statusArray = res.map((res) => res.status);
 
       // Will Return True if all values are
-      return statusArray.every(currentValue =>currentValue === 200)
+      // return statusArray.every((currentValue) => currentValue === 200);
+
+      //EXAMPLE 2
 
       // console.log("invoiceDetails",invoiceDetails)
 
@@ -137,9 +155,7 @@ class InvoiceDataService {
 
   deleteInvoiceDetails = async (Id: Number): Promise<boolean> => {
     try {
-      const resp = await axiosInterface.delete(
-        Urls.DeleteInvoiceDetails +  Id
-      );
+      const resp = await axiosInterface.delete(Urls.DeleteInvoiceDetails + Id);
       return resp.status === 200;
     } catch (error) {
       console.error(error);
@@ -149,9 +165,7 @@ class InvoiceDataService {
 
   deleteInvoicePayment = async (Id: Number): Promise<boolean> => {
     try {
-      const resp = await axiosInterface.delete(
-        Urls.DeleteInvoicePayment + Id
-      );
+      const resp = await axiosInterface.delete(Urls.DeleteInvoicePayment + Id);
       return resp.status === 200;
     } catch (error) {
       console.error(error);
