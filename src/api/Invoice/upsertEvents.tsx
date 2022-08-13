@@ -35,7 +35,9 @@ class InvoiceDataService {
     }
   };
 
-  createInvoiceInvoiceDetails = async (
+  // TODO:  concurrent calls are duplicating records in the db
+  // Saved for reference
+  createInvoiceInvoiceDetailsBackup = async (
     invoiceDetails: InvoiceDetails[]
   ): Promise<boolean> => {
     try {
@@ -45,13 +47,16 @@ class InvoiceDataService {
         return result;
       });
 
-      const res = await Promise.all(promises);
+      // const res = await Promise.all(promises);
+      // return res.map((res) => res.status).every((currentValue) => currentValue === 200)
 
-      return res.map((res) => res.status).every((currentValue) => currentValue === 200)
+      const res = await Promise.allSettled(promises);
+      return res
+        .map((res) => res.status)
+        .every((currentValue) => currentValue === "fulfilled");
 
-        // const statusArray = res.map((res) => res.status);
-        // return statusArray.every((currentValue) => currentValue === 200);
-
+      // const statusArray = res.map((res) => res.status);
+      // return statusArray.every((currentValue) => currentValue === 200);
 
       // Example 1
 
@@ -85,6 +90,40 @@ class InvoiceDataService {
     } catch (error) {
       console.error(error);
       return false;
+    }
+  };
+
+  // TODO: I need to improve this methods, because it is a maroneo! (Temporary Fix)
+  createInvoiceInvoiceDetails = async (
+    invoiceDetails: InvoiceDetails[]
+  ): Promise<boolean> => {
+    const executionTime = invoiceDetails.length * 37;
+
+    if (invoiceDetails.length === 0) {
+      return false;
+    } else {
+      // Array with Data
+      invoiceDetails.forEach((element, i) => {
+        setTimeout(async function () {
+          try {
+            const resp = await axiosInterface.put(
+              Urls.CreateInvoiceDetails,
+              element
+            );
+            if (resp.status != 200) return false;
+          } catch (error) {
+            console.error(error);
+            return false;
+          }
+        }, i * 30);
+      });
+
+      // I'm providing 37 mls * invoiceDetails.length of waiting before return true. if process failed will trigger a false return before below promise execution
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(true);
+        }, executionTime);
+      });
     }
   };
 

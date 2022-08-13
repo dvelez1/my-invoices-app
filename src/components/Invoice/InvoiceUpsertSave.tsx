@@ -78,9 +78,9 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
     ).then((successTransaction) => {
       if (successTransaction === true) {
         handlePostOperationResult(true);
+        handleUpsertReturnClick();
       } else {
         handlePostOperationResult(false);
-        handleUpsertReturnClick();
       }
     });
   };

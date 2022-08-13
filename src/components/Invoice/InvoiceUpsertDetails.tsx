@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { InvoiceDetails } from "../../models/InvoiceDetails";
 import { useDataContext } from "../../context/DataContext";
 
@@ -10,6 +10,29 @@ export const InvoiceUpsertDetails = (props: any) => {
     if (InvoiceId && InvoiceId > 0) return true;
     else return false;
   };
+
+  // TODO: iN pROGRESS (uNDER EVALUATION)
+  const detailTotal = (
+    InvoiceDetailsId: number,
+    value: number,
+    priceEdited: boolean
+  ): number => {
+    invoiceDetailsArray.filter((obj) => {
+      if (obj.InvoiceDetailsId === InvoiceDetailsId) {
+        if (priceEdited) {
+          return obj.Quantity * value;
+        } else {
+          return obj.Price * value;
+        }
+      }
+    });
+    return 0;
+  };
+
+
+  const calculateTotal = (price:number,quantity:number): number =>{
+    return ((price ?? 0) * (quantity ?? 0))
+  }
 
   //#region OnChange Methods
   const handleProductChange = (e: any, invoiceDetailsId: number) => {
@@ -71,7 +94,7 @@ export const InvoiceUpsertDetails = (props: any) => {
       })
     );
   };
-//#endregion
+  //#endregion
 
   return (
     <>
@@ -105,7 +128,7 @@ export const InvoiceUpsertDetails = (props: any) => {
                     onChange={(e) => {
                       handleProductChange(e, InvoiceDetailsId);
                     }}
-                    defaultValue={ProductId || ""}
+                    value={ProductId || ""}
                   >
                     <option value="" disabled>
                       {" "}
@@ -119,32 +142,38 @@ export const InvoiceUpsertDetails = (props: any) => {
                   </select>
                 </td>
                 <td>
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="masterPrice"
-                    name="masterPrice"
-                    placeholder="Catalog Price"
-                    value={CatalogPrice}
-                    onChange={(e) => {
-                      handleCatPriceChange(e, InvoiceDetailsId);
-                    }}
-                    readOnly
-                  />
+                  <div className="input-group">
+                    <span className="input-group-text">$</span>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="masterPrice"
+                      name="masterPrice"
+                      placeholder="Catalog Price"
+                      value={CatalogPrice.toFixed(2)}
+                      onChange={(e) => {
+                        handleCatPriceChange(e, InvoiceDetailsId);
+                      }}
+                      readOnly
+                    />
+                  </div>
                 </td>
                 <td>
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="price"
-                    name="price"
-                    placeholder="Price"
-                    defaultValue={Price}
-                    onChange={(e) => {
-                      handlePriceChange(e, InvoiceDetailsId);
-                    }}
-                    readOnly={isCreateOperation(InvoiceId)}
-                  />
+                  <div className="input-group mb-3">
+                    <span className="input-group-text">$</span>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="price"
+                      name="price"
+                      placeholder="Price"
+                      defaultValue={Price.toFixed(2)}
+                      onChange={(e) => {
+                        handlePriceChange(e, InvoiceDetailsId);
+                      }}
+                      readOnly={isCreateOperation(InvoiceId)}
+                    />
+                  </div>
                 </td>
                 <td>
                   <input
@@ -161,15 +190,23 @@ export const InvoiceUpsertDetails = (props: any) => {
                   />
                 </td>
                 <td>
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="total"
-                    name="total"
-                    placeholder="Total"
-                    defaultValue={(Price ?? 0) * (Quantity ?? 0)}
-                    readOnly
-                  />
+                  {/* useEffect(()=>{}) */}
+                  
+                    <div className="input-group mb-3">
+                      <span className="input-group-text">$</span>
+                      <input
+                        type="number"
+                        className="form-control"
+                        id="total"
+                        name="total"
+                        placeholder="Total"
+                        value={
+                          calculateTotal(Price, Quantity).toFixed(2)
+                        }
+                        readOnly
+                      />
+                    </div>
+         
                 </td>
                 <td>
                   <span

@@ -24,7 +24,7 @@ export const Invoices = () => {
     setInvoiceDetailsArray,
     setInvoicePaymentsArray,
   } = useDataContext();
-  // Load Invoices
+  // Load Invoices (Custom Hook)
   const { isLoading, invoiceMaster, invoiceDetails, invoicePayments } =
     useInvoicesGet();
 

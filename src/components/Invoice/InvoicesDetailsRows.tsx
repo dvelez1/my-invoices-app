@@ -6,15 +6,15 @@ export const InvoicesDetailsRows = (props: any) => {
       <tr>
         <td>{props.ProductName}</td>
         <td>
-          {"$ "} {props.CatalogPrice ?? 0}
+          {"$ "} {props.CatalogPrice.toFixed(2) ?? 0}
         </td>
         <td>
-          {"$ "} {props.Price ?? 0}
+          {"$ "} {props.Price.toFixed(2) ?? 0}
         </td>
         <td>{props.Quantity ?? 0}</td>
         <td>
           {"$ "}
-          {(props.Quantity ?? 0) * (props.Price ?? 0)}
+          {((props.Quantity ?? 0) * (props.Price ?? 0)).toFixed(2)}
         </td>
       </tr>
     </>

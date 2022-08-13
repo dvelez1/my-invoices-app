@@ -23,7 +23,7 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
       TotalAmount: Number(returnTotalAmountFromList()),
     });
   }, [invoiceDetailsArray]);
-  
+
   // Get Total Amount From List
   const returnTotalAmountFromList = () => {
     let totalPrice: number = 0;
@@ -105,26 +105,34 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
               </div>
               <div className="col-md-2">
                 <label className="form-label fw-bold">Catalog Price</label>
-                <input
-                  type="number"
-                  step=".01"
-                  className="form-control"
-                  name="catalogPrice"
-                  placeholder="Catalog Price"
-                  value={productPrice ?? 0}
-                  readOnly
-                />
+                <div className="input-group mb-3">
+                  <span className="input-group-text">$</span>
+                  <input
+                    type="number"
+                    step=".01"
+                    className="form-control"
+                    name="catalogPrice"
+                    placeholder="Catalog Price"
+                    value={productPrice?.toFixed(2) ?? 0}
+                    readOnly
+                  />
+                </div>
               </div>
+
               <div className="col-md-2">
                 <label className="form-label fw-bold">Price</label>
-                <input
-                  type="number"
-                  step=".01"
-                  className="form-control"
-                  name="price"
-                  placeholder="Price"
-                />
+                <div className="input-group mb-3">
+                  <span className="input-group-text">$</span>
+                  <input
+                    type="number"
+                    step=".01"
+                    className="form-control"
+                    name="price"
+                    placeholder="Price"
+                  />
+                </div>
               </div>
+
               <div className="col-md-2">
                 <label className="form-label fw-bold">Quantity</label>
                 <input

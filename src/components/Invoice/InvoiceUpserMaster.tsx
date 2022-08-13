@@ -89,7 +89,7 @@ export const InvoiceUpserMaster = (props: any) => {
                 aria-label="Floating label select example"
                 name="CustomerId"
                 onChange={handleChange}
-                defaultValue={invoiceMasterModel?.CustomerId || ""}
+                value={invoiceMasterModel?.CustomerId || ""}
               >
                 <option value="" disabled>
                   {" "}
@@ -113,7 +113,7 @@ export const InvoiceUpserMaster = (props: any) => {
                   name="TotalAmount"
                   placeholder="Total Amount"
                   onChange={handleChange}
-                  value={invoiceMasterModel?.TotalAmount}
+                  value={invoiceMasterModel?.TotalAmount.toFixed(2)}
                   readOnly
                 />
               </div>
@@ -143,7 +143,7 @@ export const InvoiceUpserMaster = (props: any) => {
                   className="form-control"
                   name="difference"
                   placeholder="Amount Difference"
-                  value={amountDifference()}
+                  value={amountDifference().toFixed(2)}
                   readOnly
                 />
               </div>
