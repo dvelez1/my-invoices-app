@@ -5,7 +5,7 @@ import { useDataContext } from "../../context/DataContext";
 import { currentDate } from "../../helper/dateFormatter";
 
 import InvoiceDataService from "../../api/Invoice/upsertEvents";
-import { InvoicePayments } from "../../models/InvoicePayments";
+import { InvoicePayments } from "../../interfaces/InvoicePayments";
 
 //#endregion Imports
 

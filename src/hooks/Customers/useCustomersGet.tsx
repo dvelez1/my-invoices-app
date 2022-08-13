@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { axiosInterface } from "../../helper/axiosInterface";
-import { Customer } from "../../models/customer";
+import { Customer } from "../../interfaces/customer";
 
 // const instance = axios.create({
 //     baseURL: 'http://localhost:5000/Api/customer',

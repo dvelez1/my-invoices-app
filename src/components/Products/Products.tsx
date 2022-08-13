@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Product } from "../../models/product";
+import { Product } from "../../interfaces/product";
 
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";

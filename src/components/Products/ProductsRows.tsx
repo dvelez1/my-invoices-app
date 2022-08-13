@@ -1,6 +1,6 @@
 import React from "react";
 import { createSearchParams, useNavigate } from "react-router-dom";
-import { Product } from "../../models/product";
+import { Product } from "../../interfaces/product";
 
 export const ProductsRows = ({
   ProductId,

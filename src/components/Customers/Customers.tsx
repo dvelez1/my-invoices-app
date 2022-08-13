@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCustomersGet } from "../../hooks/Customers/useCustomersGet";
-import { Customer } from "../../models/customer";
+import { Customer } from "../../interfaces/customer";
 
 // Data Context
 import { useDataContext } from "../../context/DataContext";

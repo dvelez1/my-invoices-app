@@ -1,7 +1,7 @@
 import { axiosInterface } from "../../helper/axiosInterface";
-import { InvoiceMaster } from "../../models/InvoiceMaster";
-import { InvoiceDetails } from "../../models/InvoiceDetails";
-import { InvoicePayments } from "../../models/InvoicePayments";
+import { InvoiceMaster } from "../../interfaces/InvoiceMaster";
+import { InvoiceDetails } from "../../interfaces/InvoiceDetails";
+import { InvoicePayments } from "../../interfaces/InvoicePayments";
 
 var successResult = false;
 

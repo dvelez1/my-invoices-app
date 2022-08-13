@@ -7,7 +7,7 @@ import {
   updateCustomer,
 } from "../../api/Customers/upsertEvents";
 
-import { Customer } from "../../models/customer";
+import { Customer } from "../../interfaces/customer";
 
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";

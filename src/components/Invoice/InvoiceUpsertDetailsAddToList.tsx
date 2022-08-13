@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 // Data Context
 import { useDataContext } from "../../context/DataContext";
-import { InvoiceDetails } from "../../models/InvoiceDetails";
-import { Product } from "../../models/product";
+import { InvoiceDetails } from "../../interfaces/InvoiceDetails";
+import { Product } from "../../interfaces/product";
 import { InvoiceUpserMaster } from "./InvoiceUpserMaster";
 
 export const InvoiceUpsertDetailsAddToList = (props: any) => {

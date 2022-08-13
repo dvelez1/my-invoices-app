@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Customer } from "../models/customer";
-import { Product } from "../models/product";
-import { InvoiceMaster } from "../models/InvoiceMaster";
-import { InvoiceDetails } from "../models/InvoiceDetails";
-import { InvoicePayments } from "../models/InvoicePayments";
+import { Customer } from "../interfaces/customer";
+import { Product } from "../interfaces/product";
+import { InvoiceMaster } from "../interfaces/InvoiceMaster";
+import { InvoiceDetails } from "../interfaces/InvoiceDetails";
+import { InvoicePayments } from "../interfaces/InvoicePayments";
 import { resolve } from "path";
 
 interface Props {

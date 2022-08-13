@@ -2,9 +2,9 @@ import  { useState, useEffect } from "react";
 import { axiosInterface } from "../../helper/axiosInterface";
 
 // Models
-import { InvoiceMaster } from "../../models/InvoiceMaster";
-import { InvoiceDetails } from "../../models/InvoiceDetails";
-import { InvoicePayments } from "../../models/InvoicePayments";
+import { InvoiceMaster } from "../../interfaces/InvoiceMaster";
+import { InvoiceDetails } from "../../interfaces/InvoiceDetails";
+import { InvoicePayments } from "../../interfaces/InvoicePayments";
 
 export const useInvoicesGet = () => {
     // Used to Loading /Spinner Implementation

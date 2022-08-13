@@ -1,5 +1,5 @@
 import { axiosInterface } from "../../helper/axiosInterface";
-import { Customer } from "../../models/customer";
+import { Customer } from "../../interfaces/customer";
 
 var successResult: boolean = false;
 

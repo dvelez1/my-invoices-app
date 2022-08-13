@@ -4,7 +4,7 @@ import { useNavigate, useLocation, Route } from "react-router-dom";
 // Date Formatter
 import { currentDate } from "../../helper/dateFormatter";
 // Product Interface
-import { Product } from "../../models/product";
+import { Product } from "../../interfaces/product";
 // Methods for Insert
 import { createProduct, updateProduct } from "../../api/Products/upsertEvents";
 // Import Toast components (react-toastify) -> Note: Was implemented a custom solution

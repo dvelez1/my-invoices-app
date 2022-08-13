@@ -1,4 +1,4 @@
-import { Customer } from "../models/customer";
+import { Customer } from "../interfaces/customer";
 
 export const setCustomerInterface = (customer: Customer) => {
   return {

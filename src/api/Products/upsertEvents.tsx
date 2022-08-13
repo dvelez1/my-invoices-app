@@ -1,5 +1,5 @@
 import { axiosInterface } from "../../helper/axiosInterface";
-import { Product } from "../../models/product";
+import { Product } from "../../interfaces/product";
 
 var successResult: boolean = false;
 

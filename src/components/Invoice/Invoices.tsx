@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useInvoicesGet } from "../../hooks/Invoice/useInvoicesGet";
 
 // Interfaces
-import { InvoiceMaster } from "../../models/InvoiceMaster";
+import { InvoiceMaster } from "../../interfaces/InvoiceMaster";
 
 // Data Context
 import { useDataContext } from "../../context/DataContext";
