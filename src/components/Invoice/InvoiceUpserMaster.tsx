@@ -8,10 +8,8 @@ import { useDataContext } from "../../context/DataContext";
 import { useEffect } from "react";
 
 export const InvoiceUpserMaster = (props: any) => {
-
-
   const { invoiceMasterModel, setInvoiceMasterModel } = useDataContext();
-   const handleChange = (e: any) => {
+  const handleChange = (e: any) => {
     setInvoiceMasterModel({
       ...invoiceMasterModel,
 
@@ -65,7 +63,11 @@ export const InvoiceUpserMaster = (props: any) => {
                 name="StartDate"
                 placeholder="Invoice Date"
                 onChange={handleChange}
-                defaultValue={setDateValue(invoiceMasterModel?.StartDate)}
+                defaultValue={
+                  isCreateInvoiceEvent()
+                    ? setDateValue(currentDate())
+                    : setDateValue(invoiceMasterModel?.StartDate)
+                }
               />
             </div>
             <div className="col-md-3">
@@ -102,7 +104,7 @@ export const InvoiceUpserMaster = (props: any) => {
                 ))}
               </select>
             </div>
-            
+
             <div className="col-md-3">
               <label className="form-label fw-bold">Total Amount:</label>
               <div className="input-group mb-3">
