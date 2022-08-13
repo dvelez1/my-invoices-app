@@ -116,8 +116,8 @@ export const Invoices = () => {
       <div className="card">
         <h3 className="card-header">Invoices</h3>
         <div className="card-body">
-          <h5 className="card-title">List of Invoices</h5>
-          <hr />
+          {/* <h5 className="card-title">List of Invoices</h5>
+          <hr /> */}
 
           <input
             className="mb-2 form-control"

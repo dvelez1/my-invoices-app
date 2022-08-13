@@ -78,8 +78,8 @@ export const Products = () => {
       <div className="card">
         <h3 className="card-header">Products</h3>
         <div className="card-body">
-          <h5 className="card-title">List of Products</h5>
-          <hr />
+          {/* <h5 className="card-title ">List of Products</h5>
+          <hr /> */}
 
           <input
             className="mb-2 form-control"
@@ -97,7 +97,7 @@ export const Products = () => {
             Create New Product
           </button>
           <table className="table mt-2">
-            <thead className="thead-dark">
+            <thead className="">
               <tr>
                 <th>Id</th>
                 <th>Name</th>

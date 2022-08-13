@@ -68,8 +68,8 @@ export const Customers = () => {
       <div className="card">
         <h3 className="card-header">Customers</h3>
         <div className="card-body">
-          <h5 className="card-title">List of Customers</h5>
-          <hr />
+          {/* <h5 className="card-title">List of Customers</h5>
+          <hr /> */}
 
           <input
             className="mb-2 form-control"
