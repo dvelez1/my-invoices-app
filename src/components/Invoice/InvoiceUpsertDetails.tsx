@@ -1,38 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { InvoiceDetails } from "../../models/InvoiceDetails";
+import { useState } from "react";
 import { useDataContext } from "../../context/DataContext";
 
 export const InvoiceUpsertDetails = (props: any) => {
-  const { invoiceMasterModel, invoiceDetailsArray, setInvoiceDetailsArray } =
-    useDataContext();
+  const { invoiceDetailsArray, setInvoiceDetailsArray } = useDataContext();
   const [product, setProduct] = useState("");
   const isCreateOperation = (InvoiceId: number): boolean => {
     if (InvoiceId && InvoiceId > 0) return true;
     else return false;
   };
 
-  // TODO: iN pROGRESS (uNDER EVALUATION)
-  const detailTotal = (
-    InvoiceDetailsId: number,
-    value: number,
-    priceEdited: boolean
-  ): number => {
-    invoiceDetailsArray.filter((obj) => {
-      if (obj.InvoiceDetailsId === InvoiceDetailsId) {
-        if (priceEdited) {
-          return obj.Quantity * value;
-        } else {
-          return obj.Price * value;
-        }
-      }
-    });
-    return 0;
+  const calculateTotal = (price: number, quantity: number): number => {
+    return (price ?? 0) * (quantity ?? 0);
   };
-
-
-  const calculateTotal = (price:number,quantity:number): number =>{
-    return ((price ?? 0) * (quantity ?? 0))
-  }
 
   //#region OnChange Methods
   const handleProductChange = (e: any, invoiceDetailsId: number) => {
@@ -190,23 +169,18 @@ export const InvoiceUpsertDetails = (props: any) => {
                   />
                 </td>
                 <td>
-                  {/* useEffect(()=>{}) */}
-                  
-                    <div className="input-group mb-3">
-                      <span className="input-group-text">$</span>
-                      <input
-                        type="number"
-                        className="form-control"
-                        id="total"
-                        name="total"
-                        placeholder="Total"
-                        value={
-                          calculateTotal(Price, Quantity).toFixed(2)
-                        }
-                        readOnly
-                      />
-                    </div>
-         
+                  <div className="input-group mb-3">
+                    <span className="input-group-text">$</span>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="total"
+                      name="total"
+                      placeholder="Total"
+                      value={calculateTotal(Price, Quantity).toFixed(2)}
+                      readOnly
+                    />
+                  </div>
                 </td>
                 <td>
                   <span

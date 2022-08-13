@@ -60,7 +60,17 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
 
   // Insert/Edit Click Event
   const handleSaveClick = () => {
+    // Indicate that we can proceed with the save event in the useEffect method that will be triggered when invoicePayment change
     setSubmitted(true);
+
+    // Automatic close the transaction when TotalAmount <= PayedAmount (Only the logic will be evaluated if invoiceMasterModel.EndDate is null )
+    // Also, if EndDate provided, the transaction will be closed.
+    setInvoiceMasterModel({
+      ...invoiceMasterModel,
+      EndDate: invoiceMasterModel.EndDate ?? invoiceMasterModel?.TotalAmount<= invoiceMasterModel?.PayedAmount ? currentDate() :null,
+      TransactionActive: invoiceMasterModel.EndDate ? false : invoiceMasterModel?.TotalAmount<= invoiceMasterModel?.PayedAmount ? false :true,
+    });
+
     setInvoicePayment({
       ...invoicePayment,
       Payment: Number(invoiceMasterModel?.PayedAmount),
@@ -162,7 +172,6 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
       >
         Return
       </button>
-
       <button
         className="btn btn-primary btn-md me-md-2"
         type="submit"
