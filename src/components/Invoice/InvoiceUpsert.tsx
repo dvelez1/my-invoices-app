@@ -50,11 +50,11 @@ export const InvoiceUpsert = () => {
   return (
     <>
       <div className="card">
-        <h3 className="card-header">Invoice</h3>
+        <h3 className="card-header">{isCreateInvoiceEvent() ? "Create" : "Edit"} Invoice</h3>
         <div className="card-body">
-          <h5 className="card-title">
+          {/* <h5 className="card-title">
             {isCreateInvoiceEvent() ? "Create" : "Edit"} Invoice
-          </h5>
+          </h5> */}
           <hr />
           <div className="mt-2">
             <div className="card">
