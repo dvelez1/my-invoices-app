@@ -149,6 +149,7 @@ export const Invoices = () => {
             }) => (
               <div key={InvoiceId} className="mt-2">
                 <div className="card">
+                <h3 className="card-header">Invoice</h3>
                   <div className="card-body">
                     <InvoiceBody
                       InvoiceId={InvoiceId}
@@ -164,7 +165,7 @@ export const Invoices = () => {
                     />
                     <hr />
 
-                    <label className="fw-bold">Invoice Details</label>
+                    <label className="fw-bold mb-2">Invoice Details</label>
                     <table className="table table-sm">
                       <thead className="thead-dark">
                         <tr>
