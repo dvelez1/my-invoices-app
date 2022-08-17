@@ -8,6 +8,7 @@ import { useDataContext } from "../../context/DataContext";
 
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";
+import { currentDate } from "../../helper/dateFormatter";
 
 export const Customers = () => {
   const { setCustomerModel } = useDataContext();
@@ -24,12 +25,29 @@ export const Customers = () => {
 
   // Redirect to Main Page
   function handleEditClick(customerId: Number) {
-    setCustomerModel(
-      customers.filter((obj) => {
-        return obj.CustomerId === customerId;
-      })[0]
-    );
-    if (customerId > 0) handleUpsertClick();
+    if (customerId == 0) {
+      setCustomerModel({
+        CustomerId:0,
+        Name:"",
+        MiddleName:"",
+        FirstName:"",
+        LastName:"",
+        Address1:"",
+        Address2:"",
+        City:"",
+        State:"",
+        ZipCode:"",
+        StartDate:currentDate(),
+        EndDate:null
+      })
+    } else {
+      setCustomerModel(
+        customers.filter((obj) => {
+          return obj.CustomerId === customerId;
+        })[0]
+      );
+    }
+    handleUpsertClick();
   }
 
   //#region "Filtering and Pagination"
@@ -38,7 +56,9 @@ export const Customers = () => {
       return customers.slice(currentPage, currentPage + 10);
 
     //Search Input with data
-    const filtered = customers.filter((cust) => cust.Name.toLowerCase().includes(search));
+    const filtered = customers.filter((cust) =>
+      cust.Name.toLowerCase().includes(search)
+    );
     return filtered.slice(currentPage, currentPage + 10);
   };
 
@@ -68,9 +88,6 @@ export const Customers = () => {
       <div className="card">
         <h3 className="card-header">Customers</h3>
         <div className="card-body">
-          {/* <h5 className="card-title">List of Customers</h5>
-          <hr /> */}
-
           <input
             className="mb-2 form-control"
             type="text"
@@ -82,7 +99,7 @@ export const Customers = () => {
           <button
             type="button"
             className="btn btn-primary mt-2"
-            onClick={handleUpsertClick}
+            onClick={()=>handleEditClick(0)}
           >
             Create New Customer
           </button>
@@ -130,14 +147,6 @@ export const Customers = () => {
                           onClick={() => handleEditClick(CustomerId)}
                         ></i>
                       </span>
-                      {/* <span>
-                        <i
-                          title="Delete Customer"
-                          className="bi bi-trash cursor"
-                          style={{ fontSize: 25 }}
-                          onClick={() => handleDeleteClick(CustomerId)}
-                        ></i>
-                      </span> */}
                     </td>
                   </tr>
                 )

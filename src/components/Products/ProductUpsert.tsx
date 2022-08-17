@@ -13,6 +13,8 @@ import {
   successToastTransaction,
   errorToastTransaction,
 } from "../../helper/toastMessages";
+// Form Vaidation
+import { productValidation } from "../../hooks/Products/productValidation";
 
 // Components
 import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
@@ -51,7 +53,7 @@ export const ProductUpsert = () => {
   const handleSubmit = (event: any) => {
     setIsSubmit(true);
     event.preventDefault();
-    setFormErrors(validate(product));
+    setFormErrors(productValidation(product));
   };
 
   // Method to handle Insert/Update Operation Result Message
@@ -63,23 +65,8 @@ export const ProductUpsert = () => {
       errorToastTransaction("Failed Transaction!");
     }
   };
-
-  //#region Validations Methods
-
-  // Validation Rules
-  const validate = (values: Product): {} => {
-    const errors: any = {};
-    if (!values.Name) {
-      errors.Name = "Name is Required!";
-    }
-
-    if (!values.Price) {
-      errors.Price = "Price is Required!";
-    }
-    return errors;
-  };
-
-  /* Will be triggered if a formErrors object is modified.
+ 
+  /* Used for Form validation: Will be triggered if a formErrors object is modified.
   If (Object.keys(formErrors).length === 0) is true (No errors found) AND isSubmit is true, will trigger the create/edit event */
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
@@ -95,13 +82,11 @@ export const ProductUpsert = () => {
     }
   }, [formErrors]);
 
-  // When Product Change - Trigger the validation without submit (Because isSubmit will be false )
+  // Used for Form validation: When Product Change - Trigger the validation without submit (Because isSubmit will be false )
   useEffect(() => {
-    setFormErrors(validate(product));
+    setFormErrors(productValidation(product));
   }, [product]);
-
-  //#endregion Validations Methods
-
+ 
   //#endregion "Methods"
 
   return (

@@ -12,8 +12,8 @@ interface Props {
 
 type nameDataType = {
   // Customer
-  customerModel: Customer | undefined;
-  setCustomerModel: React.Dispatch<React.SetStateAction<Customer | undefined>>;
+  customerModel: Customer;
+  setCustomerModel: React.Dispatch<React.SetStateAction<Customer>>;
   // Product
   productModel: Product | undefined;
   setProductModel: React.Dispatch<React.SetStateAction<Product | undefined>>;
@@ -45,9 +45,8 @@ const Context = React.createContext<nameDataType>({} as nameDataType);
 
 const DataProvider: React.FC<Props> = ({ children }) => {
   // Customer
-  const [customerModel, setCustomerModel] = useState<Customer | undefined>(
-    undefined
-  );
+  const [customerModel, setCustomerModel] = useState<Customer>(null!);
+
   //Product
   const [productModel, setProductModel] = useState<Product | undefined>(
     undefined
