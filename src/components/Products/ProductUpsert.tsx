@@ -16,7 +16,6 @@ import {
 
 // Components
 import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
-import { Loading } from "../../components/shared/Loading";
 import { ProductUpsertSave } from "./ProductUpsertSave";
 import { ProductUpsertBody } from "./ProductUpsertBody";
 
@@ -29,8 +28,6 @@ export const ProductUpsert = () => {
 
   const [product, setProduct] = React.useState<Product>(initialFormData);
   const [formErrors, setFormErrors] = useState({});
-
-  const [isLoading, setIsLoading] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
 
   //#region "Methods"
@@ -65,15 +62,13 @@ export const ProductUpsert = () => {
     } else {
       errorToastTransaction("Failed Transaction!");
     }
-    setIsLoading(false);
   };
 
   //#region Validations Methods
 
-  // ValidatiON Rules
+  // Validation Rules
   const validate = (values: Product): {} => {
     const errors: any = {};
-
     if (!values.Name) {
       errors.Name = "Name is Required!";
     }
@@ -81,12 +76,11 @@ export const ProductUpsert = () => {
     if (!values.Price) {
       errors.Price = "Price is Required!";
     }
-
-    console.log("Errors", errors);
     return errors;
   };
 
-  // Will be triggered if a formErrors object is modified, but if Object.keys(formErrors).length === 0 is true (No errors found), will trigger the create/edit event
+  /* Will be triggered if a formErrors object is modified.
+  If (Object.keys(formErrors).length === 0) is true (No errors found) AND isSubmit is true, will trigger the create/edit event */
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       //Insert / Update Operation
@@ -101,7 +95,7 @@ export const ProductUpsert = () => {
     }
   }, [formErrors]);
 
-  // When Product Change - Trigger the validation without submit
+  // When Product Change - Trigger the validation without submit (Because isSubmit will be false )
   useEffect(() => {
     setFormErrors(validate(product));
   }, [product]);
@@ -120,7 +114,6 @@ export const ProductUpsert = () => {
               : "Create Product"}
           </h3>
           <div className="card-body">
-            {isLoading && <Loading />}
             <ProductUpsertBody
               product={product}
               formErrors={formErrors}
