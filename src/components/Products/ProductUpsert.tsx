@@ -20,17 +20,19 @@ import { Loading } from "../../components/shared/Loading";
 import { ProductUpsertSave } from "./ProductUpsertSave";
 import { ProductUpsertBody } from "./ProductUpsertBody";
 
-
 //#endregion Imports
 
 export const ProductUpsert = () => {
   // Note: We are sending from Product and Object of Product Type as Parameter on the Route Navigation event
   const location = useLocation();
   var initialFormData = Object.freeze(location.state as Product);
+
   const [product, setProduct] = React.useState<Product>(initialFormData);
+  const [formErrors, setFormErrors] = useState({});
+
   const [isLoading, setIsLoading] = useState(false);
-  const [isPending, setIsPending] = useState(false);
-  
+  const [isSubmit, setIsSubmit] = useState(false);
+
   //#region "Methods"
 
   // Navigate (Route)
@@ -50,28 +52,61 @@ export const ProductUpsert = () => {
 
   // Submit Event
   const handleSubmit = (event: any) => {
-    setIsPending(true);
+    setIsSubmit(true);
     event.preventDefault();
-    // console.log(event.target.elements.name.value); // from elements property
-    // console.log(event.target.name.value); // or directly
-
-    //Insert / Update Operation
-    if (product.ProductId === 0)
-      saveEventResultMessageHandler(Boolean(createProduct(product)));
-    else if (product.ProductId > 0)
-      saveEventResultMessageHandler(Boolean(updateProduct(product)));
-
-    setIsLoading(false);
+    setFormErrors(validate(product));
   };
 
   // Method to handle Insert/Update Operation Result Message
   const saveEventResultMessageHandler = (successResponse: boolean) => {
     if (successResponse) {
       successToastTransaction("Success Transaction!");
-      setIsPending(false);
-      handleUpsertClick();
-    } else errorToastTransaction("Failed Transaction!");
+      // handleUpsertClick();
+    } else {
+      errorToastTransaction("Failed Transaction!");
+    }
+    setIsLoading(false);
   };
+
+  //#region Validations Methods
+
+  // ValidatiON Rules
+  const validate = (values: Product): {} => {
+    const errors: any = {};
+
+    if (!values.Name) {
+      errors.Name = "Name is Required!";
+    }
+
+    if (!values.Price) {
+      errors.Price = "Price is Required!";
+    }
+
+    console.log("Errors", errors);
+    return errors;
+  };
+
+  // Will be triggered if a formErrors object is modified, but if Object.keys(formErrors).length === 0 is true (No errors found), will trigger the create/edit event
+  useEffect(() => {
+    if (Object.keys(formErrors).length === 0 && isSubmit) {
+      //Insert / Update Operation
+      if (product.ProductId === 0)
+        saveEventResultMessageHandler(Boolean(createProduct(product)));
+      else if (product.ProductId > 0)
+        saveEventResultMessageHandler(Boolean(updateProduct(product)));
+    }
+    // After Run the validation, set IsSubmit to False
+    if (isSubmit) {
+      setIsSubmit(false);
+    }
+  }, [formErrors]);
+
+  // When Product Change - Trigger the validation without submit
+  useEffect(() => {
+    setFormErrors(validate(product));
+  }, [product]);
+
+  //#endregion Validations Methods
 
   //#endregion "Methods"
 
@@ -80,12 +115,21 @@ export const ProductUpsert = () => {
       <form onSubmit={handleSubmit}>
         <div className="card">
           <h3 className="card-header">
-            {product && product.ProductId > 0 ? "Edit Product" : "Create Product"}
+            {product && product.ProductId > 0
+              ? "Edit Product"
+              : "Create Product"}
           </h3>
           <div className="card-body">
-            <ProductUpsertBody product={product} handleChange={handleChange}/>
             {isLoading && <Loading />}
-            <ProductUpsertSave isPending={isPending} handleUpsertClick={handleUpsertClick}/>
+            <ProductUpsertBody
+              product={product}
+              formErrors={formErrors}
+              handleChange={handleChange}
+            />
+            <ProductUpsertSave
+              setIsSubmit={isSubmit}
+              handleUpsertClick={handleUpsertClick}
+            />
             <ToastContainerImplementation />
           </div>
         </div>

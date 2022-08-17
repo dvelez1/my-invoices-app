@@ -114,7 +114,11 @@ export const InvoiceUpsertDetails = (props: any) => {
                       -- Select a Product --{" "}
                     </option>
                     {props.products.map((prod: any) => (
-                      <option key={prod.ProductId} value={prod.ProductId}>
+                      <option
+                        key={prod.ProductId}
+                        value={prod.ProductId}
+                        disabled={isCreateOperation(InvoiceId)}
+                      >
                         ({prod.ProductId}) - {prod.Name}
                       </option>
                     ))}

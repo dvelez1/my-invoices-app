@@ -11,7 +11,7 @@ export const ProductUpsertSave = (props: any) => {
               Save
             </button>
           )}
-          {props.isPending && (
+          {props.isSubmit && (
             <button className="btn btn-primary me-md-2" disabled type="submit">
               Saving
             </button>

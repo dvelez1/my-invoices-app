@@ -39,6 +39,7 @@ export const InvoiceUpserMaster = (props: any) => {
     <>
       <div className="card" style={{ width: "100" }}>
         <div className="card-body">
+          {/* <h5 className="card-title"  style={{backgroundColor: "#0d6efd", color:"white"}} >Master</h5> */}
           <h5 className="card-title">Master</h5>
 
           <hr />

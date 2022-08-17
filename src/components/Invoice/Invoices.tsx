@@ -149,7 +149,9 @@ export const Invoices = () => {
             }) => (
               <div key={InvoiceId} className="mt-2">
                 <div className="card">
-                <h3 className="card-header">Invoice</h3>
+                  <h5 className="card-header">
+                    Invoice: {InvoiceId}
+                  </h5>
                   <div className="card-body">
                     <InvoiceBody
                       InvoiceId={InvoiceId}
@@ -164,7 +166,6 @@ export const Invoices = () => {
                       handleEditClick={handleEditClick}
                     />
                     <hr />
-
                     <label className="fw-bold mb-2">Invoice Details</label>
                     <table className="table table-sm">
                       <thead className="thead-dark">
@@ -186,7 +187,7 @@ export const Invoices = () => {
                               CatalogPrice,
                               Price,
                               Quantity,
-                             InvoiceDetailsId
+                              InvoiceDetailsId,
                             }) => (
                               <InvoicesDetailsRows
                                 ProductName={ProductName}
