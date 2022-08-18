@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 // Data Context
 import { useDataContext } from "../../context/DataContext";
+import { addInvoiceDetailsValidation } from "../../hooks/Invoice/addInvoiceDetailsValidation";
 import { InvoiceDetails } from "../../interfaces/InvoiceDetails";
 import { Product } from "../../interfaces/product";
-import { InvoiceUpserMaster } from "./InvoiceUpserMaster";
 
 export const InvoiceUpsertDetailsAddToList = (props: any) => {
   // Import DataContext
@@ -15,6 +15,21 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
   } = useDataContext();
 
   const [productPrice, setProductPrice] = useState<number | null>(null);
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmit, setIsSubmit] = useState(false);
+  const initialFormData:InvoiceDetails = {
+    InvoiceDetailsId:0,
+    InvoiceId: 0,
+    ProductId: 0,
+    ProductName: "",
+    CatalogPrice: 0,
+    Price: 0,
+    RemovedTransaction: false,
+    RemovedDate:  null,
+    Quantity: 0
+
+  }
+  const [invoiceDetails,setInvoiceDetails] = useState<InvoiceDetails>(initialFormData)
 
   // When a Item is added to invoiceDetailsArray, proceed to update invoiceMasterModel
   useEffect(() => {
@@ -36,27 +51,39 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
   // Add Elements to Array (InvoiceDetails - Only Create Operation
   const handleAddInvoiceDetailsSubmit = (event: any) => {
     event.preventDefault();
-    // console.log(event.target.elements.name.value); // from elements property
-    // console.log(event.target.name.value); // or directly
+    setIsSubmit(true);
 
     const formData: InvoiceDetails = {
       InvoiceDetailsId: invoiceDetailsArray.length + 1,
       InvoiceId: invoiceMasterModel?.InvoiceId ?? 0,
-      ProductId: Number(event.target.productId.value),
+      ProductId: Number(event.target.ProductId.value),
       ProductName: props.products.filter((obj: Product) => {
-        return obj.ProductId == Number(event.target.productId.value);
+        return obj.ProductId == Number(event.target.ProductId.value);
       })[0].Name,
-      CatalogPrice: Number(event.target.catalogPrice.value),
-      Price: Number(event.target.price.value),
+      CatalogPrice: Number(event.target.CatalogPrice.value),
+      Price: Number(event.target.Price.value),
       RemovedTransaction: false,
       RemovedDate: null,
-      Quantity: Number(event.target.quantity.value),
+      Quantity: Number(event.target.Quantity.value),
     };
 
-    //Update Context
     setInvoiceDetailsArray((current) => [...current, formData]);
-
     clearForm(event);
+
+    // Change below
+    // setFormErrors(addInvoiceDetailsValidation(formData));
+
+    // if (Object.keys(formErrors).length === 0 && isSubmit) {
+    //   console.log("entre");
+    //   //Update Context
+    //   setInvoiceDetailsArray((current) => [...current, formData]);
+    //   clearForm(event);
+    // }
+
+    // // After Run the validation, set IsSubmit to False
+    // if (isSubmit) {
+    //   setIsSubmit(false);
+    // }
   };
 
   const clearForm = (event: any) => {
@@ -64,6 +91,26 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
     // Reset Form
     event.target.reset();
     setProductPrice(0);
+  };
+
+  const handleChange = (e: any) => {
+    setInvoiceDetails({
+      ...invoiceDetails,
+      // Trimming any whitespace
+      [e.target.name]: e.target.value.trim(),
+    });
+
+    // Update Catalog Price
+    if (e.target.name == "ProductId"){
+      setProductPrice(
+        props.products.filter((obj: any) => {
+          return obj.ProductId == Number(e.target.value);
+        })[0].Price
+      )
+    }
+  
+    // Set Product Price
+
   };
 
   return (
@@ -80,16 +127,10 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
               <div className="col-md-3">
                 <label className="form-label fw-bold">Product</label>
                 <select
-                  name="productId"
+                  name="ProductId"
                   className="form-control"
                   aria-label="Floating label select example"
-                  onChange={(e) =>
-                    setProductPrice(
-                      props.products.filter((obj: any) => {
-                        return obj.ProductId == Number(e.target.value);
-                      })[0].Price
-                    )
-                  }
+                  onChange={handleChange}
                   defaultValue={""}
                 >
                   <option value="" disabled>
@@ -111,9 +152,10 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
                     type="number"
                     step=".01"
                     className="form-control"
-                    name="catalogPrice"
+                    name="CatalogPrice"
                     placeholder="Catalog Price"
                     value={productPrice?.toFixed(2) ?? 0}
+                    onChange={handleChange}
                     readOnly
                   />
                 </div>
@@ -127,8 +169,9 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
                     type="number"
                     step=".01"
                     className="form-control"
-                    name="price"
+                    name="Price"
                     placeholder="Price"
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -138,8 +181,9 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
                 <input
                   type="number"
                   className="form-control"
-                  name="quantity"
+                  name="Quantity"
                   placeholder="Quantity"
+                  onChange={handleChange}
                 />
               </div>
               <div className="col-md-3">
