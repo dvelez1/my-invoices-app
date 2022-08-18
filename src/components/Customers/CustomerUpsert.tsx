@@ -1,16 +1,11 @@
-// Note: We are using ref for submit Data
+//#region Imports
 
-import React, { useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   createCustomer,
   updateCustomer,
 } from "../../api/Customers/upsertEvents";
-
-import { Customer } from "../../interfaces/customer";
-
-// Import Spinner
-import { Loading } from "../../components/shared/Loading";
 
 // Data Context
 import { useDataContext } from "../../context/DataContext";
@@ -22,22 +17,19 @@ import {
   errorToastTransaction,
 } from "../../helper/toastMessages";
 import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
+import { customerValidation } from "../../hooks/Customers/customerValidation";
+// Import Spinner
+import { Loading } from "../../components/shared/Loading";
+
+//#endregion Imports
 
 export const CustomerUpsert = () => {
   // Data Context
   const { setCustomerModel, customerModel } = useDataContext();
-  const [formErrors, setFormErrors] = useState({});
+  
+  const [formErrors, setFormErrors] = useState<any>({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  const handleChange = (e: any) => {
-    setCustomerModel({
-      ...customerModel,
-      // Trimming any whitespace
-      [e.target.name]: e.target.value.trim(),
-    });
-    console.log(customerModel);
-  };
 
   //#region "Methods"
 
@@ -48,24 +40,44 @@ export const CustomerUpsert = () => {
     navigate("/customer");
   };
 
+  const handleChange = (e: any) => {
+    setCustomerModel({
+      ...customerModel,
+      // Trimming any whitespace
+      [e.target.name]: e.target.value.trim(),
+    });
+  };
+
   // Insert/Edit Operation
   const handleSaveClick = () => {
-    setIsLoading(true);
-
-    //Insert / Update Operation
-    if (customerModel?.CustomerId === 0) {
-      //PUT (Create)
-      saveEventResultMessageHandler(Boolean(createCustomer(customerModel)));
-    } else {
-      // Post (Update)
-      saveEventResultMessageHandler(Boolean(updateCustomer(customerModel)));
-    }
-
-    setIsLoading(false);
+    setIsSubmit(true);
+    setFormErrors(customerValidation(customerModel));
   };
+
+  useEffect(() => {
+    if (Object.keys(formErrors).length === 0 && isSubmit) {
+      //Insert / Update Operation
+      if (customerModel?.CustomerId === 0) {
+        //PUT (Create)
+        saveEventResultMessageHandler(Boolean(createCustomer(customerModel)));
+      } else {
+        // Post (Update)
+        saveEventResultMessageHandler(Boolean(updateCustomer(customerModel)));
+      }
+    }
+    // After Run the validation, set IsSubmit to False
+    if (isSubmit) {
+      setIsSubmit(false);
+    }
+  }, [formErrors]);
+
+  useEffect(() => {
+    setFormErrors(customerValidation(customerModel));
+  }, [customerModel]);
 
   // Method to handle Insert/Update Operation Result Message
   const saveEventResultMessageHandler = (successResponse: boolean) => {
+    setIsSubmit(false);
     if (successResponse) {
       successToastTransaction("Success Transaction!");
       handleUpsertClick();
@@ -73,6 +85,7 @@ export const CustomerUpsert = () => {
   };
 
   //#endregion "Methods"
+ 
   return (
     <>
       <div className="card">
@@ -84,7 +97,9 @@ export const CustomerUpsert = () => {
         <div className="card-body">
           <div className="row">
             <div className="col-md-3">
-              <label className="form-label">Name</label>
+              <label className="form-label">
+                <strong>Name</strong>
+              </label>
               <input
                 type="text"
                 className="form-control"
@@ -93,9 +108,12 @@ export const CustomerUpsert = () => {
                 defaultValue={customerModel.Name}
                 onChange={handleChange}
               />
+              <p className="text-danger"> {formErrors.Name}</p>
             </div>
             <div className="col-md-3">
-              <label className="form-label">Middle Name</label>
+              <label className="form-label">
+                <strong>Middle Name</strong>
+              </label>
               <input
                 type="text"
                 className="form-control"
@@ -106,7 +124,9 @@ export const CustomerUpsert = () => {
               />
             </div>
             <div className="col-md-3">
-              <label className="form-label">First Name</label>
+              <label className="form-label">
+                <strong>Last Name</strong>
+              </label>
               <input
                 type="text"
                 className="form-control"
@@ -115,9 +135,12 @@ export const CustomerUpsert = () => {
                 defaultValue={customerModel?.FirstName}
                 onChange={handleChange}
               />
+              <p className="text-danger"> {formErrors.FirstName}</p>
             </div>
             <div className="col-md-3">
-              <label className="form-label">Last Name</label>
+              <label className="form-label">
+                <strong>Second Surname</strong>
+              </label>
               <input
                 type="text"
                 className="form-control"
@@ -131,7 +154,9 @@ export const CustomerUpsert = () => {
 
           <div className="row mt-2">
             <div className="col-md-6">
-              <label className="form-label">Adress 1</label>
+              <label className="form-label">
+                <strong>Adress 1</strong>
+              </label>
               <input
                 type="text"
                 className="form-control"
@@ -142,7 +167,9 @@ export const CustomerUpsert = () => {
               />
             </div>
             <div className="col-md-6">
-              <label className="form-label">Adress 2</label>
+              <label className="form-label">
+                <strong>Adress 2</strong>
+              </label>
               <input
                 type="text"
                 className="form-control"
@@ -156,7 +183,9 @@ export const CustomerUpsert = () => {
           {isLoading && <Loading />}
           <div className="row mt-2 mb-2">
             <div className="col-md-4">
-              <label className="form-label">City</label>
+              <label className="form-label">
+                <strong>City</strong>
+              </label>
               <input
                 type="text"
                 className="form-control"
@@ -165,9 +194,13 @@ export const CustomerUpsert = () => {
                 defaultValue={customerModel?.City}
                 onChange={handleChange}
               />
+              <p className="text-danger"> {formErrors.City}</p>
             </div>
             <div className="col-md-4">
-              <label className="form-label">State</label>
+              <label className="form-label">
+                {" "}
+                <strong>State</strong>
+              </label>
               <input
                 type="text"
                 className="form-control"
@@ -176,17 +209,21 @@ export const CustomerUpsert = () => {
                 defaultValue={customerModel?.State}
                 onChange={handleChange}
               />
+              <p className="text-danger"> {formErrors.State}</p>
             </div>
             <div className="col-md-4">
-              <label className="form-label">Zip Code</label>
+              <label className="form-label">
+                <strong>Zip Code</strong>
+              </label>
               <input
-                type="text"
+                type="number"
                 className="form-control"
                 name="ZipCode"
                 placeholder="Zip Code"
                 defaultValue={customerModel?.ZipCode}
                 onChange={handleChange}
               />
+              <p className="text-danger"> {formErrors.ZipCode}</p>
             </div>
           </div>
 
