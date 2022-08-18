@@ -14,17 +14,14 @@ import { InvoiceUpsertDetailsAddToList } from "./InvoiceUpsertDetailsAddToList";
 import { InvoiceUpsertDetails } from "./InvoiceUpsertDetails";
 // Import Toast components (react-toastify) -> Note: Was implemented a custom solution
 import "react-toastify/dist/ReactToastify.css";
-import {
-  successToastTransaction,
-  errorToastTransaction,
-} from "../../helper/toastMessages";
+import {errorToastTransaction} from "../../helper/toastMessages";
 import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
 
 //#endregion
 
 export const InvoiceUpsert = () => {
   // Import Data Context Properties
-  const { invoiceMasterModel } = useDataContext();
+  const { invoiceMasterModel, setSuccessToast } = useDataContext();
 
   // For Select
   const { customers } = useCustomersGet();
@@ -39,10 +36,16 @@ export const InvoiceUpsert = () => {
     );
   };
 
- // Evaluate Post Response to Trigger the Toast
+  // Evaluate Post Response to Trigger the Toast
   const handlePostOperationResult = (successResult: boolean) => {
-    if (successResult) successToastTransaction("Transaction was executed successfully!");
-    else errorToastTransaction("Transaction Failed! Please, contact your IT Team.");
+    if (successResult) {
+      setSuccessToast(true);
+    } else {
+      errorToastTransaction(
+        "Transaction Failed! Please, contact your IT Team."
+      );
+      setSuccessToast(false);
+    }
   };
 
   //#endregion "Methods"
@@ -50,11 +53,10 @@ export const InvoiceUpsert = () => {
   return (
     <>
       <div className="card">
-        <h3 className="card-header">{isCreateInvoiceEvent() ? "Create" : "Edit"} Invoice</h3>
+        <h3 className="card-header">
+          {isCreateInvoiceEvent() ? "Create" : "Edit"} Invoice
+        </h3>
         <div className="card-body">
-          {/* <h5 className="card-title">
-            {isCreateInvoiceEvent() ? "Create" : "Edit"} Invoice
-          </h5> */}
           <hr />
           <div className="mt-2">
             <div className="card">
