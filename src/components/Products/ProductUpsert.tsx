@@ -1,6 +1,6 @@
 //#region Imports
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation, Route } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 // Date Formatter
 import { currentDate } from "../../helper/dateFormatter";
 // Product Interface
@@ -31,13 +31,19 @@ export const ProductUpsert = () => {
   const [product, setProduct] = React.useState<Product>(initialFormData);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
+  const [triggerSuccessToast, setTriggerSuccessToast] = useState(false);
 
   //#region "Methods"
 
   // Navigate (Route)
   const navigate = useNavigate();
   const handleUpsertClick = () => {
-    navigate("/product");
+    console.log("triggerSuccessToast",triggerSuccessToast)
+    navigate("/product", {
+      state: triggerSuccessToast,
+    });
+
+    // navigate("/product");
   };
 
   // We will update our post model with their respective setter
@@ -58,6 +64,7 @@ export const ProductUpsert = () => {
 
   // Method to handle Insert/Update Operation Result Message
   const saveEventResultMessageHandler = (successResponse: boolean) => {
+    setTriggerSuccessToast(successResponse);
     if (successResponse) {
       successToastTransaction("Success Transaction!");
       handleUpsertClick();
@@ -65,7 +72,7 @@ export const ProductUpsert = () => {
       errorToastTransaction("Failed Transaction!");
     }
   };
- 
+
   /* Used for Form validation: Will be triggered if a formErrors object is modified.
   If (Object.keys(formErrors).length === 0) is true (No errors found) AND isSubmit is true, will trigger the create/edit event */
   useEffect(() => {
@@ -86,7 +93,7 @@ export const ProductUpsert = () => {
   useEffect(() => {
     setFormErrors(productValidation(product));
   }, [product]);
- 
+
   //#endregion "Methods"
 
   return (

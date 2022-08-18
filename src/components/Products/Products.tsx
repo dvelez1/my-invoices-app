@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { Product } from "../../interfaces/product";
 
@@ -8,6 +8,12 @@ import { Loading } from "../../components/shared/Loading";
 import { useProductsGet } from "../../hooks/Products/useProductsGet";
 import { ProductsRows } from "../Products/ProductsRows";
 
+import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
+import {
+  successToastTransaction,
+  errorToastTransaction,
+} from "../../helper/toastMessages";
+
 export const Products = () => {
   // Get Product and execute Loading Spinner
   const { products, isLoading } = useProductsGet();
@@ -15,6 +21,10 @@ export const Products = () => {
   // Properties for paging and Search
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
+
+  const location = useLocation();
+  console.log(location)
+
 
   //#region "Methods"
   // Page Redirection
