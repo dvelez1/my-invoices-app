@@ -60,7 +60,7 @@ export const ProductUpsert = () => {
   const saveEventResultMessageHandler = (successResponse: boolean) => {
     if (successResponse) {
       successToastTransaction("Success Transaction!");
-      // handleUpsertClick();
+      handleUpsertClick();
     } else {
       errorToastTransaction("Failed Transaction!");
     }
