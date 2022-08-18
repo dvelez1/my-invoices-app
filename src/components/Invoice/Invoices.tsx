@@ -1,5 +1,5 @@
 //#region "Imports"
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // Used for routing
 import { useNavigate } from "react-router-dom";
 
@@ -16,6 +16,8 @@ import { useDataContext } from "../../context/DataContext";
 import { Loading } from "../../components/shared/Loading";
 import { InvoicesDetailsRows } from "./InvoicesDetailsRows";
 import { InvoiceBody } from "./InvoiceBody";
+import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
+import { successToastTransaction } from "../../helper/toastMessages";
 
 export const Invoices = () => {
   // Import Data Context Properties
@@ -23,7 +25,18 @@ export const Invoices = () => {
     setInvoiceMasterModel,
     setInvoiceDetailsArray,
     setInvoicePaymentsArray,
+    successToast,
+    setSuccessToast,
   } = useDataContext();
+
+  // Trigger Toast Message if the redirection was from upsert success Evenet.
+  useEffect(() => {
+    if (successToast) {
+      setSuccessToast(false);
+      successToastTransaction("Success Transaction!");
+    }
+  }, []);
+
   // Load Invoices (Custom Hook)
   const { isLoading, invoiceMaster, invoiceDetails, invoicePayments } =
     useInvoicesGet();
@@ -149,9 +162,7 @@ export const Invoices = () => {
             }) => (
               <div key={InvoiceId} className="mt-2">
                 <div className="card">
-                  <h5 className="card-header">
-                    Invoice: {InvoiceId}
-                  </h5>
+                  <h5 className="card-header">Invoice: {InvoiceId}</h5>
                   <div className="card-body">
                     <InvoiceBody
                       InvoiceId={InvoiceId}

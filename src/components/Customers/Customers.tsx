@@ -1,20 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCustomersGet } from "../../hooks/Customers/useCustomersGet";
 import { Customer } from "../../interfaces/customer";
 
 // Data Context
 import { useDataContext } from "../../context/DataContext";
+// Toast
+import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
+import { successToastTransaction } from "../../helper/toastMessages";
 
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";
 import { currentDate } from "../../helper/dateFormatter";
 
 export const Customers = () => {
-  const { setCustomerModel } = useDataContext();
+  const { setCustomerModel, successToast, setSuccessToast } = useDataContext();
   const { customers, isLoading } = useCustomersGet();
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
+
+    // Trigger Toast Message if the redirection was from upsert success Evenet.
+    useEffect(() => {
+      if (successToast) {
+        setSuccessToast(false)
+        successToastTransaction("Success Transaction!");
+      }
+    }, []);
 
   //#region "Methods"
 
@@ -162,6 +173,7 @@ export const Customers = () => {
             </button>
           </div>
           {isLoading && <Loading />}
+          <ToastContainerImplementation />
         </div>
       </div>
     </>

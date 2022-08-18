@@ -11,6 +11,10 @@ interface Props {
 }
 
 type nameDataType = {
+  // Trigger SuccessToast on the redirection from upsert to Get Invoice After Success Insert / Update Operation
+  successToast: boolean;
+  setSuccessToast: React.Dispatch<React.SetStateAction<boolean>>;
+
   // Customer
   customerModel: Customer;
   setCustomerModel: React.Dispatch<React.SetStateAction<Customer>>;
@@ -19,9 +23,7 @@ type nameDataType = {
   setProductModel: React.Dispatch<React.SetStateAction<Product | undefined>>;
   // Invoices Master
   invoiceMasterModel: InvoiceMaster;
-  setInvoiceMasterModel: React.Dispatch<
-    React.SetStateAction<InvoiceMaster>
-  >;
+  setInvoiceMasterModel: React.Dispatch<React.SetStateAction<InvoiceMaster>>;
   // Invoice Details
   invoiceDetailsArray: InvoiceDetails[];
   setInvoiceDetailsArray: React.Dispatch<
@@ -35,10 +37,9 @@ type nameDataType = {
 
   //#region Example for Login
   login: () => Promise<void>;
-  logout:() => Promise<void>;
+  logout: () => Promise<void>;
   authed: boolean;
   //#endregion
-
 };
 
 const Context = React.createContext<nameDataType>({} as nameDataType);
@@ -52,9 +53,9 @@ const DataProvider: React.FC<Props> = ({ children }) => {
     undefined
   );
   // Invoice Master
-  const [invoiceMasterModel, setInvoiceMasterModel] = useState<
-    InvoiceMaster
-  >(null!);
+  const [invoiceMasterModel, setInvoiceMasterModel] = useState<InvoiceMaster>(
+    null!
+  );
   // Invoice Details
   const [invoiceDetailsArray, setInvoiceDetailsArray] = useState<
     InvoiceDetails[]
@@ -63,6 +64,9 @@ const DataProvider: React.FC<Props> = ({ children }) => {
   const [invoicePaymentsArray, setInvoicePaymentsArray] = useState<
     InvoicePayments[]
   >(null!);
+
+  // Trigger SuccessToast on the redirection from upsert to Get Invoice on Upsert
+  const [successToast, setSuccessToast] = useState(false);
 
   //#region Examples for Loging
 
@@ -119,7 +123,10 @@ const DataProvider: React.FC<Props> = ({ children }) => {
         // Invoice Payments
         invoicePaymentsArray,
         setInvoicePaymentsArray,
-        
+        // Set 
+        successToast,
+        setSuccessToast,
+
         //#region Examples for Loging
         login,
         logout,

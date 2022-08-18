@@ -25,7 +25,7 @@ import { Loading } from "../../components/shared/Loading";
 
 export const CustomerUpsert = () => {
   // Data Context
-  const { setCustomerModel, customerModel } = useDataContext();
+  const { setCustomerModel, customerModel, setSuccessToast } = useDataContext();
   
   const [formErrors, setFormErrors] = useState<any>({});
   const [isSubmit, setIsSubmit] = useState(false);
@@ -79,7 +79,7 @@ export const CustomerUpsert = () => {
   const saveEventResultMessageHandler = (successResponse: boolean) => {
     setIsSubmit(false);
     if (successResponse) {
-      successToastTransaction("Success Transaction!");
+      setSuccessToast(true)
       handleUpsertClick();
     } else errorToastTransaction("Failed Transaction!");
   };

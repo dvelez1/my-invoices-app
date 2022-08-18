@@ -1,30 +1,33 @@
-import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDataContext } from "../../context/DataContext";
 import { Product } from "../../interfaces/product";
-
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";
+
 import { useProductsGet } from "../../hooks/Products/useProductsGet";
 import { ProductsRows } from "../Products/ProductsRows";
-
+// Toast
 import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
-import {
-  successToastTransaction,
-  errorToastTransaction,
-} from "../../helper/toastMessages";
+import { successToastTransaction } from "../../helper/toastMessages";
 
 export const Products = () => {
+  const { successToast, setSuccessToast } = useDataContext();
+
+  // Trigger Toast Message if the redirection was from upsert success Evenet.
+  useEffect(() => {
+    if (successToast) {
+      setSuccessToast(false)
+      successToastTransaction("Success Transaction!");
+    }
+  }, []);
+
   // Get Product and execute Loading Spinner
   const { products, isLoading } = useProductsGet();
 
   // Properties for paging and Search
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
-
-  const location = useLocation();
-  console.log(location)
-
 
   //#region "Methods"
   // Page Redirection
@@ -88,9 +91,6 @@ export const Products = () => {
       <div className="card">
         <h3 className="card-header">Products</h3>
         <div className="card-body">
-          {/* <h5 className="card-title ">List of Products</h5>
-          <hr /> */}
-
           <input
             className="mb-2 form-control"
             type="text"
@@ -137,6 +137,7 @@ export const Products = () => {
             </button>
           </div>
           {isLoading && <Loading />}
+          <ToastContainerImplementation />
         </div>
       </div>
     </>

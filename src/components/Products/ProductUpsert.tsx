@@ -1,18 +1,15 @@
 //#region Imports
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-// Date Formatter
-import { currentDate } from "../../helper/dateFormatter";
+// Import DataContect
+import { useDataContext } from "../../context/DataContext";
 // Product Interface
 import { Product } from "../../interfaces/product";
 // Methods for Insert
 import { createProduct, updateProduct } from "../../api/Products/upsertEvents";
 // Import Toast components (react-toastify) -> Note: Was implemented a custom solution
 import "react-toastify/dist/ReactToastify.css";
-import {
-  successToastTransaction,
-  errorToastTransaction,
-} from "../../helper/toastMessages";
+import { errorToastTransaction } from "../../helper/toastMessages";
 // Form Vaidation
 import { productValidation } from "../../hooks/Products/productValidation";
 
@@ -28,22 +25,17 @@ export const ProductUpsert = () => {
   const location = useLocation();
   var initialFormData = Object.freeze(location.state as Product);
 
+  const { setSuccessToast } = useDataContext();
   const [product, setProduct] = React.useState<Product>(initialFormData);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
-  const [triggerSuccessToast, setTriggerSuccessToast] = useState(false);
 
   //#region "Methods"
 
   // Navigate (Route)
   const navigate = useNavigate();
   const handleUpsertClick = () => {
-    console.log("triggerSuccessToast",triggerSuccessToast)
-    navigate("/product", {
-      state: triggerSuccessToast,
-    });
-
-    // navigate("/product");
+    navigate("/product");
   };
 
   // We will update our post model with their respective setter
@@ -64,12 +56,12 @@ export const ProductUpsert = () => {
 
   // Method to handle Insert/Update Operation Result Message
   const saveEventResultMessageHandler = (successResponse: boolean) => {
-    setTriggerSuccessToast(successResponse);
     if (successResponse) {
-      successToastTransaction("Success Transaction!");
+      setSuccessToast(true);
       handleUpsertClick();
     } else {
       errorToastTransaction("Failed Transaction!");
+      setSuccessToast(false);
     }
   };
 
