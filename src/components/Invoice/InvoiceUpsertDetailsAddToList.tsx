@@ -17,19 +17,19 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
   const [productPrice, setProductPrice] = useState<number | null>(null);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
-  const initialFormData:InvoiceDetails = {
-    InvoiceDetailsId:0,
+  const initialFormData: InvoiceDetails = {
+    InvoiceDetailsId: 0,
     InvoiceId: 0,
     ProductId: 0,
     ProductName: "",
     CatalogPrice: 0,
     Price: 0,
     RemovedTransaction: false,
-    RemovedDate:  null,
-    Quantity: 0
-
-  }
-  const [invoiceDetails,setInvoiceDetails] = useState<InvoiceDetails>(initialFormData)
+    RemovedDate: null,
+    Quantity: 0,
+  };
+  const [invoiceDetails, setInvoiceDetails] =
+    useState<InvoiceDetails>(initialFormData);
 
   // When a Item is added to invoiceDetailsArray, proceed to update invoiceMasterModel
   useEffect(() => {
@@ -53,7 +53,6 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
     event.preventDefault();
     setIsSubmit(true);
 
-
     const formData: InvoiceDetails = {
       InvoiceDetailsId: invoiceDetailsArray.length + 1,
       InvoiceId: invoiceMasterModel?.InvoiceId ?? 0,
@@ -67,26 +66,13 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
       RemovedDate: null,
       Quantity: Number(event.target.Quantity.value),
     };
-    console.log("invoiceDetails",invoiceDetails)
-    console.log("formData",formData)
+
+    setInvoiceDetails(formData);
+
 
     setInvoiceDetailsArray((current) => [...current, formData]);
     clearForm(event);
 
-    // Change below
-    // setFormErrors(addInvoiceDetailsValidation(formData));
-
-    // if (Object.keys(formErrors).length === 0 && isSubmit) {
-    //   console.log("entre");
-    //   //Update Context
-    //   setInvoiceDetailsArray((current) => [...current, formData]);
-    //   clearForm(event);
-    // }
-
-    // // After Run the validation, set IsSubmit to False
-    // if (isSubmit) {
-    //   setIsSubmit(false);
-    // }
   };
 
   const clearForm = (event: any) => {
@@ -96,37 +82,36 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
     setProductPrice(0);
   };
 
-  const handleChange = (e: any) => {
+  // useEffect(() => {
+  //   if (isSubmit) {
+  //     setInvoiceDetailsArray((current) => [...current, invoiceDetails]);
+  //   }
+  //   setIsSubmit(false)
+  // }, [invoiceDetails]);
 
+  const handleChange = (e: any) => {
+    // setInvoiceDetails({
+    //   ...invoiceDetails,
+    //   // Trimming any whitespace
+    //   [e.target.name]: e.target.value.trim(),
+    // });
+
+    // // Update Catalog Price
+    // if (e.target.name == "ProductId") {
+    //   setProductPrice(
+    //     props.products.filter((obj: any) => {
+    //       return obj.ProductId == Number(e.target.value);
+    //     })[0].Price
+    //   );
+    // }
 
     // setInvoiceDetails({
     //   ...invoiceDetails,
     //   // Trimming any whitespace
-    //   // [e.target.name]: e.target.value.trim(),
-    //   InvoiceDetailsId:invoiceDetailsArray.length + 1,
-    //   InvoiceId: invoiceMasterModel?.InvoiceId ?? 0,
-    //   ProductId: Number(e.target.ProductId.value),
-    //   ProductName: props.products.filter((obj: Product) => {
-    //     return obj.ProductId == Number(e.target.ProductId.value);
-    //   })[0].Name,
-    //   CatalogPrice: Number(e.target.CatalogPrice.value),
-    //   Price: Number(e.target.Price.value),
-    //   RemovedTransaction: false,
-    //   RemovedDate: null,
-    //   Quantity: Number(e.target.Quantity.value),
+    //   CatalogPrice: productPrice ?? 0,
     // });
 
-    // Update Catalog Price
-    if (e.target.name == "ProductId"){
-      setProductPrice(
-        props.products.filter((obj: any) => {
-          return obj.ProductId == Number(e.target.value);
-        })[0].Price
-      )
-    }
-  
-    // Set Product Price
-
+    // // Set Product Price
   };
 
   return (
