@@ -53,6 +53,7 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
     event.preventDefault();
     setIsSubmit(true);
 
+
     const formData: InvoiceDetails = {
       InvoiceDetailsId: invoiceDetailsArray.length + 1,
       InvoiceId: invoiceMasterModel?.InvoiceId ?? 0,
@@ -66,6 +67,8 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
       RemovedDate: null,
       Quantity: Number(event.target.Quantity.value),
     };
+    console.log("invoiceDetails",invoiceDetails)
+    console.log("formData",formData)
 
     setInvoiceDetailsArray((current) => [...current, formData]);
     clearForm(event);
@@ -94,11 +97,24 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
   };
 
   const handleChange = (e: any) => {
-    setInvoiceDetails({
-      ...invoiceDetails,
-      // Trimming any whitespace
-      [e.target.name]: e.target.value.trim(),
-    });
+
+
+    // setInvoiceDetails({
+    //   ...invoiceDetails,
+    //   // Trimming any whitespace
+    //   // [e.target.name]: e.target.value.trim(),
+    //   InvoiceDetailsId:invoiceDetailsArray.length + 1,
+    //   InvoiceId: invoiceMasterModel?.InvoiceId ?? 0,
+    //   ProductId: Number(e.target.ProductId.value),
+    //   ProductName: props.products.filter((obj: Product) => {
+    //     return obj.ProductId == Number(e.target.ProductId.value);
+    //   })[0].Name,
+    //   CatalogPrice: Number(e.target.CatalogPrice.value),
+    //   Price: Number(e.target.Price.value),
+    //   RemovedTransaction: false,
+    //   RemovedDate: null,
+    //   Quantity: Number(e.target.Quantity.value),
+    // });
 
     // Update Catalog Price
     if (e.target.name == "ProductId"){
@@ -154,7 +170,8 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
                     className="form-control"
                     name="CatalogPrice"
                     placeholder="Catalog Price"
-                    value={productPrice?.toFixed(2) ?? 0}
+                    value={productPrice ?? 0}
+                    // value={productPrice?.toFixed(2) ?? 0}
                     onChange={handleChange}
                     readOnly
                   />
