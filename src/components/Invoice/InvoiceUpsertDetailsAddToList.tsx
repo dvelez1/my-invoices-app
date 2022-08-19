@@ -15,7 +15,7 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
   } = useDataContext();
 
   const [productPrice, setProductPrice] = useState<number | null>(null);
-  const [formErrors, setFormErrors] = useState({});
+  const [formErrors, setFormErrors] = useState<any>({});
   const [isSubmit, setIsSubmit] = useState(false);
   const initialFormData: InvoiceDetails = {
     InvoiceDetailsId: 0,
@@ -39,6 +39,21 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
     });
   }, [invoiceDetailsArray]);
 
+  // Used to add records in the InvoiceDetails (submit Event)
+  useEffect(() => {
+    if (Object.keys(formErrors).length === 0 && isSubmit) {
+      setInvoiceDetailsArray((current) => [...current, invoiceDetails]);
+      clearForm();
+    }
+
+    setIsSubmit(false);
+  }, [formErrors]);
+
+  // Run Validation always invoiceDetails change
+  useEffect(() => {
+    setFormErrors(addInvoiceDetailsValidation(invoiceDetails));
+  }, [invoiceDetails]);
+
   // Get Total Amount From List
   const returnTotalAmountFromList = () => {
     let totalPrice: number = 0;
@@ -52,14 +67,16 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
   const handleAddInvoiceDetailsSubmit = (event: any) => {
     event.preventDefault();
     setIsSubmit(true);
-
     const formData: InvoiceDetails = {
       InvoiceDetailsId: invoiceDetailsArray.length + 1,
       InvoiceId: invoiceMasterModel?.InvoiceId ?? 0,
       ProductId: Number(event.target.ProductId.value),
-      ProductName: props.products.filter((obj: Product) => {
-        return obj.ProductId == Number(event.target.ProductId.value);
-      })[0].Name,
+      ProductName:
+        event.target.ProductId.value === ""
+          ? ""
+          : props.products.filter((obj: Product) => {
+              return obj.ProductId == Number(event.target.ProductId.value);
+            })[0].Name,
       CatalogPrice: Number(event.target.CatalogPrice.value),
       Price: Number(event.target.Price.value),
       RemovedTransaction: false,
@@ -68,50 +85,29 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
     };
 
     setInvoiceDetails(formData);
-
-
-    setInvoiceDetailsArray((current) => [...current, formData]);
-    clearForm(event);
-
+    setFormErrors(addInvoiceDetailsValidation(formData));
   };
-
-  const clearForm = (event: any) => {
-    event.preventDefault();
-    // Reset Form
-    event.target.reset();
-    setProductPrice(0);
-  };
-
-  // useEffect(() => {
-  //   if (isSubmit) {
-  //     setInvoiceDetailsArray((current) => [...current, invoiceDetails]);
-  //   }
-  //   setIsSubmit(false)
-  // }, [invoiceDetails]);
 
   const handleChange = (e: any) => {
-    // setInvoiceDetails({
-    //   ...invoiceDetails,
-    //   // Trimming any whitespace
-    //   [e.target.name]: e.target.value.trim(),
-    // });
+    setInvoiceDetails({
+      ...invoiceDetails,
+      // Trimming any whitespace
+      [e.target.name]: e.target.value.trim(),
+    });
 
-    // // Update Catalog Price
-    // if (e.target.name == "ProductId") {
-    //   setProductPrice(
-    //     props.products.filter((obj: any) => {
-    //       return obj.ProductId == Number(e.target.value);
-    //     })[0].Price
-    //   );
-    // }
+    // Update Catalog Price
+    if (e.target.name == "ProductId") {
+      setProductPrice(
+        props.products.filter((obj: any) => {
+          return obj.ProductId == Number(e.target.value);
+        })[0].Price
+      );
+    }
+  };
 
-    // setInvoiceDetails({
-    //   ...invoiceDetails,
-    //   // Trimming any whitespace
-    //   CatalogPrice: productPrice ?? 0,
-    // });
-
-    // // Set Product Price
+  const clearForm = () => {
+    setInvoiceDetails(initialFormData);
+    setProductPrice(0);
   };
 
   return (
@@ -132,7 +128,7 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
                   className="form-control"
                   aria-label="Floating label select example"
                   onChange={handleChange}
-                  defaultValue={""}
+                  value={invoiceDetails?.ProductId || ""}
                 >
                   <option value="" disabled>
                     {" "}
@@ -144,7 +140,9 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
                     </option>
                   ))}
                 </select>
+                <p className="text-danger"> {formErrors.ProductId}</p>
               </div>
+              
               <div className="col-md-2">
                 <label className="form-label fw-bold">Catalog Price</label>
                 <div className="input-group mb-3">
@@ -155,8 +153,7 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
                     className="form-control"
                     name="CatalogPrice"
                     placeholder="Catalog Price"
-                    value={productPrice ?? 0}
-                    // value={productPrice?.toFixed(2) ?? 0}
+                    value={productPrice?.toFixed(2) ?? 0}
                     onChange={handleChange}
                     readOnly
                   />
@@ -174,7 +171,9 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
                     name="Price"
                     placeholder="Price"
                     onChange={handleChange}
+                    value={invoiceDetails?.Price}
                   />
+                  <p className="text-danger"> {formErrors.Price}</p>
                 </div>
               </div>
 
@@ -185,16 +184,25 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
                   className="form-control"
                   name="Quantity"
                   placeholder="Quantity"
+                  value={invoiceDetails?.Quantity}
                   onChange={handleChange}
                 />
+                <p className="text-danger"> {formErrors.Quantity}</p>
               </div>
+
               <div className="col-md-3">
                 <div className="d-grid gap-2 d-md-flex mt-2">
                   <label className="form-label fw-bold"></label>
                   <button className="btn btn-primary btn-md mt-4" type="submit">
                     Add
                   </button>
-                  <button className="btn btn-primary btn-md mt-4">Clear</button>
+                  <button
+                    type="button"
+                    className="btn btn-primary btn-md mt-4"
+                    onClick={clearForm}
+                  >
+                    Clear
+                  </button>
                 </div>
               </div>
             </div>

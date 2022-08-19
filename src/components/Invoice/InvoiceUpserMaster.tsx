@@ -1,18 +1,16 @@
 import {
-  dateFormatter,
   setDateValue,
   currentDate,
 } from "../../helper/dateFormatter";
 
 import { useDataContext } from "../../context/DataContext";
-import { useEffect } from "react";
 
 export const InvoiceUpserMaster = (props: any) => {
+  
   const { invoiceMasterModel, setInvoiceMasterModel } = useDataContext();
   const handleChange = (e: any) => {
     setInvoiceMasterModel({
       ...invoiceMasterModel,
-
       // Trimming any whitespace
       [e.target.name]: e.target.value.trim(),
     });
