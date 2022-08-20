@@ -1,13 +1,12 @@
-import {
-  setDateValue,
-  currentDate,
-} from "../../helper/dateFormatter";
-
+import { setDateValue, currentDate } from "../../helper/dateFormatter";
 import { useDataContext } from "../../context/DataContext";
+import { invoiceMasterValidation } from "../../hooks/Invoice/invoiceMasterValidation";
+import { useEffect, useState } from "react";
 
 export const InvoiceUpserMaster = (props: any) => {
-  
   const { invoiceMasterModel, setInvoiceMasterModel } = useDataContext();
+  const [formErrors, setFormErrors] = useState<any>({});
+
   const handleChange = (e: any) => {
     setInvoiceMasterModel({
       ...invoiceMasterModel,
@@ -28,6 +27,11 @@ export const InvoiceUpserMaster = (props: any) => {
       (invoiceMasterModel?.PayedAmount ?? 0)
     );
   };
+
+  // Trigger Validation on Change
+  useEffect(() => {
+    setFormErrors(invoiceMasterValidation(invoiceMasterModel));
+  }, [invoiceMasterModel]);
 
   return (
     <>
@@ -64,6 +68,7 @@ export const InvoiceUpserMaster = (props: any) => {
                     : setDateValue(invoiceMasterModel?.StartDate)
                 }
               />
+              <p className="text-danger"> {formErrors.StartDate}</p>
             </div>
             <div className="col-md-3">
               <label className="form-label fw-bold">Invoice Closed On:</label>
@@ -98,6 +103,7 @@ export const InvoiceUpserMaster = (props: any) => {
                   </option>
                 ))}
               </select>
+              <p className="text-danger"> {formErrors.CustomerId}</p>
             </div>
 
             <div className="col-md-3">
@@ -128,6 +134,9 @@ export const InvoiceUpserMaster = (props: any) => {
                   onChange={handleChange}
                   defaultValue={invoiceMasterModel?.PayedAmount}
                 />
+              </div>
+              <div style={{ position: "relative", bottom: "16px" }}>
+                <p className="text-danger"> {formErrors.PayedAmount}</p>
               </div>
             </div>
 

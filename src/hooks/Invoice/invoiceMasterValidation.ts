@@ -1,6 +1,6 @@
 import { InvoiceMaster } from "../../interfaces/InvoiceMaster";
 
-export const addInvoiceDetailsValidation = (values: InvoiceMaster): {} => {
+export const invoiceMasterValidation = (values: InvoiceMaster): {} => {
     const errors: any = {};
     if (!values.StartDate) {
       errors.StartDate = "Invoice Date is Required!";
