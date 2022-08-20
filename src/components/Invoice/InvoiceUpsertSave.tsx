@@ -8,7 +8,7 @@ import InvoiceDataService from "../../api/Invoice/upsertEvents";
 import { InvoicePayments } from "../../interfaces/InvoicePayments";
 
 import { invoiceMasterValidation } from "../../hooks/Invoice/invoiceMasterValidation";
-import { addInvoiceDetailsValidation } from "../../hooks/Invoice/addInvoiceDetailsValidation";
+import { invoiceDetailsValidationSuccess } from "../../hooks/Invoice/InvoiceDetailsArrayValidation";
 
 //#endregion Imports
 
@@ -33,6 +33,9 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
   };
 
   const [formErrors, setFormErrors] = useState<any>({});
+  const [formErrorsInvoiceDetails, setFormErrorsInvoiceDetails] = useState<any>(
+    {}
+  );
 
   const invPaymentInitialInitialization = {
     InvoiceId: invoiceMasterModel.InvoiceId,
@@ -49,9 +52,12 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
 
   const [submitted, setSubmitted] = useState(false);
 
-   // When Model be updated, Run The Validation
+  // When Model be updated, Run The Validation
   useEffect(() => {
     setFormErrors(invoiceMasterValidation(invoiceMasterModel));
+    invoiceDetailsValidationSuccess(invoiceDetailsArray);
+
+    // Validate invoiceDetailsArray
   }, [invoicePayment]);
 
   // Trigger Submit After Validation (Only if submitted equal to true)
@@ -59,8 +65,12 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
     if (submitted) {
       if (Object.keys(formErrors).length === 0 && submitted) {
         setSubmitted(false);
-        if (isCreateEvent()) handleCreateEvent();
-        else handleEditEvent();
+        console.log("result",invoiceDetailsValidationSuccess(invoiceDetailsArray))
+        if (invoiceDetailsValidationSuccess(invoiceDetailsArray)) {
+          console.log("entre")
+          if (isCreateEvent()) handleCreateEvent();
+          else handleEditEvent();
+        }
       }
     }
 
