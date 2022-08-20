@@ -142,7 +142,7 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
                 </select>
                 <p className="text-danger"> {formErrors.ProductId}</p>
               </div>
-              
+
               <div className="col-md-2">
                 <label className="form-label fw-bold">Catalog Price</label>
                 <div className="input-group mb-3">
@@ -173,7 +173,9 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
                     onChange={handleChange}
                     value={invoiceDetails?.Price}
                   />
-                  <p className="text-danger"> {formErrors.Price}</p>
+                </div>
+                <div style={{ position: "relative", bottom: "16px" }}>
+                  <p className="text-danger">{formErrors.Price}</p>
                 </div>
               </div>
 

@@ -11,7 +11,6 @@ export const ProductUpsertBody = (props: any) => {
             className="form-control"
             name="Name"
             placeholder="Name"
-            // defaultValue={props.product?.Name}
             value={props.product.Name}
             onChange={props.handleChange}
           />
@@ -27,7 +26,6 @@ export const ProductUpsertBody = (props: any) => {
             name="Price"
             placeholder="Price"
             step=".01"
-            // defaultValue={props.product?.Price}
             value={props.product.Price}
             onChange={props.handleChange}
           />

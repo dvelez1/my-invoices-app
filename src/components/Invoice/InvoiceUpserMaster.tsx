@@ -16,10 +16,6 @@ export const InvoiceUpserMaster = (props: any) => {
     });
   };
 
-  const handleCustomerChange = (e: any) => {
-    console.log(e.target.value);
-  };
-
   const isCreateInvoiceEvent = (): boolean => {
     return (
       invoiceMasterModel === undefined || invoiceMasterModel?.InvoiceId === 0

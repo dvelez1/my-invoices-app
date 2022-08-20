@@ -108,6 +108,7 @@ export const InvoiceUpsertDetails = (props: any) => {
                       handleProductChange(e, InvoiceDetailsId);
                     }}
                     value={ProductId || ""}
+                    name="ProductId"
                   >
                     <option value="" disabled>
                       {" "}
@@ -130,8 +131,7 @@ export const InvoiceUpsertDetails = (props: any) => {
                     <input
                       type="number"
                       className="form-control"
-                      id="masterPrice"
-                      name="masterPrice"
+                      name="CatalogPrice"
                       placeholder="Catalog Price"
                       value={CatalogPrice.toFixed(2)}
                       onChange={(e) => {
@@ -147,8 +147,7 @@ export const InvoiceUpsertDetails = (props: any) => {
                     <input
                       type="number"
                       className="form-control"
-                      id="price"
-                      name="price"
+                      name="Price"
                       placeholder="Price"
                       defaultValue={Price.toFixed(2)}
                       onChange={(e) => {
@@ -162,8 +161,7 @@ export const InvoiceUpsertDetails = (props: any) => {
                   <input
                     type="number"
                     className="form-control"
-                    id="quantity"
-                    name="quantity"
+                    name="Quantity"
                     placeholder="Quantity"
                     defaultValue={Quantity}
                     onChange={(e) => {
@@ -178,8 +176,7 @@ export const InvoiceUpsertDetails = (props: any) => {
                     <input
                       type="number"
                       className="form-control"
-                      id="total"
-                      name="total"
+                      name="Total"
                       placeholder="Total"
                       value={calculateTotal(Price, Quantity).toFixed(2)}
                       readOnly

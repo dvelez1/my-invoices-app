@@ -37,9 +37,11 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
     TransactionDate: currentDate(),
     Payment: 0,
   } as InvoicePayments;
+
   const [invoicePayment, setInvoicePayment] = useState<InvoicePayments>(
     invPaymentInitialInitialization
   );
+  
   const [submitted, setSubmitted] = useState(false);
 
   // Usse Effect created to trigger when invoicePayment and submitted is true
