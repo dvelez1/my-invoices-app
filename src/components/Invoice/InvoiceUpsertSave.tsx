@@ -1,11 +1,14 @@
 //#region Imports
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDataContext } from "../../context/DataContext";
 import { currentDate } from "../../helper/dateFormatter";
 
 import InvoiceDataService from "../../api/Invoice/upsertEvents";
 import { InvoicePayments } from "../../interfaces/InvoicePayments";
+
+import { invoiceMasterValidation } from "../../hooks/Invoice/invoiceMasterValidation";
+import { addInvoiceDetailsValidation } from "../../hooks/Invoice/addInvoiceDetailsValidation";
 
 //#endregion Imports
 
@@ -29,6 +32,8 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
     navigate("/invoice");
   };
 
+  const [formErrors, setFormErrors] = useState<any>({});
+
   const invPaymentInitialInitialization = {
     InvoiceId: invoiceMasterModel.InvoiceId,
     InvoicePaiymentsId: 0,
@@ -41,18 +46,29 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
   const [invoicePayment, setInvoicePayment] = useState<InvoicePayments>(
     invPaymentInitialInitialization
   );
-  
+
   const [submitted, setSubmitted] = useState(false);
 
-  // Usse Effect created to trigger when invoicePayment and submitted is true
-  // This useEffect will trigger in the Save Click Event
+   // When Model be updated, Run The Validation
+  useEffect(() => {
+    setFormErrors(invoiceMasterValidation(invoiceMasterModel));
+  }, [invoicePayment]);
+
+  // Trigger Submit After Validation (Only if submitted equal to true)
   useEffect(() => {
     if (submitted) {
-      setSubmitted(false);
-      if (isCreateEvent()) handleCreateEvent();
-      else handleEditEvent();
+      if (Object.keys(formErrors).length === 0 && submitted) {
+        setSubmitted(false);
+        if (isCreateEvent()) handleCreateEvent();
+        else handleEditEvent();
+      }
     }
-  }, [invoicePayment]);
+
+    // After Run the validation, set IsSubmit to False
+    if (submitted) {
+      setSubmitted(false);
+    }
+  }, [formErrors]);
 
   const isCreateEvent = (): boolean => {
     return (
@@ -69,8 +85,16 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
     // Also, if EndDate provided, the transaction will be closed.
     setInvoiceMasterModel({
       ...invoiceMasterModel,
-      EndDate: invoiceMasterModel.EndDate ?? invoiceMasterModel?.TotalAmount<= invoiceMasterModel?.PayedAmount ? currentDate() :null,
-      TransactionActive: invoiceMasterModel.EndDate ? false : invoiceMasterModel?.TotalAmount<= invoiceMasterModel?.PayedAmount ? false :true,
+      EndDate:
+        invoiceMasterModel.EndDate ??
+        invoiceMasterModel?.TotalAmount <= invoiceMasterModel?.PayedAmount
+          ? currentDate()
+          : null,
+      TransactionActive: invoiceMasterModel.EndDate
+        ? false
+        : invoiceMasterModel?.TotalAmount <= invoiceMasterModel?.PayedAmount
+        ? false
+        : true,
     });
 
     setInvoicePayment({
