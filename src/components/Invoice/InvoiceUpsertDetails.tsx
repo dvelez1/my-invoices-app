@@ -4,6 +4,7 @@ import { useDataContext } from "../../context/DataContext";
 export const InvoiceUpsertDetails = (props: any) => {
   const { invoiceDetailsArray, setInvoiceDetailsArray } = useDataContext();
   const [product, setProduct] = useState("");
+
   const isCreateOperation = (InvoiceId: number): boolean => {
     if (InvoiceId && InvoiceId > 0) return true;
     else return false;
