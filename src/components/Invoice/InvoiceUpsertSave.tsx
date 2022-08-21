@@ -34,7 +34,7 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
 
   const [formErrors, setFormErrors] = useState<any>({});
   const [formErrorsInvoiceDetails, setFormErrorsInvoiceDetails] = useState<any>(
-    {}
+    []
   );
 
   const invPaymentInitialInitialization = {
@@ -54,8 +54,10 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
 
   // When Model be updated, Run The Validation
   useEffect(() => {
+    setFormErrorsInvoiceDetails(
+      invoiceDetailsValidationSuccess(invoiceDetailsArray)
+    );
     setFormErrors(invoiceMasterValidation(invoiceMasterModel));
-    invoiceDetailsValidationSuccess(invoiceDetailsArray);
 
     // Validate invoiceDetailsArray
   }, [invoicePayment]);
@@ -63,15 +65,18 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
   // Trigger Submit After Validation (Only if submitted equal to true)
   useEffect(() => {
     if (submitted) {
-      if (Object.keys(formErrors).length === 0 && submitted) {
+      if (
+        Object.keys(formErrors).length === 0 &&
+        formErrorsInvoiceDetails.length === 0 &&
+        submitted
+      ) {
         setSubmitted(false);
-        console.log("result",invoiceDetailsValidationSuccess(invoiceDetailsArray))
-        if (invoiceDetailsValidationSuccess(invoiceDetailsArray)) {
-          console.log("entre")
-          if (isCreateEvent()) handleCreateEvent();
-          else handleEditEvent();
-        }
+
+        console.log("Create event triggered", formErrorsInvoiceDetails);
+        if (isCreateEvent()) handleCreateEvent();
+        else handleEditEvent();
       }
+      else alert("Validation Failed")
     }
 
     // After Run the validation, set IsSubmit to False
@@ -80,6 +85,7 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
     }
   }, [formErrors]);
 
+  // Return true on Create New Invoice
   const isCreateEvent = (): boolean => {
     return (
       invoiceMasterModel === undefined || invoiceMasterModel?.InvoiceId === 0
