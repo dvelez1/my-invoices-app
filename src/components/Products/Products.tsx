@@ -106,7 +106,7 @@ export const Products = () => {
           >
             Create New Product
           </button>
-          <table className="table mt-2">
+          <table className="table table-sm mt-2">
             <thead className="">
               <tr>
                 <th>Id</th>

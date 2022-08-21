@@ -1,6 +1,3 @@
-import React from "react";
-import { createSearchParams, useNavigate } from "react-router-dom";
-import { Product } from "../../interfaces/product";
 
 export const ProductsRows = ({
   ProductId,
@@ -10,9 +7,9 @@ export const ProductsRows = ({
 }: any) => {
   return (
     <tr>
-      <td>{ProductId}</td>
-      <td>{Name}</td>
-      <td>{Price.toFixed(2)}</td>
+      <td><div className="mt-2">{ProductId}</div></td>
+      <td><div className="mt-2">{Name}</div></td>
+      <td><div className="mt-2">{Price.toFixed(2)}</div></td>
       <td>
         <span className="me-md-2 ">
           <i
