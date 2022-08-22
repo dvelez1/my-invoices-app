@@ -79,6 +79,7 @@ export const InvoiceUpserMaster = (props: any) => {
                 onChange={handleChange}
                 defaultValue={setDateValue(invoiceMasterModel?.EndDate)}
               />
+              <p className="text-danger"> {formErrors.EndDate}</p>
             </div>
           </div>
 
@@ -169,6 +170,7 @@ export const InvoiceUpserMaster = (props: any) => {
                   onChange={handleChange}
                   defaultValue={invoiceMasterModel?.Note}
                 />
+                <p className="text-danger"> {formErrors.Note}</p>
               </label>
             </div>
           </div>

@@ -7,7 +7,7 @@ export const invoiceVoidValidation = (values: InvoiceMaster): {} => {
   }
 
   if (!values.EndDate) {
-    errors.EndDate = "Invoice End Date is Required!";
+    errors.EndDate = "Invoice Closed Date is Required!";
   }
 
   if (!values.CustomerId) {
@@ -15,7 +15,7 @@ export const invoiceVoidValidation = (values: InvoiceMaster): {} => {
   }
 
   if (!values.Note || values.Note.length <=3) {
-    errors.Note = "Note is Required! Please, provide more than 3 characteres.";
+    errors.Note = "Comments is Required! Please, provide more than 3 characteres.";
   }
 
 
