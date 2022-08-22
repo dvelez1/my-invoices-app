@@ -14,7 +14,7 @@ export const invoiceVoidValidation = (values: InvoiceMaster): {} => {
     errors.CustomerId = "Customer Name is Required!";
   }
 
-  if (!values.Note || values.Note.length >=3) {
+  if (!values.Note || values.Note.length <=3) {
     errors.Note = "Note is Required! Please, provide more than 3 characteres.";
   }
 

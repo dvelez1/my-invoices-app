@@ -12,12 +12,9 @@ import { invoiceDetailsValidationSuccess } from "../../hooks/Invoice/InvoiceDeta
 import { invoiceVoidValidation } from "../../hooks/Invoice/invoiceVoidValidation";
 import { infoToastTransaction } from "../../helper/toastMessages";
 
-
 //#endregion Imports
 
-export const InvoiceUpsertSave = ({
-  handlePostOperationResult,
-}: any) => {
+export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
   // DataContext
   const {
     invoiceMasterModel,
@@ -72,13 +69,20 @@ export const InvoiceUpsertSave = ({
     if (submitted) {
       if (
         Object.keys(formErrors).length === 0 &&
-        formErrorsInvoiceDetails.length === 0 &&
-        submitted
+        formErrorsInvoiceDetails.length === 0 
       ) {
-        setSubmitted(false);
-
         if (isCreateEvent()) handleCreateEvent();
         else handleEditEvent();
+      } else {
+        infoToastTransaction(
+          "Please, provide all requested information!" +
+            " Maybe some data did not meet the requirements or is missing."
+        );
+      }
+    } else if (submittedVoidOperation) {
+      // Void Operation
+      if (Object.keys(formErrors).length === 0) {
+        handleVoidOperation();
       } else {
         infoToastTransaction(
           "Please, provide all requested information!" +
@@ -90,6 +94,10 @@ export const InvoiceUpsertSave = ({
     // After Run the validation, set IsSubmit to False
     if (submitted) {
       setSubmitted(false);
+    }
+
+    if (submittedVoidOperation) {
+      setSubmittedVoidOperation(false);
     }
   }, [formErrors]);
 
@@ -133,12 +141,10 @@ export const InvoiceUpsertSave = ({
   // Void Invoice Click Event
   const handleVoidClick = () => {
     setSubmittedVoidOperation(true);
-
-
+    setFormErrors(invoiceVoidValidation(invoiceMasterModel));
   };
 
-
-  const handleVoidOperation = () =>{
+  const handleVoidOperation = () => {
     InvoiceDataService.deleteInvoiceMaster(
       invoiceMasterModel,
       invoiceMasterModel.InvoiceId
@@ -150,7 +156,7 @@ export const InvoiceUpsertSave = ({
         handlePostOperationResult(false);
       }
     });
-  }
+  };
 
   // Create Invoice
   const handleCreateEvent = () => {
