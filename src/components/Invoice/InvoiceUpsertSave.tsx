@@ -9,13 +9,14 @@ import { InvoicePayments } from "../../interfaces/InvoicePayments";
 
 import { invoiceMasterValidation } from "../../hooks/Invoice/invoiceMasterValidation";
 import { invoiceDetailsValidationSuccess } from "../../hooks/Invoice/InvoiceDetailsArrayValidation";
+import { invoiceVoidValidation } from "../../hooks/Invoice/invoiceVoidValidation";
 import { infoToastTransaction } from "../../helper/toastMessages";
+
 
 //#endregion Imports
 
 export const InvoiceUpsertSave = ({
   handlePostOperationResult,
-  setErrorsList,
 }: any) => {
   // DataContext
   const {
@@ -54,6 +55,7 @@ export const InvoiceUpsertSave = ({
   );
 
   const [submitted, setSubmitted] = useState(false);
+  const [submittedVoidOperation, setSubmittedVoidOperation] = useState(false);
 
   // When Model be updated, Run The Validation
   useEffect(() => {
@@ -90,11 +92,6 @@ export const InvoiceUpsertSave = ({
       setSubmitted(false);
     }
   }, [formErrors]);
-
-  // Send List to Errors for Invoice Details to InvoiceUpsert Component (Father)
-  useEffect(() => {
-    setErrorsList([]);
-  }, [formErrorsInvoiceDetails]);
 
   // Return true on Create New Invoice
   const isCreateEvent = (): boolean => {
@@ -135,6 +132,13 @@ export const InvoiceUpsertSave = ({
 
   // Void Invoice Click Event
   const handleVoidClick = () => {
+    setSubmittedVoidOperation(true);
+
+
+  };
+
+
+  const handleVoidOperation = () =>{
     InvoiceDataService.deleteInvoiceMaster(
       invoiceMasterModel,
       invoiceMasterModel.InvoiceId
@@ -146,7 +150,7 @@ export const InvoiceUpsertSave = ({
         handlePostOperationResult(false);
       }
     });
-  };
+  }
 
   // Create Invoice
   const handleCreateEvent = () => {

@@ -25,7 +25,7 @@ import { useState } from "react";
 export const InvoiceUpsert = () => {
   // Import Data Context Properties
   const { invoiceMasterModel, setSuccessToast } = useDataContext();
-  const [errorsList, setErrorsList] = useState(["a","b","c"]);
+
   // For Select
   const { customers } = useCustomersGet();
   const { products } = useProductsGet();
@@ -63,7 +63,6 @@ export const InvoiceUpsert = () => {
           <div className="mt-2">
             <div className="card">
               <div className="card-body">
-                <ErrorsBasedOnValidation errorsList={errorsList} />
                 <InvoiceUpserMaster customers={customers} />
 
                 <div className="card mt-2" style={{ width: "100" }}>
@@ -80,7 +79,6 @@ export const InvoiceUpsert = () => {
                 </div>
                 <InvoiceUpsertSave
                   handlePostOperationResult={handlePostOperationResult}
-                  setErrorsList={setErrorsList}
                 />
               </div>
             </div>
