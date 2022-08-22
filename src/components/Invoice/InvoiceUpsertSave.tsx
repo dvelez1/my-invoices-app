@@ -9,15 +9,18 @@ import { InvoicePayments } from "../../interfaces/InvoicePayments";
 
 import { invoiceMasterValidation } from "../../hooks/Invoice/invoiceMasterValidation";
 import { invoiceDetailsValidationSuccess } from "../../hooks/Invoice/InvoiceDetailsArrayValidation";
+import { infoToastTransaction } from "../../helper/toastMessages";
 
 //#endregion Imports
 
-export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
+export const InvoiceUpsertSave = ({
+  handlePostOperationResult,
+  setErrorsList,
+}: any) => {
   // DataContext
   const {
     invoiceMasterModel,
     invoiceDetailsArray,
-    invoicePaymentsArray,
     setInvoiceMasterModel,
     setInvoiceDetailsArray,
     setInvoicePaymentsArray,
@@ -72,11 +75,14 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
       ) {
         setSubmitted(false);
 
-        console.log("Create event triggered", formErrorsInvoiceDetails);
         if (isCreateEvent()) handleCreateEvent();
         else handleEditEvent();
+      } else {
+        infoToastTransaction(
+          "Please, provide all requested information!" +
+            " Maybe some data did not meet the requirements or is missing."
+        );
       }
-      else alert("Validation Failed")
     }
 
     // After Run the validation, set IsSubmit to False
@@ -84,6 +90,11 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
       setSubmitted(false);
     }
   }, [formErrors]);
+
+  // Send List to Errors for Invoice Details to InvoiceUpsert Component (Father)
+  useEffect(() => {
+    setErrorsList([]);
+  }, [formErrorsInvoiceDetails]);
 
   // Return true on Create New Invoice
   const isCreateEvent = (): boolean => {

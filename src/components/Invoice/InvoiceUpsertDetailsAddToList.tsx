@@ -117,7 +117,7 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
         id="add-invoice-details"
         name="add-invoice-details"
       >
-        <div className="card mt-2" style={{ width: "100" }}>
+        <div className="card mt-2 mb-3 shadow" style={{ width: "100" }}>
           <div className="card-body">
             <label className="fw-bold mb-2">Add detail to the Invoice:</label>
             <div className="row">

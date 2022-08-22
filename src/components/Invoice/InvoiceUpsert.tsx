@@ -12,17 +12,20 @@ import { InvoiceUpsertSave } from "./InvoiceUpsertSave";
 import { InvoiceUpserMaster } from "./InvoiceUpserMaster";
 import { InvoiceUpsertDetailsAddToList } from "./InvoiceUpsertDetailsAddToList";
 import { InvoiceUpsertDetails } from "./InvoiceUpsertDetails";
+
 // Import Toast components (react-toastify) -> Note: Was implemented a custom solution
 import "react-toastify/dist/ReactToastify.css";
-import {errorToastTransaction} from "../../helper/toastMessages";
+import { errorToastTransaction } from "../../helper/toastMessages";
 import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
+import { ErrorsBasedOnValidation } from "../shared/ErrorsBasedOnValidation";
+import { useState } from "react";
 
 //#endregion
 
 export const InvoiceUpsert = () => {
   // Import Data Context Properties
   const { invoiceMasterModel, setSuccessToast } = useDataContext();
-
+  const [errorsList, setErrorsList] = useState(["a","b","c"]);
   // For Select
   const { customers } = useCustomersGet();
   const { products } = useProductsGet();
@@ -57,10 +60,10 @@ export const InvoiceUpsert = () => {
           {isCreateInvoiceEvent() ? "Create" : "Edit"} Invoice
         </h3>
         <div className="card-body">
-          <hr />
           <div className="mt-2">
             <div className="card">
               <div className="card-body">
+                <ErrorsBasedOnValidation errorsList={errorsList} />
                 <InvoiceUpserMaster customers={customers} />
 
                 <div className="card mt-2" style={{ width: "100" }}>
@@ -77,6 +80,7 @@ export const InvoiceUpsert = () => {
                 </div>
                 <InvoiceUpsertSave
                   handlePostOperationResult={handlePostOperationResult}
+                  setErrorsList={setErrorsList}
                 />
               </div>
             </div>

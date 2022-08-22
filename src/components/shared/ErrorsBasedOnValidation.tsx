@@ -1,10 +1,11 @@
 import React from "react";
 
-export const InvoiceDetailsErrorValidation = (errors: []) => {
+export const ErrorsBasedOnValidation = ({errorsList}: any) => {
+  console.log("errorsList",errorsList)
   return (
     <>
       <ul>
-        {errors.map((data) => (
+        {errorsList.map((data:any) => (
           <li key={data}>
             <p className="text-danger">{data}</p>
           </li>

@@ -114,7 +114,7 @@ export const Customers = () => {
           >
             Create New Customer
           </button>
-          <table className="table mt-2">
+          <table className="table table-sm mt-2">
             <thead className="thead-dark">
               <tr>
                 <th>Id</th>
@@ -154,7 +154,7 @@ export const Customers = () => {
                         <i
                           title="Edit Customer"
                           className="bi bi-pencil-square cursor"
-                          style={{ fontSize: 25 }}
+                          style={{ fontSize: 20 }}
                           onClick={() => handleEditClick(CustomerId)}
                         ></i>
                       </span>

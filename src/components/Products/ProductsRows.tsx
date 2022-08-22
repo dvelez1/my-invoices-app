@@ -7,15 +7,15 @@ export const ProductsRows = ({
 }: any) => {
   return (
     <tr>
-      <td><div className="mt-2">{ProductId}</div></td>
-      <td><div className="mt-2">{Name}</div></td>
-      <td><div className="mt-2">{Price.toFixed(2)}</div></td>
+      <td>{ProductId}</td>
+      <td>{Name}</td>
+      <td>{Price.toFixed(2)}</td>
       <td>
-        <span className="me-md-2 ">
+        <span className="me-md-2">
           <i
             title="Edit Product"
             className="bi bi-pencil-square cursor"
-            style={{ fontSize: 25 }}
+            style={{ fontSize: 20 }}
             onClick={() => handleUpsertClick(ProductId)}
           ></i>
         </span>
