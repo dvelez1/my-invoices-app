@@ -18,10 +18,13 @@ export const invoiceVoidValidation = (values: InvoiceMaster): {} => {
     errors.Note = "Comments is Required! Please, provide more than 3 characteres.";
   }
 
-
   if (!values.PayedAmount) {
-    if (values.PayedAmount < 0)
+    if (!Number.isFinite(values.PayedAmount))
       errors.PayedAmount = "Payed Amount is Required!";
+  } else {
+    if (values.PayedAmount < 0)
+      errors.PayedAmount = "Payed Amount need to be 0 or greater!!";
   }
+
   return errors;
 };

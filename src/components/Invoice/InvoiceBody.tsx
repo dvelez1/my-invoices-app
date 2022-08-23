@@ -47,14 +47,14 @@ export const InvoiceBody = (props: any) => {
             <label>
               {" "}
               <span className="fw-bold">Total Amount:</span> {"$ "}
-              {props.TotalAmount.toFixed(2) ?? 0}
+              {props.TotalAmount ? props.TotalAmount.toFixed(2) : 0}
             </label>
           </div>
           <div className="col-md-3">
             <label>
               {" "}
               <span className="fw-bold">Payed Amount:</span> {"$ "}
-              {props.PayedAmount.toFixed(2) ?? 0}
+              { props.PayedAmount ? props.PayedAmount.toFixed(2) : 0}
             </label>
           </div>
           <div className="col-md-3">

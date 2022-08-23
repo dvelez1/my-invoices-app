@@ -22,6 +22,7 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
     setInvoiceMasterModel,
     setInvoiceDetailsArray,
     setInvoicePaymentsArray,
+    setIsInvoiceVoidSubmitted
   } = useDataContext();
 
   // Redirect to another Page / Reset the Contect during redirection
@@ -66,6 +67,7 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
 
   // Trigger Submit After Validation (Only if submitted equal to true)
   useEffect(() => {
+    console.log("formErrors",formErrors)
     if (submitted) {
       if (
         Object.keys(formErrors).length === 0 &&
@@ -98,6 +100,8 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
 
     if (submittedVoidOperation) {
       setSubmittedVoidOperation(false);
+      // Update a DataContext
+      setIsInvoiceVoidSubmitted(false);
     }
   }, [formErrors]);
 
@@ -141,6 +145,8 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
   // Void Invoice Click Event
   const handleVoidClick = () => {
     setSubmittedVoidOperation(true);
+    // Update a DataContext
+    setIsInvoiceVoidSubmitted(true);
     setFormErrors(invoiceVoidValidation(invoiceMasterModel));
   };
 

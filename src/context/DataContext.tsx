@@ -35,6 +35,9 @@ type nameDataType = {
     React.SetStateAction<InvoicePayments[]>
   >;
 
+  isInvoiceVoidSubmitted: boolean;
+  setIsInvoiceVoidSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
+
   //#region Example for Login
   login: () => Promise<void>;
   logout: () => Promise<void>;
@@ -67,6 +70,9 @@ const DataProvider: React.FC<Props> = ({ children }) => {
 
   // Trigger SuccessToast on the redirection from upsert to Get Invoice on Upsert
   const [successToast, setSuccessToast] = useState(false);
+
+  // Indicate Invoice Operation was submitted
+  const [isInvoiceVoidSubmitted, setIsInvoiceVoidSubmitted] = useState(false);
 
   //#region Examples for Loging
 
@@ -126,6 +132,9 @@ const DataProvider: React.FC<Props> = ({ children }) => {
         // Set 
         successToast,
         setSuccessToast,
+
+        isInvoiceVoidSubmitted,
+        setIsInvoiceVoidSubmitted,
 
         //#region Examples for Loging
         login,

@@ -4,7 +4,8 @@ import { invoiceMasterValidation } from "../../hooks/Invoice/invoiceMasterValida
 import { useEffect, useState } from "react";
 
 export const InvoiceUpserMaster = (props: any) => {
-  const { invoiceMasterModel, setInvoiceMasterModel } = useDataContext();
+  const { invoiceMasterModel, setInvoiceMasterModel, isInvoiceVoidSubmitted } =
+    useDataContext();
   const [formErrors, setFormErrors] = useState<any>({});
 
   const handleChange = (e: any) => {
@@ -30,7 +31,10 @@ export const InvoiceUpserMaster = (props: any) => {
 
   // Trigger Validation on Change
   useEffect(() => {
-    setFormErrors(invoiceMasterValidation(invoiceMasterModel));
+    if (isInvoiceVoidSubmitted) {
+    } else {
+      setFormErrors(invoiceMasterValidation(invoiceMasterModel));
+    }
   }, [invoiceMasterModel]);
 
   return (
