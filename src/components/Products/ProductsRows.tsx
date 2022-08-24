@@ -9,7 +9,7 @@ export const ProductsRows = ({
     <tr>
       <td>{ProductId}</td>
       <td>{Name}</td>
-      <td>{Price.toFixed(2)}</td>
+      <td>{Price?.toFixed(2)}</td>
       <td>
         <span className="me-md-2">
           <i

@@ -1,5 +1,4 @@
 //#region Imports
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -7,9 +6,9 @@ import {
   updateCustomer,
 } from "../../api/Customers/upsertEvents";
 
+import { currentDate } from "../../helper/dateFormatter";
 // Data Context
 import { useDataContext } from "../../context/DataContext";
-
 // Import Toast components (react-toastify) -> Note: Was implemented a custom solution
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -20,6 +19,7 @@ import { ToastContainerImplementation } from "../shared/ToastContainerImplementa
 import { customerValidation } from "../../hooks/Customers/customerValidation";
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";
+import { Customer } from "../../interfaces/customer";
 
 //#endregion Imports
 
@@ -30,6 +30,26 @@ export const CustomerUpsert = () => {
   const [formErrors, setFormErrors] = useState<any>({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const customerDefaultInitialization: Customer = {
+    CustomerId: 0,
+    Name: "",
+    MiddleName: "",
+    FirstName: "",
+    LastName: "",
+    Address1: "",
+    Address2: "",
+    City: "",
+    State: "",
+    ZipCode: "",
+    StartDate: currentDate(),
+    EndDate: null,
+  };
+
+  useEffect(() => {
+    if (!customerModel) {
+      setCustomerModel(customerDefaultInitialization);
+    }
+  }, []);
 
   //#region "Methods"
 
@@ -54,6 +74,7 @@ export const CustomerUpsert = () => {
     setFormErrors(customerValidation(customerModel));
   };
 
+  // Execute Post/Put After
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       //Insert / Update Operation
@@ -77,8 +98,9 @@ export const CustomerUpsert = () => {
     }
   }, [formErrors]);
 
+  // Run Validation
   useEffect(() => {
-    setFormErrors(customerValidation(customerModel));
+    if (customerModel) setFormErrors(customerValidation(customerModel));
   }, [customerModel]);
 
   // Method to handle Insert/Update Operation Result Message
@@ -111,10 +133,10 @@ export const CustomerUpsert = () => {
                 className="form-control"
                 name="Name"
                 placeholder="Name"
-                defaultValue={customerModel.Name}
+                defaultValue={customerModel?.Name}
                 onChange={handleChange}
               />
-              <p className="text-danger"> {formErrors.Name}</p>
+              <p className="text-danger"> {formErrors?.Name}</p>
             </div>
             <div className="col-md-3">
               <label className="form-label">
@@ -141,7 +163,7 @@ export const CustomerUpsert = () => {
                 defaultValue={customerModel?.FirstName}
                 onChange={handleChange}
               />
-              <p className="text-danger"> {formErrors.FirstName}</p>
+              <p className="text-danger"> {formErrors?.FirstName}</p>
             </div>
             <div className="col-md-3">
               <label className="form-label">
@@ -200,7 +222,7 @@ export const CustomerUpsert = () => {
                 defaultValue={customerModel?.City}
                 onChange={handleChange}
               />
-              <p className="text-danger"> {formErrors.City}</p>
+              <p className="text-danger"> {formErrors?.City}</p>
             </div>
             <div className="col-md-4">
               <label className="form-label">
@@ -215,7 +237,7 @@ export const CustomerUpsert = () => {
                 defaultValue={customerModel?.State}
                 onChange={handleChange}
               />
-              <p className="text-danger"> {formErrors.State}</p>
+              <p className="text-danger"> {formErrors?.State}</p>
             </div>
             <div className="col-md-4">
               <label className="form-label">
@@ -229,7 +251,7 @@ export const CustomerUpsert = () => {
                 defaultValue={customerModel?.ZipCode}
                 onChange={handleChange}
               />
-              <p className="text-danger"> {formErrors.ZipCode}</p>
+              <p className="text-danger"> {formErrors?.ZipCode}</p>
             </div>
           </div>
 

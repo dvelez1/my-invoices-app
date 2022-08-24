@@ -19,13 +19,13 @@ export const Customers = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
 
-    // Trigger Toast Message if the redirection was from upsert success Evenet.
-    useEffect(() => {
-      if (successToast) {
-        setSuccessToast(false)
-        successToastTransaction("Success Transaction!");
-      }
-    }, []);
+  // Trigger Toast Message if the redirection was from upsert success Evenet.
+  useEffect(() => {
+    if (successToast) {
+      setSuccessToast(false);
+      successToastTransaction("Success Transaction!");
+    }
+  }, []);
 
   //#region "Methods"
 
@@ -34,23 +34,24 @@ export const Customers = () => {
     navigate("/customerUpsert");
   };
 
+  const customerDefaultInitialization = {
+    CustomerId: 0,
+    Name: "",
+    MiddleName: "",
+    FirstName: "",
+    LastName: "",
+    Address1: "",
+    Address2: "",
+    City: "",
+    State: "",
+    ZipCode: "",
+    StartDate: currentDate(),
+    EndDate: null,
+  };
   // Redirect to Main Page
   function handleEditClick(customerId: Number) {
     if (customerId == 0) {
-      setCustomerModel({
-        CustomerId:0,
-        Name:"",
-        MiddleName:"",
-        FirstName:"",
-        LastName:"",
-        Address1:"",
-        Address2:"",
-        City:"",
-        State:"",
-        ZipCode:"",
-        StartDate:currentDate(),
-        EndDate:null
-      })
+      setCustomerModel(customerDefaultInitialization);
     } else {
       setCustomerModel(
         customers.filter((obj) => {
@@ -110,7 +111,7 @@ export const Customers = () => {
           <button
             type="button"
             className="btn btn-primary mt-2"
-            onClick={()=>handleEditClick(0)}
+            onClick={() => handleEditClick(0)}
           >
             Create New Customer
           </button>

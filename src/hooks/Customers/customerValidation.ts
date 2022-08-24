@@ -1,3 +1,4 @@
+import { Console } from "console";
 import { Customer } from "../../interfaces/customer";
 
 export const customerValidation = (values: Customer): {} => {

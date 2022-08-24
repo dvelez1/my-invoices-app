@@ -10,6 +10,7 @@ import { ProductsRows } from "../Products/ProductsRows";
 // Toast
 import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
 import { successToastTransaction } from "../../helper/toastMessages";
+import { productValidation } from "../../hooks/Products/productValidation";
 
 export const Products = () => {
   const { successToast, setSuccessToast } = useDataContext();
@@ -17,7 +18,7 @@ export const Products = () => {
   // Trigger Toast Message if the redirection was from upsert success Evenet.
   useEffect(() => {
     if (successToast) {
-      setSuccessToast(false)
+      setSuccessToast(false);
       successToastTransaction("Success Transaction!");
     }
   }, []);
@@ -120,6 +121,7 @@ export const Products = () => {
               {/* Row list implementation */}
               {filteredProduct().map(({ ProductId, Name, Price }) => (
                 <ProductsRows
+                  key={ProductId}
                   ProductId={ProductId}
                   Name={Name}
                   Price={Price}

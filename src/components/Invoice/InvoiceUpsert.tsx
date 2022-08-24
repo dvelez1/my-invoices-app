@@ -18,13 +18,37 @@ import "react-toastify/dist/ReactToastify.css";
 import { errorToastTransaction } from "../../helper/toastMessages";
 import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
 import { ErrorsBasedOnValidation } from "../shared/ErrorsBasedOnValidation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { InvoiceMaster } from "../../interfaces/InvoiceMaster";
 
 //#endregion
 
 export const InvoiceUpsert = () => {
+  const invoiceModelInitialization = {
+    InvoiceId: 0,
+    CustomerId: 0,
+    CustomerName: "",
+    FirstName: "",
+    LastName: "",
+    TransactionActive: true,
+    TotalAmount: 0,
+    PayedAmount: 0,
+    Note: "",
+    Void: false,
+    StartDate: new Date(),
+    EndDate: null,
+  };
+
   // Import Data Context Properties
-  const { invoiceMasterModel, setSuccessToast } = useDataContext();
+  const { setInvoiceMasterModel, invoiceMasterModel, setSuccessToast } =
+    useDataContext();
+
+  // If no data found, initialize with default value
+  useEffect(() => {
+    if (!invoiceMasterModel) {
+      setInvoiceMasterModel(invoiceModelInitialization);
+    }
+  }, []);
 
   // For Select
   const { customers } = useCustomersGet();

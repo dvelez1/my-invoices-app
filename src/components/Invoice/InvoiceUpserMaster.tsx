@@ -32,7 +32,7 @@ export const InvoiceUpserMaster = (props: any) => {
 
   // Trigger Validation when invoiceMasterModel change
   useEffect(() => {
-    if (isInvoiceVoidSubmitted) 
+    if (isInvoiceVoidSubmitted)
       setFormErrors(invoiceVoidValidation(invoiceMasterModel));
     else setFormErrors(invoiceMasterValidation(invoiceMasterModel));
   }, [invoiceMasterModel]);
@@ -120,7 +120,11 @@ export const InvoiceUpserMaster = (props: any) => {
                   name="TotalAmount"
                   placeholder="Total Amount"
                   onChange={handleChange}
-                  value={invoiceMasterModel?.TotalAmount.toFixed(2)}
+                  value={
+                    invoiceMasterModel?.TotalAmount
+                      ? invoiceMasterModel?.TotalAmount.toFixed(2)
+                      : 0
+                  }
                   readOnly
                 />
               </div>
@@ -153,7 +157,7 @@ export const InvoiceUpserMaster = (props: any) => {
                   className="form-control"
                   name="difference"
                   placeholder="Amount Difference"
-                  value={amountDifference().toFixed(2)}
+                  value={amountDifference() ? amountDifference().toFixed(2) : 0}
                   readOnly
                 />
               </div>
