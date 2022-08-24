@@ -19,10 +19,11 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
   const {
     invoiceMasterModel,
     invoiceDetailsArray,
+    isInvoiceVoidSubmitted,
     setInvoiceMasterModel,
     setInvoiceDetailsArray,
     setInvoicePaymentsArray,
-    setIsInvoiceVoidSubmitted
+    setIsInvoiceVoidSubmitted,
   } = useDataContext();
 
   // Redirect to another Page / Reset the Contect during redirection
@@ -40,7 +41,7 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
   );
 
   const invPaymentInitialInitialization = {
-    InvoiceId: invoiceMasterModel.InvoiceId,
+    InvoiceId: invoiceMasterModel?.InvoiceId,
     InvoicePaiymentsId: 0,
     RemovedTransaction: false,
     RemovedTransactionDate: null,
@@ -53,7 +54,6 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
   );
 
   const [submitted, setSubmitted] = useState(false);
-  const [submittedVoidOperation, setSubmittedVoidOperation] = useState(false);
 
   // When Model be updated, Run The Validation
   useEffect(() => {
@@ -67,11 +67,10 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
 
   // Trigger Submit After Validation (Only if submitted equal to true)
   useEffect(() => {
-    console.log("formErrors",formErrors)
     if (submitted) {
       if (
         Object.keys(formErrors).length === 0 &&
-        formErrorsInvoiceDetails.length === 0 
+        formErrorsInvoiceDetails.length === 0
       ) {
         if (isCreateEvent()) handleCreateEvent();
         else handleEditEvent();
@@ -81,7 +80,7 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
             " Maybe some data did not meet the requirements or is missing."
         );
       }
-    } else if (submittedVoidOperation) {
+    } else if (isInvoiceVoidSubmitted) {
       // Void Operation
       if (Object.keys(formErrors).length === 0) {
         handleVoidOperation();
@@ -98,8 +97,8 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
       setSubmitted(false);
     }
 
-    if (submittedVoidOperation) {
-      setSubmittedVoidOperation(false);
+    // After Run Validation and proceed with the operation, set the local and global varialble as false
+    if (isInvoiceVoidSubmitted) {
       // Update a DataContext
       setIsInvoiceVoidSubmitted(false);
     }
@@ -140,28 +139,6 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
     });
 
     // Note: We are submitting the transaction with use effect. The following condition need to be completed: Change of invoicePayment and submitted equal to true
-  };
-
-  // Void Invoice Click Event
-  const handleVoidClick = () => {
-    setSubmittedVoidOperation(true);
-    // Update a DataContext
-    setIsInvoiceVoidSubmitted(true);
-    setFormErrors(invoiceVoidValidation(invoiceMasterModel));
-  };
-
-  const handleVoidOperation = () => {
-    InvoiceDataService.deleteInvoiceMaster(
-      invoiceMasterModel,
-      invoiceMasterModel.InvoiceId
-    ).then((successTransaction) => {
-      if (successTransaction === true) {
-        handlePostOperationResult(true);
-        handleUpsertReturnClick();
-      } else {
-        handlePostOperationResult(false);
-      }
-    });
   };
 
   // Create Invoice
@@ -231,6 +208,45 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
         }
       }
     );
+  };
+
+  // Invoice Void Click Event
+  const handleVoidClick = () => {
+    // Update a DataContext (Global State)
+    setIsInvoiceVoidSubmitted(true);
+
+    // Automatic close the transaction when TotalAmount <= PayedAmount (Only the logic will be evaluated if invoiceMasterModel.EndDate is null )
+    // Also, if EndDate provided, the transaction will be closed.
+    setInvoiceMasterModel({
+      ...invoiceMasterModel,
+      EndDate:
+        invoiceMasterModel.EndDate ??
+        invoiceMasterModel?.TotalAmount <= invoiceMasterModel?.PayedAmount
+          ? currentDate()
+          : null,
+      TransactionActive: invoiceMasterModel.EndDate
+        ? false
+        : invoiceMasterModel?.TotalAmount <= invoiceMasterModel?.PayedAmount
+        ? false
+        : true,
+    });
+
+    setFormErrors(invoiceVoidValidation(invoiceMasterModel));
+  };
+
+  // Invoice Void Operation
+  const handleVoidOperation = () => {
+    InvoiceDataService.deleteInvoiceMaster(
+      invoiceMasterModel,
+      invoiceMasterModel.InvoiceId
+    ).then((successTransaction) => {
+      if (successTransaction === true) {
+        handlePostOperationResult(true);
+        handleUpsertReturnClick();
+      } else {
+        handlePostOperationResult(false);
+      }
+    });
   };
 
   return (

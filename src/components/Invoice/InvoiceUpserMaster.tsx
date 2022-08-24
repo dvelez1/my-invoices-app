@@ -1,6 +1,7 @@
 import { setDateValue, currentDate } from "../../helper/dateFormatter";
 import { useDataContext } from "../../context/DataContext";
 import { invoiceMasterValidation } from "../../hooks/Invoice/invoiceMasterValidation";
+import { invoiceVoidValidation } from "../../hooks/Invoice/invoiceVoidValidation";
 import { useEffect, useState } from "react";
 
 export const InvoiceUpserMaster = (props: any) => {
@@ -29,12 +30,11 @@ export const InvoiceUpserMaster = (props: any) => {
     );
   };
 
-  // Trigger Validation on Change
+  // Trigger Validation when invoiceMasterModel change
   useEffect(() => {
-    if (isInvoiceVoidSubmitted) {
-    } else {
-      setFormErrors(invoiceMasterValidation(invoiceMasterModel));
-    }
+    if (isInvoiceVoidSubmitted) 
+      setFormErrors(invoiceVoidValidation(invoiceMasterModel));
+    else setFormErrors(invoiceMasterValidation(invoiceMasterModel));
   }, [invoiceMasterModel]);
 
   return (

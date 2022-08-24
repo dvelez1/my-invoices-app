@@ -2,6 +2,9 @@ import { InvoiceMaster } from "../../interfaces/InvoiceMaster";
 
 export const invoiceMasterValidation = (values: InvoiceMaster): {} => {
   const errors: any = {};
+  // Not Run validation If model does not exist
+  if (!values) return errors;
+
   if (!values.StartDate) {
     errors.StartDate = "Invoice Date is Required!";
   }
