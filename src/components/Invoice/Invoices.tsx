@@ -1,5 +1,8 @@
 //#region "Imports"
 import React, { useEffect, useState } from "react";
+//Import components from react-bootstrap
+import Button from "react-bootstrap/Button";
+import Collapse from "react-bootstrap/Collapse";
 // Used for routing
 import { useNavigate } from "react-router-dom";
 
@@ -11,7 +14,6 @@ import { InvoiceMaster } from "../../interfaces/InvoiceMaster";
 
 // Data Context
 import { useDataContext } from "../../context/DataContext";
-
 
 // Components
 import { Loading } from "../../components/shared/Loading";
@@ -44,6 +46,7 @@ export const Invoices = () => {
 
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
+  const [open, setOpen] = useState(false);
 
   //#endregion
 
@@ -176,6 +179,7 @@ export const Invoices = () => {
                     />
                     <hr />
                     <label className="fw-bold mb-2">Invoice Details</label>
+
                     <table className="table table-sm">
                       <thead className="thead-dark">
                         <tr>
@@ -209,6 +213,8 @@ export const Invoices = () => {
                           )}
                       </tbody>
                     </table>
+
+                    
                   </div>
                 </div>
               </div>
