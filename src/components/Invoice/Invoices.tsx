@@ -17,7 +17,7 @@ import { useDataContext } from "../../context/DataContext";
 
 // Components
 import { Loading } from "../../components/shared/Loading";
-import { InvoicesDetailsRows } from "./InvoicesDetailsRows";
+import { InvoicesDetails } from "./InvoicesDetails";
 import { InvoiceBody } from "./InvoiceBody";
 import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
 import { successToastTransaction } from "../../helper/toastMessages";
@@ -179,42 +179,10 @@ export const Invoices = () => {
                     />
                     <hr />
                     <label className="fw-bold mb-2">Invoice Details</label>
-
-                    <table className="table table-sm">
-                      <thead className="thead-dark">
-                        <tr>
-                          <th>Product Name</th>
-                          <th>Catalog Price</th>
-                          <th>Transaction Price</th>
-                          <th>Quantity</th>
-                          <th>Total</th>
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        {invoiceDetails
-                          .filter((obj) => obj.InvoiceId === InvoiceId)
-                          .map(
-                            ({
-                              ProductName,
-                              CatalogPrice,
-                              Price,
-                              Quantity,
-                              InvoiceDetailsId,
-                            }) => (
-                              <InvoicesDetailsRows
-                                ProductName={ProductName}
-                                CatalogPrice={CatalogPrice}
-                                Price={Price}
-                                Quantity={Quantity}
-                                key={InvoiceDetailsId}
-                              />
-                            )
-                          )}
-                      </tbody>
-                    </table>
-
-                    
+                    <InvoicesDetails
+                      invoiceDetails={invoiceDetails}
+                      InvoiceId={InvoiceId}
+                    />
                   </div>
                 </div>
               </div>
