@@ -1,8 +1,5 @@
 //#region "Imports"
 import React, { useEffect, useState } from "react";
-//Import components from react-bootstrap
-import Button from "react-bootstrap/Button";
-import Collapse from "react-bootstrap/Collapse";
 // Used for routing
 import { useNavigate } from "react-router-dom";
 
@@ -178,7 +175,7 @@ export const Invoices = () => {
                       handleEditClick={handleEditClick}
                     />
                     <hr />
-                    <label className="fw-bold mb-2">Invoice Details</label>
+                    
                     <InvoicesDetails
                       invoiceDetails={invoiceDetails}
                       InvoiceId={InvoiceId}
