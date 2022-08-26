@@ -11,6 +11,7 @@ import { ProductsRows } from "../Products/ProductsRows";
 import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
 import { successToastTransaction } from "../../helper/toastMessages";
 import { productValidation } from "../../hooks/Products/productValidation";
+import { genericMessages } from "../../helper/genericMessages";
 
 export const Products = () => {
   const { successToast, setSuccessToast } = useDataContext();
@@ -19,7 +20,7 @@ export const Products = () => {
   useEffect(() => {
     if (successToast) {
       setSuccessToast(false);
-      successToastTransaction("Success Transaction!");
+      successToastTransaction(genericMessages.success);
     }
   }, []);
 

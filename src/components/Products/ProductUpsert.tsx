@@ -58,12 +58,15 @@ export const ProductUpsert = () => {
   };
 
   // Method to handle Insert/Update Operation Result Message
-  const saveEventResultMessageHandler = (successResponse: boolean) => {
+  const saveEventResultMessageHandler = (
+    successResponse: boolean,
+    genericMessage: string
+  ) => {
     if (successResponse) {
       setSuccessToast(true);
       handleUpsertClick();
     } else {
-      errorToastTransaction("Failed Transaction!");
+      errorToastTransaction(genericMessage);
       setSuccessToast(false);
     }
   };
@@ -74,9 +77,13 @@ export const ProductUpsert = () => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       //Insert / Update Operation
       if (product.ProductId === 0)
-        saveEventResultMessageHandler(Boolean(createProduct(product)));
+        createProduct(product).then((result) => {
+          saveEventResultMessageHandler(result[0], result[1]);
+        });
       else if (product.ProductId > 0)
-        saveEventResultMessageHandler(Boolean(updateProduct(product)));
+        updateProduct(product).then((result) => {
+          saveEventResultMessageHandler(result[0], result[1]);
+        });
     } else {
       if (isSubmit)
         infoToastTransaction(
