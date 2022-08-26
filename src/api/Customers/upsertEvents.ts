@@ -1,39 +1,33 @@
 import { axiosInterface } from "../../helper/axiosInterface";
+import { genericMessages } from "../../helper/genericMessages";
 import { Customer } from "../../interfaces/customer";
 
-var successResult: boolean = false;
-
-export const createCustomer = async (customer: Customer): Promise<boolean> => {
+export const createCustomer = async (
+  customer: Customer
+): Promise<[boolean, string]> => {
   try {
     const resp = await axiosInterface.put("customer/createCustomer", customer);
-    successResult = resp.status === 200;
+    return [
+      resp.status === 200,
+      resp.status === 200 ? genericMessages.success : genericMessages.error,
+    ];
   } catch (error) {
     console.error(error);
+    return [false, genericMessages.error];
   }
-
-  return successResult;
 };
 
-// export const updateCustomer = (customer: Customer) => {
-//   console.log(customer);
-//   axiosInterface
-//     .post("customer/updateCustomer", customer)
-//     .then((response) => {
-//       successResult = response.status === 200 ? true : false;
-//     })
-//     .catch((error) => console.log(error));
-
-//   return successResult;
-// };
-
-export const updateCustomer = async (customer: Customer): Promise<boolean> => {
+export const updateCustomer = async (
+  customer: Customer
+): Promise<[boolean, string]> => {
   try {
     const resp = await axiosInterface.post("customer/updateCustomer", customer);
-    successResult = resp.status === 200;
+    return [
+      resp.status === 200,
+      resp.status === 200 ? genericMessages.success : genericMessages.error,
+    ];
   } catch (error) {
     console.error(error);
+    return [false, genericMessages.error];
   }
-  return successResult;
 };
-
-// export const deleteCustomer = (customer: Customer) => {};

@@ -80,10 +80,15 @@ export const CustomerUpsert = () => {
       //Insert / Update Operation
       if (customerModel?.CustomerId === 0) {
         //PUT (Create)
-        saveEventResultMessageHandler(Boolean(createCustomer(customerModel)));
+        createCustomer(customerModel).then((result)=>{
+          saveEventResultMessageHandler(result[0], result[1]);
+        });
+        
       } else {
         // Post (Update)
-        saveEventResultMessageHandler(Boolean(updateCustomer(customerModel)));
+        updateCustomer(customerModel).then((result)=>{
+          saveEventResultMessageHandler(result[0], result[1]);
+        });
       }
     } else {
       if (isSubmit)
@@ -104,12 +109,15 @@ export const CustomerUpsert = () => {
   }, [customerModel]);
 
   // Method to handle Insert/Update Operation Result Message
-  const saveEventResultMessageHandler = (successResponse: boolean) => {
+  const saveEventResultMessageHandler = (
+    successResponse: boolean,
+    genericMessage: string
+  ) => {
     setIsSubmit(false);
     if (successResponse) {
       setSuccessToast(true);
       handleUpsertClick();
-    } else errorToastTransaction("Failed Transaction!");
+    } else errorToastTransaction(genericMessage);
   };
 
   //#endregion "Methods"

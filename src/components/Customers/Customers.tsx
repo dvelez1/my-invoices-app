@@ -1,3 +1,4 @@
+//#region Imports
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCustomersGet } from "../../hooks/Customers/useCustomersGet";
@@ -12,6 +13,9 @@ import { successToastTransaction } from "../../helper/toastMessages";
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";
 import { currentDate } from "../../helper/dateFormatter";
+import { genericMessages } from "../../helper/genericMessages";
+
+//#endregion Imports
 
 export const Customers = () => {
   const { setCustomerModel, successToast, setSuccessToast } = useDataContext();
@@ -23,7 +27,7 @@ export const Customers = () => {
   useEffect(() => {
     if (successToast) {
       setSuccessToast(false);
-      successToastTransaction("Success Transaction!");
+      successToastTransaction(genericMessages.success);
     }
   }, []);
 
