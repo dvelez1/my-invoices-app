@@ -14,7 +14,7 @@ import { successToastTransaction } from "../../helper/toastMessages";
 import { Loading } from "../../components/shared/Loading";
 import { currentDate } from "../../helper/dateFormatter";
 import { genericMessages } from "../../helper/genericMessages";
-import { CustomerPagination } from "../../hooks/Customers/CustomerPagination";
+import { PaginationComponent } from "../shared/PaginationComponent";
 
 //#endregion Imports
 
@@ -22,6 +22,8 @@ export const Customers = () => {
   const { setCustomerModel, successToast, setSuccessToast } = useDataContext();
   const { customers, isLoading } = useCustomersGet();
   const [currentPage, setCurrentPage] = useState(0);
+  const [totalPaginationRecords, setTotalPaginationRecords] =
+    useState<number>(0);
   const [search, setSearch] = useState("");
 
   const [page, setPage] = useState(1);
@@ -78,6 +80,7 @@ export const Customers = () => {
     const filtered = customers.filter((cust) =>
       cust.Name.toLowerCase().includes(search)
     );
+
     return filtered.slice(currentPage, currentPage + 10);
   };
 
@@ -98,11 +101,20 @@ export const Customers = () => {
     setSearch(target.value.toLowerCase());
   };
 
-  //
+  //#region TODO: New Methods related to Pagination
   const hangleChangePage = useCallback((page: number) => {
-    alert(page)
     setPage(page);
-  },[]);
+    setCurrentPage((page - 1) * 10);
+  }, []);
+
+  const totalGridRecords = (): number => {
+    if (search.length === 0) return customers.length;
+
+    return customers.filter((cust) => cust.Name.toLowerCase().includes(search))
+      .length;
+  };
+
+  //#endregion
 
   //#endregion "Filtering and Pagination"
 
@@ -186,11 +198,13 @@ export const Customers = () => {
               Next
             </button>
           </div>
-          <CustomerPagination
-            total={customers.length}
+
+          {/* <PaginationComponent
+            total= {Math.ceil(totalGridRecords() / 10)}
             current={page}
             onChangePage={hangleChangePage}
-          />
+          /> */}
+
           {isLoading && <Loading />}
           <ToastContainerImplementation />
         </div>

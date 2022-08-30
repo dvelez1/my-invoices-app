@@ -1,16 +1,22 @@
 import Pagination from "react-bootstrap/Pagination";
 
-export const CustomerPagination = ({ total, current, onChangePage }: any) => {
-
+export const PaginationComponent = ({ total, current, elipse, onChangePage }: any) => {
   let items = [];
-  if (current > 1)
+  if (current > 1) {
     items.push(
       <Pagination.Prev key="prev" onClick={() => onChangePage(current - 1)} />
     );
+  }
+
 
   for (let page = 1; page <= total; page++) {
     items.push(
-      <Pagination.Item key={page} data-page={page} active={page === current} onClick={() => onChangePage(page)}>
+      <Pagination.Item
+        key={page}
+        data-page={page}
+        active={page === current}
+        onClick={() => onChangePage(page)}
+      >
         {page}
       </Pagination.Item>
     );
@@ -21,10 +27,14 @@ export const CustomerPagination = ({ total, current, onChangePage }: any) => {
       <Pagination.Next key="next" onClick={() => onChangePage(current + 1)} />
     );
   }
-
+ 
   return (
     <>
-      <Pagination>{items}</Pagination>
+      <div className="row">
+        <div className="col-md-12">
+          <Pagination>{items}</Pagination>
+        </div>
+      </div>
     </>
   );
 };
