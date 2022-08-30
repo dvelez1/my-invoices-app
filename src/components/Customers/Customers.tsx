@@ -1,5 +1,5 @@
 //#region Imports
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCustomersGet } from "../../hooks/Customers/useCustomersGet";
 import { Customer } from "../../interfaces/customer";
@@ -14,6 +14,7 @@ import { successToastTransaction } from "../../helper/toastMessages";
 import { Loading } from "../../components/shared/Loading";
 import { currentDate } from "../../helper/dateFormatter";
 import { genericMessages } from "../../helper/genericMessages";
+import { CustomerPagination } from "../../hooks/Customers/CustomerPagination";
 
 //#endregion Imports
 
@@ -22,6 +23,8 @@ export const Customers = () => {
   const { customers, isLoading } = useCustomersGet();
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
+
+  const [page, setPage] = useState(1);
 
   // Trigger Toast Message if the redirection was from upsert success Evenet.
   useEffect(() => {
@@ -94,6 +97,12 @@ export const Customers = () => {
     setCurrentPage(0);
     setSearch(target.value.toLowerCase());
   };
+
+  //
+  const hangleChangePage = useCallback((page: number) => {
+    alert(page)
+    setPage(page);
+  },[]);
 
   //#endregion "Filtering and Pagination"
 
@@ -177,6 +186,11 @@ export const Customers = () => {
               Next
             </button>
           </div>
+          <CustomerPagination
+            total={customers.length}
+            current={page}
+            onChangePage={hangleChangePage}
+          />
           {isLoading && <Loading />}
           <ToastContainerImplementation />
         </div>
