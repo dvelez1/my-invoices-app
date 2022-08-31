@@ -15,6 +15,7 @@ import { Loading } from "../../components/shared/Loading";
 import { currentDate } from "../../helper/dateFormatter";
 import { genericMessages } from "../../helper/genericMessages";
 import { PaginationComponent } from "../shared/PaginationComponent";
+import { PaginationCustom } from "../shared/PaginationCustom";
 
 //#endregion Imports
 
@@ -35,6 +36,10 @@ export const Customers = () => {
       successToastTransaction(genericMessages.success);
     }
   }, []);
+
+  useEffect(() => {
+    console.log(currentPage / 10 + 1);
+  }, [currentPage]);
 
   //#region "Methods"
 
@@ -80,7 +85,6 @@ export const Customers = () => {
     const filtered = customers.filter((cust) =>
       cust.Name.toLowerCase().includes(search)
     );
-
     return filtered.slice(currentPage, currentPage + 10);
   };
 
@@ -190,21 +194,12 @@ export const Customers = () => {
               )}
             </tbody>
           </table>
-          <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-            <button className="btn btn-primary me-md-2" onClick={prevPage}>
-              Previous
-            </button>
-            <button className="btn btn-primary" onClick={nextPage}>
-              Next
-            </button>
-          </div>
-
-          {/* <PaginationComponent
-            total= {Math.ceil(totalGridRecords() / 10)}
-            current={page}
-            onChangePage={hangleChangePage}
-          /> */}
-
+          <PaginationCustom
+            prevPage={prevPage}
+            nextPage={nextPage}
+            currentPage={currentPage}
+            totalPages={Math.ceil(totalGridRecords() / 10)}
+          />
           {isLoading && <Loading />}
           <ToastContainerImplementation />
         </div>
