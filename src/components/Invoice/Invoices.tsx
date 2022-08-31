@@ -91,7 +91,7 @@ export const Invoices = () => {
   }
 
   //#region "Filtering and Pagination"
-  const filteredInvoce = (): InvoiceMaster[] => {
+  const filteredDataSource = (): InvoiceMaster[] => {
     if (search.length === 0)
       return invoiceMaster.slice(currentPage, currentPage + 10);
 
@@ -146,7 +146,7 @@ export const Invoices = () => {
             Create New Invoice
           </button>
 
-          {filteredInvoce().map(
+          {filteredDataSource().map(
             ({
               InvoiceId,
               CustomerName,

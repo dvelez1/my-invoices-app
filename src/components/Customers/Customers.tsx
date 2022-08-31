@@ -37,10 +37,6 @@ export const Customers = () => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log(currentPage / 10 + 1);
-  }, [currentPage]);
-
   //#region "Methods"
 
   const navigate = useNavigate();
@@ -77,7 +73,8 @@ export const Customers = () => {
   }
 
   //#region "Filtering and Pagination"
-  const filteredCustomers = (): Customer[] => {
+
+  const filteredDataSource = (): Customer[] => {
     if (search.length === 0)
       return customers.slice(currentPage, currentPage + 10);
 
@@ -104,12 +101,6 @@ export const Customers = () => {
     setCurrentPage(0);
     setSearch(target.value.toLowerCase());
   };
-
-  //#region TODO: New Methods related to Pagination
-  const hangleChangePage = useCallback((page: number) => {
-    setPage(page);
-    setCurrentPage((page - 1) * 10);
-  }, []);
 
   const totalGridRecords = (): number => {
     if (search.length === 0) return customers.length;
@@ -159,7 +150,7 @@ export const Customers = () => {
             </thead>
 
             <tbody>
-              {filteredCustomers().map(
+              {filteredDataSource().map(
                 ({
                   CustomerId,
                   Name,

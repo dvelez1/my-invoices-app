@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from "react";
 
 export const PaginationCustom = (props: any) => {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(props.currentPage);
 
   useEffect(() => {
-    setCurrentPage(props.totalPages === 0 ? 0 : (props.currentPage / 10) + 1);
-  }, [props.currentPage]);
+    setCurrentPage(currentPageCalculator);
+  }, [props.currentPage, props.totalPages]);
+
+  const currentPageCalculator = (): number => {
+    if (props.totalPages === 0) return 0;
+
+    if (props.currentPage == 0) return 1;
+
+    return props.currentPage / 10 + 1;
+  };
 
   return (
     <>
       <div className="text-center shadow p-1 bg-white rounded">
-        
         <div className="d-inline p-2">
           <span className="me-md-2 cursor body">
             <i
@@ -36,7 +43,6 @@ export const PaginationCustom = (props: any) => {
             ></i>
           </span>
         </div>
-
       </div>
     </>
   );

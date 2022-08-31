@@ -56,7 +56,7 @@ export const Products = () => {
   };
 
   //#region "Filtering and Pagination"
-  const filteredProduct = (): Product[] => {
+  const filteredDataSource = (): Product[] => {
     if (search.length === 0)
       return products.slice(currentPage, currentPage + 10);
 
@@ -120,7 +120,7 @@ export const Products = () => {
 
             <tbody>
               {/* Row list implementation */}
-              {filteredProduct().map(({ ProductId, Name, Price }) => (
+              {filteredDataSource().map(({ ProductId, Name, Price }) => (
                 <ProductsRows
                   key={ProductId}
                   ProductId={ProductId}
