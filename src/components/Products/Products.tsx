@@ -12,6 +12,7 @@ import { ToastContainerImplementation } from "../shared/ToastContainerImplementa
 import { successToastTransaction } from "../../helper/toastMessages";
 import { productValidation } from "../../hooks/Products/productValidation";
 import { genericMessages } from "../../helper/genericMessages";
+import { PaginationCustom } from "../shared/PaginationCustom";
 
 export const Products = () => {
   const { successToast, setSuccessToast } = useDataContext();
@@ -84,6 +85,13 @@ export const Products = () => {
     setSearch(target.value.toLowerCase());
   };
 
+  const totalGridRecords = (): number => {
+    if (search.length === 0) return products.length;
+
+    return products.filter((prod) => prod.Name.toLowerCase().includes(search))
+      .length;
+  };
+
   //#endregion "Filtering and Pagination"
 
   //#endregion "Methods"
@@ -131,14 +139,13 @@ export const Products = () => {
               ))}
             </tbody>
           </table>
-          <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-            <button className="btn btn-primary me-md-2" onClick={prevPage}>
-              Previous
-            </button>
-            <button className="btn btn-primary" onClick={nextPage}>
-              Next
-            </button>
-          </div>
+
+          <PaginationCustom
+            prevPage={prevPage}
+            nextPage={nextPage}
+            currentPage={currentPage}
+            totalPages={Math.ceil(totalGridRecords() / 10)}
+          />
           {isLoading && <Loading />}
           <ToastContainerImplementation />
         </div>
