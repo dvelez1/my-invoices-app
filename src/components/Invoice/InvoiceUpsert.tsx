@@ -16,7 +16,6 @@ import { InvoiceUpsertDetails } from "./InvoiceUpsertDetails";
 // Import Toast components (react-toastify) -> Note: Was implemented a custom solution
 import "react-toastify/dist/ReactToastify.css";
 import { errorToastTransaction } from "../../helper/toastMessages";
-import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
 import { ErrorsBasedOnValidation } from "../shared/ErrorsBasedOnValidation";
 import { useEffect, useState } from "react";
 import { InvoiceMaster } from "../../interfaces/InvoiceMaster";
@@ -108,7 +107,6 @@ export const InvoiceUpsert = () => {
             </div>
           </div>
         </div>
-        <ToastContainerImplementation />
       </div>
     </>
   );

@@ -8,7 +8,6 @@ import { Loading } from "../../components/shared/Loading";
 import { useProductsGet } from "../../hooks/Products/useProductsGet";
 import { ProductsRows } from "../Products/ProductsRows";
 // Toast
-import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
 import { successToastTransaction } from "../../helper/toastMessages";
 import { productValidation } from "../../hooks/Products/productValidation";
 import { genericMessages } from "../../helper/genericMessages";
@@ -127,7 +126,6 @@ export const Products = () => {
             setCurrentPage = {setCurrentPage}
           />
           {isLoading && <Loading />}
-          <ToastContainerImplementation />
         </div>
       </div>
     </>

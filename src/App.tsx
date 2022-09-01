@@ -10,11 +10,13 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { CustomerUpsert } from "./components/Customers/CustomerUpsert";
 import { ProductUpsert } from "./components/Products/ProductUpsert";
 import {InvoiceUpsert} from "./components/Invoice/InvoiceUpsert"
+import { ToastContainerImplementation } from "./components/shared/ToastContainerImplementation";
 
 
 function App() {
   return (
     <>
+    <ToastContainerImplementation />
       <BrowserRouter>
         <Navbar />
         <div className="context">

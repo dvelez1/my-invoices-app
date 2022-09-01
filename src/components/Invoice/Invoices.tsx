@@ -16,7 +16,6 @@ import { useDataContext } from "../../context/DataContext";
 import { Loading } from "../../components/shared/Loading";
 import { InvoicesDetails } from "./InvoicesDetails";
 import { InvoiceBody } from "./InvoiceBody";
-import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
 import { successToastTransaction } from "../../helper/toastMessages";
 import { PaginationCustom } from "../shared/PaginationCustom";
 
@@ -103,25 +102,10 @@ export const Invoices = () => {
     return filtered.slice(currentPage, currentPage + 10);
   };
 
-  const nextPage = () => {
-    if (
-      invoiceMaster.filter((invMaster) =>
-        invMaster.CustomerName.includes(search)
-      ).length >
-      currentPage + 10
-    )
-      setCurrentPage(currentPage + 10);
-  };
-
-  const prevPage = () => {
-    if (currentPage > 0) setCurrentPage(currentPage - 10);
-  };
-
   const onSearchChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentPage(0);
     setSearch(target.value.toLowerCase());
   };
-
   //#endregion "Filtering and Pagination"
 
   //#endregion "Methods"
@@ -176,7 +160,7 @@ export const Invoices = () => {
                       handleEditClick={handleEditClick}
                     />
                     <hr />
-                    
+
                     <InvoicesDetails
                       invoiceDetails={invoiceDetails}
                       InvoiceId={InvoiceId}
@@ -186,17 +170,16 @@ export const Invoices = () => {
               </div>
             )
           )}
-         
+
           <PaginationCustom
             currentPage={currentPage}
-            search = {search}
-            dataSource = {invoiceMaster}
-            filterValueName = "CustomerName"
-            setCurrentPage = {setCurrentPage}
+            search={search}
+            dataSource={invoiceMaster}
+            filterValueName="CustomerName"
+            setCurrentPage={setCurrentPage}
           />
 
           <div className="row">{isLoading && <Loading />}</div>
-          <ToastContainerImplementation />
         </div>
       </div>
     </>

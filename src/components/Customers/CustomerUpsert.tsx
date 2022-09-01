@@ -15,7 +15,6 @@ import {
   infoToastTransaction,
   errorToastTransaction,
 } from "../../helper/toastMessages";
-import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
 import { customerValidation } from "../../hooks/Customers/customerValidation";
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";
@@ -281,7 +280,6 @@ export const CustomerUpsert = () => {
               </button>
             </div>
           </div>
-          <ToastContainerImplementation />
         </div>
       </div>
     </>

@@ -17,7 +17,6 @@ import {
 import { productValidation } from "../../hooks/Products/productValidation";
 
 // Components
-import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
 import { ProductUpsertSave } from "./ProductUpsertSave";
 import { ProductUpsertBody } from "./ProductUpsertBody";
 
@@ -123,7 +122,6 @@ export const ProductUpsert = () => {
               setIsSubmit={isSubmit}
               handleUpsertClick={handleUpsertClick}
             />
-            <ToastContainerImplementation />
           </div>
         </div>
       </form>

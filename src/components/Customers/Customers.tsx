@@ -7,7 +7,6 @@ import { Customer } from "../../interfaces/customer";
 // Data Context
 import { useDataContext } from "../../context/DataContext";
 // Toast
-import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
 import { successToastTransaction } from "../../helper/toastMessages";
 
 // Import Spinner
@@ -169,7 +168,6 @@ export const Customers = () => {
             setCurrentPage = {setCurrentPage}
           />
           {isLoading && <Loading />}
-          <ToastContainerImplementation />
         </div>
       </div>
     </>
