@@ -14,7 +14,6 @@ import { successToastTransaction } from "../../helper/toastMessages";
 import { Loading } from "../../components/shared/Loading";
 import { currentDate } from "../../helper/dateFormatter";
 import { genericMessages } from "../../helper/genericMessages";
-import { PaginationComponent } from "../shared/PaginationComponent";
 import { PaginationCustom } from "../shared/PaginationCustom";
 
 //#endregion Imports
@@ -23,11 +22,7 @@ export const Customers = () => {
   const { setCustomerModel, successToast, setSuccessToast } = useDataContext();
   const { customers, isLoading } = useCustomersGet();
   const [currentPage, setCurrentPage] = useState(0);
-  const [totalPaginationRecords, setTotalPaginationRecords] =
-    useState<number>(0);
   const [search, setSearch] = useState("");
-
-  const [page, setPage] = useState(1);
 
   // Trigger Toast Message if the redirection was from upsert success Evenet.
   useEffect(() => {
@@ -87,7 +82,7 @@ export const Customers = () => {
 
   const nextPage = () => {
     if (
-      customers.filter((cust) => cust.Name.includes(search)).length >
+      customers.filter((cust) => cust["Name"].includes(search)).length >
       currentPage + 10
     )
       setCurrentPage(currentPage + 10);

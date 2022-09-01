@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 
 export const PaginationCustom = (props: any) => {
-  const [currentPage, setCurrentPage] = useState(props.currentPage);
+  const [page, setPage] = useState(props.currentPage);
+
+  // TODO: Send: Search, filteredDataSource, currentPage
 
   useEffect(() => {
-    setCurrentPage(currentPageCalculator);
+    setPage(currentPageCalculator);
   }, [props.currentPage, props.totalPages]);
 
   const currentPageCalculator = (): number => {
@@ -13,6 +15,22 @@ export const PaginationCustom = (props: any) => {
     if (props.currentPage == 0) return 1;
 
     return props.currentPage / 10 + 1;
+  };
+
+  //TODO: Pending Implementation
+  const nextPage = () => {
+    if (
+      props.list.filter((obj: any) =>
+        obj[props.filerValue].includes(props.search)
+      ).length >
+      props.currentPage + 10
+    )
+      props.setCurrentPage(props.currentPage + 10);
+  };
+
+  //TODO: Pending Implementation
+  const prevPage = () => {
+    if (props.currentPage > 0) props.setCurrentPage(props.currentPage - 10);
   };
 
   return (
@@ -30,7 +48,7 @@ export const PaginationCustom = (props: any) => {
         </div>
 
         <div className="d-inline body" style={{ fontSize: 20 }}>
-          {currentPage} of {props.totalPages}
+          {page} of {props.totalPages}
         </div>
 
         <div className="d-inline p-2 ms-1 ">
