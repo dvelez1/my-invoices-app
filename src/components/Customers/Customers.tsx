@@ -80,18 +80,6 @@ export const Customers = () => {
     return filtered.slice(currentPage, currentPage + 10);
   };
 
-  const nextPage = () => {
-    if (
-      customers.filter((cust) => cust["Name"].includes(search)).length >
-      currentPage + 10
-    )
-      setCurrentPage(currentPage + 10);
-  };
-
-  const prevPage = () => {
-    if (currentPage > 0) setCurrentPage(currentPage - 10);
-  };
-
   const onSearchChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentPage(0);
     setSearch(target.value.toLowerCase());
@@ -181,10 +169,13 @@ export const Customers = () => {
             </tbody>
           </table>
           <PaginationCustom
-            prevPage={prevPage}
-            nextPage={nextPage}
             currentPage={currentPage}
             totalPages={Math.ceil(totalGridRecords() / 10)}
+
+            search = {search}
+            dataSource = {customers}
+            filterValueName = "Name"
+            setCurrentPage = {setCurrentPage}
           />
           {isLoading && <Loading />}
           <ToastContainerImplementation />

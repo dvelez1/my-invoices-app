@@ -17,18 +17,16 @@ export const PaginationCustom = (props: any) => {
     return props.currentPage / 10 + 1;
   };
 
-  //TODO: Pending Implementation
   const nextPage = () => {
     if (
-      props.list.filter((obj: any) =>
-        obj[props.filerValue].includes(props.search)
+      props.dataSource.filter((obj: any) =>
+        obj[props.filterValueName].includes(props.search)
       ).length >
       props.currentPage + 10
     )
       props.setCurrentPage(props.currentPage + 10);
   };
 
-  //TODO: Pending Implementation
   const prevPage = () => {
     if (props.currentPage > 0) props.setCurrentPage(props.currentPage - 10);
   };
@@ -42,7 +40,7 @@ export const PaginationCustom = (props: any) => {
               title="Previuos Page"
               className="bi bi-arrow-left-circle-fill"
               style={{ fontSize: 28 }}
-              onClick={props.prevPage}
+              onClick={prevPage}
             ></i>
           </span>
         </div>
@@ -57,7 +55,7 @@ export const PaginationCustom = (props: any) => {
               title="Next Page"
               className="bi bi-arrow-right-circle-fill"
               style={{ fontSize: 28 }}
-              onClick={props.nextPage}
+              onClick={nextPage}
             ></i>
           </span>
         </div>
