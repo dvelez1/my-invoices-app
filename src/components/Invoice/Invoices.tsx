@@ -16,7 +16,6 @@ import { useDataContext } from "../../context/DataContext";
 import { Loading } from "../../components/shared/Loading";
 import { InvoicesDetails } from "./InvoicesDetails";
 import { InvoiceBody } from "./InvoiceBody";
-import { successToastTransaction } from "../../helper/toastMessages";
 import { PaginationCustom } from "../shared/PaginationCustom";
 
 export const Invoices = () => {
@@ -29,21 +28,12 @@ export const Invoices = () => {
     setSuccessToast,
   } = useDataContext();
 
-  // Trigger Toast Message if the redirection was from upsert success Evenet.
-  useEffect(() => {
-    if (successToast) {
-      setSuccessToast(false);
-      successToastTransaction("Success Transaction!");
-    }
-  }, []);
-
   // Load Invoices (Custom Hook)
   const { isLoading, invoiceMaster, invoiceDetails, invoicePayments } =
     useInvoicesGet();
 
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
-  const [open, setOpen] = useState(false);
 
   //#endregion
 

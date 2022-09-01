@@ -15,10 +15,12 @@ import { InvoiceUpsertDetails } from "./InvoiceUpsertDetails";
 
 // Import Toast components (react-toastify) -> Note: Was implemented a custom solution
 import "react-toastify/dist/ReactToastify.css";
-import { errorToastTransaction } from "../../helper/toastMessages";
-import { ErrorsBasedOnValidation } from "../shared/ErrorsBasedOnValidation";
-import { useEffect, useState } from "react";
-import { InvoiceMaster } from "../../interfaces/InvoiceMaster";
+import {
+  errorToastTransaction,
+  successToastTransaction,
+} from "../../helper/toastMessages";
+import { useEffect } from "react";
+import { genericMessages } from "../../helper/genericMessages";
 
 //#endregion
 
@@ -39,8 +41,7 @@ export const InvoiceUpsert = () => {
   };
 
   // Import Data Context Properties
-  const { setInvoiceMasterModel, invoiceMasterModel, setSuccessToast } =
-    useDataContext();
+  const { setInvoiceMasterModel, invoiceMasterModel } = useDataContext();
 
   // If no data found, initialize with default value
   useEffect(() => {
@@ -64,14 +65,8 @@ export const InvoiceUpsert = () => {
 
   // Evaluate Post Response to Trigger the Toast
   const handlePostOperationResult = (successResult: boolean) => {
-    if (successResult) {
-      setSuccessToast(true);
-    } else {
-      errorToastTransaction(
-        "Transaction Failed! Please, contact your IT Team."
-      );
-      setSuccessToast(false);
-    }
+    if (successResult) successToastTransaction(genericMessages.success);
+    else errorToastTransaction(genericMessages.error);
   };
 
   //#endregion "Methods"
