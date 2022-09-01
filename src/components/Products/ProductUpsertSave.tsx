@@ -17,7 +17,7 @@ export const ProductUpsertSave = (props: any) => {
           <button
             className="btn btn-primary"
             type="button"
-            onClick={props.handleUpsertClick}
+            onClick={props.handleUpsertRedirection}
           >
             Cancel
           </button>

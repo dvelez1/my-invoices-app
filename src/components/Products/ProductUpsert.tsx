@@ -1,8 +1,6 @@
 //#region Imports
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-// Import DataContect
-import { useDataContext } from "../../context/DataContext";
 // Product Interface
 import { Product } from "../../interfaces/product";
 // Methods for Insert
@@ -12,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import {
   errorToastTransaction,
   infoToastTransaction,
+  successToastTransaction,
 } from "../../helper/toastMessages";
 // Form Vaidation
 import { productValidation } from "../../hooks/Products/productValidation";
@@ -27,7 +26,6 @@ export const ProductUpsert = () => {
   const location = useLocation();
   var initialFormData = Object.freeze(location.state as Product);
 
-  const { setSuccessToast } = useDataContext();
   const [product, setProduct] = React.useState<Product>(initialFormData);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
@@ -36,7 +34,7 @@ export const ProductUpsert = () => {
 
   // Navigate (Route)
   const navigate = useNavigate();
-  const handleUpsertClick = () => {
+  const handleUpsertRedirection = () => {
     navigate("/product");
   };
 
@@ -62,12 +60,9 @@ export const ProductUpsert = () => {
     genericMessage: string
   ) => {
     if (successResponse) {
-      setSuccessToast(true);
-      handleUpsertClick();
-    } else {
-      errorToastTransaction(genericMessage);
-      setSuccessToast(false);
-    }
+      successToastTransaction(genericMessage);
+      handleUpsertRedirection();
+    } else errorToastTransaction(genericMessage);
   };
 
   /* Used for Form validation: Will be triggered if a formErrors object is modified.
@@ -120,7 +115,7 @@ export const ProductUpsert = () => {
             />
             <ProductUpsertSave
               setIsSubmit={isSubmit}
-              handleUpsertClick={handleUpsertClick}
+              handleUpsertClick={handleUpsertRedirection}
             />
           </div>
         </div>

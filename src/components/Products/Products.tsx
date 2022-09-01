@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDataContext } from "../../context/DataContext";
 import { Product } from "../../interfaces/product";
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";
@@ -8,22 +7,9 @@ import { Loading } from "../../components/shared/Loading";
 import { useProductsGet } from "../../hooks/Products/useProductsGet";
 import { ProductsRows } from "../Products/ProductsRows";
 // Toast
-import { successToastTransaction } from "../../helper/toastMessages";
-import { productValidation } from "../../hooks/Products/productValidation";
-import { genericMessages } from "../../helper/genericMessages";
 import { PaginationCustom } from "../shared/PaginationCustom";
 
 export const Products = () => {
-  const { successToast, setSuccessToast } = useDataContext();
-
-  // Trigger Toast Message if the redirection was from upsert success Evenet.
-  useEffect(() => {
-    if (successToast) {
-      setSuccessToast(false);
-      successToastTransaction(genericMessages.success);
-    }
-  }, []);
-
   // Get Product and execute Loading Spinner
   const { products, isLoading } = useProductsGet();
 
@@ -120,10 +106,10 @@ export const Products = () => {
           </table>
           <PaginationCustom
             currentPage={currentPage}
-            search = {search}
-            dataSource = {products}
-            filterValueName = "Name"
-            setCurrentPage = {setCurrentPage}
+            search={search}
+            dataSource={products}
+            filterValueName="Name"
+            setCurrentPage={setCurrentPage}
           />
           {isLoading && <Loading />}
         </div>
