@@ -2,15 +2,12 @@ import React, { useEffect, useState } from "react";
 
 export const PaginationCustom = (props: any) => {
   const [page, setPage] = useState(props.currentPage);
-
-  // TODO: Send: Search, filteredDataSource, currentPage
-
-  useEffect(() => {
-    setPage(currentPageCalculator);
-  }, [props.currentPage, props.totalPages]);
+  const totalPages = ():number =>{
+    return Math.ceil(totalGridRecords() / 10)
+  }
 
   const currentPageCalculator = (): number => {
-    if (props.totalPages === 0) return 0;
+    if (totalPages() === 0) return 0;
 
     if (props.currentPage == 0) return 1;
 
@@ -31,6 +28,17 @@ export const PaginationCustom = (props: any) => {
     if (props.currentPage > 0) props.setCurrentPage(props.currentPage - 10);
   };
 
+  const totalGridRecords = (): number => {
+    if (props.search.length === 0) return props.dataSource.length;
+
+    return props.dataSource.filter((obj:any) => obj[props.filterValueName].toLowerCase().includes(props.search))
+      .length;
+  };
+
+  useEffect(() => {
+    setPage(currentPageCalculator);
+  }, [props.currentPage, totalPages]);
+
   return (
     <>
       <div className="text-center shadow p-1 bg-white rounded">
@@ -46,7 +54,7 @@ export const PaginationCustom = (props: any) => {
         </div>
 
         <div className="d-inline body" style={{ fontSize: 20 }}>
-          {page} of {props.totalPages}
+          {page} of {totalPages()}
         </div>
 
         <div className="d-inline p-2 ms-1 ">

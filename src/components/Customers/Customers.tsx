@@ -85,13 +85,6 @@ export const Customers = () => {
     setSearch(target.value.toLowerCase());
   };
 
-  const totalGridRecords = (): number => {
-    if (search.length === 0) return customers.length;
-
-    return customers.filter((cust) => cust.Name.toLowerCase().includes(search))
-      .length;
-  };
-
   //#endregion
 
   //#endregion "Filtering and Pagination"
@@ -170,8 +163,6 @@ export const Customers = () => {
           </table>
           <PaginationCustom
             currentPage={currentPage}
-            totalPages={Math.ceil(totalGridRecords() / 10)}
-
             search = {search}
             dataSource = {customers}
             filterValueName = "Name"
