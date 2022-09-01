@@ -18,6 +18,7 @@ import { InvoicesDetails } from "./InvoicesDetails";
 import { InvoiceBody } from "./InvoiceBody";
 import { ToastContainerImplementation } from "../shared/ToastContainerImplementation";
 import { successToastTransaction } from "../../helper/toastMessages";
+import { PaginationCustom } from "../shared/PaginationCustom";
 
 export const Invoices = () => {
   // Import Data Context Properties
@@ -185,25 +186,15 @@ export const Invoices = () => {
               </div>
             )
           )}
+         
+          <PaginationCustom
+            currentPage={currentPage}
+            search = {search}
+            dataSource = {invoiceMaster}
+            filterValueName = "CustomerName"
+            setCurrentPage = {setCurrentPage}
+          />
 
-          <div className="text-center mt-2">
-            <span className="me-md-2 cursor body">
-              <i
-                title="Previuos Page"
-                className="bi bi-arrow-left-circle-fill"
-                style={{ fontSize: 28 }}
-                onClick={prevPage}
-              ></i>
-            </span>
-            <span className="me-md-2 cursor body">
-              <i
-                title="Next Page"
-                className="bi bi-arrow-right-circle-fill"
-                style={{ fontSize: 28 }}
-                onClick={nextPage}
-              ></i>
-            </span>
-          </div>
           <div className="row">{isLoading && <Loading />}</div>
           <ToastContainerImplementation />
         </div>
