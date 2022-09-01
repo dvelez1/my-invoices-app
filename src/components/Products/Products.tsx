@@ -68,30 +68,10 @@ export const Products = () => {
     return filtered.slice(currentPage, currentPage + 10);
   };
 
-  const nextPage = () => {
-    if (
-      products.filter((prod) => prod.Name.includes(search)).length >
-      currentPage + 10
-    )
-      setCurrentPage(currentPage + 10);
-  };
-
-  const prevPage = () => {
-    if (currentPage > 0) setCurrentPage(currentPage - 10);
-  };
-
   const onSearchChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentPage(0);
     setSearch(target.value.toLowerCase());
   };
-
-  const totalGridRecords = (): number => {
-    if (search.length === 0) return products.length;
-
-    return products.filter((prod) => prod.Name.toLowerCase().includes(search))
-      .length;
-  };
-
   //#endregion "Filtering and Pagination"
 
   //#endregion "Methods"
@@ -139,12 +119,12 @@ export const Products = () => {
               ))}
             </tbody>
           </table>
-
           <PaginationCustom
-            prevPage={prevPage}
-            nextPage={nextPage}
             currentPage={currentPage}
-            totalPages={Math.ceil(totalGridRecords() / 10)}
+            search = {search}
+            dataSource = {products}
+            filterValueName = "Name"
+            setCurrentPage = {setCurrentPage}
           />
           {isLoading && <Loading />}
           <ToastContainerImplementation />

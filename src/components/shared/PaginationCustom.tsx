@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 export const PaginationCustom = (props: any) => {
   const [page, setPage] = useState(props.currentPage);
+  
   const totalPages = ():number =>{
     return Math.ceil(totalGridRecords() / 10)
   }
