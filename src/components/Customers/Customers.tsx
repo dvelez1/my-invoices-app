@@ -1,5 +1,5 @@
 //#region Imports
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCustomersGet } from "../../hooks/Customers/useCustomersGet";
 import { Customer } from "../../interfaces/customer";
@@ -7,12 +7,10 @@ import { Customer } from "../../interfaces/customer";
 // Data Context
 import { useDataContext } from "../../context/DataContext";
 // Toast
-import { successToastTransaction } from "../../helper/toastMessages";
 
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";
 import { currentDate } from "../../helper/dateFormatter";
-import { genericMessages } from "../../helper/genericMessages";
 import { PaginationCustom } from "../shared/PaginationCustom";
 
 //#endregion Imports
@@ -22,14 +20,6 @@ export const Customers = () => {
   const { customers, isLoading } = useCustomersGet();
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
-
-  // Trigger Toast Message if the redirection was from upsert success Evenet.
-  useEffect(() => {
-    if (successToast) {
-      setSuccessToast(false);
-      successToastTransaction(genericMessages.success);
-    }
-  }, []);
 
   //#region "Methods"
 
@@ -162,10 +152,10 @@ export const Customers = () => {
           </table>
           <PaginationCustom
             currentPage={currentPage}
-            search = {search}
-            dataSource = {customers}
-            filterValueName = "Name"
-            setCurrentPage = {setCurrentPage}
+            search={search}
+            dataSource={customers}
+            filterValueName="Name"
+            setCurrentPage={setCurrentPage}
           />
           {isLoading && <Loading />}
         </div>

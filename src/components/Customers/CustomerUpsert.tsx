@@ -14,7 +14,9 @@ import "react-toastify/dist/ReactToastify.css";
 import {
   infoToastTransaction,
   errorToastTransaction,
+  successToastTransaction
 } from "../../helper/toastMessages";
+import {genericMessages} from "../../helper/genericMessages"
 import { customerValidation } from "../../hooks/Customers/customerValidation";
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";
@@ -24,7 +26,7 @@ import { Customer } from "../../interfaces/customer";
 
 export const CustomerUpsert = () => {
   // Data Context
-  const { setCustomerModel, customerModel, setSuccessToast } = useDataContext();
+  const { setCustomerModel, customerModel} = useDataContext();
 
   const [formErrors, setFormErrors] = useState<any>({});
   const [isSubmit, setIsSubmit] = useState(false);
@@ -54,7 +56,7 @@ export const CustomerUpsert = () => {
 
   // Navigate (Route)
   const navigate = useNavigate();
-  const handleUpsertClick = () => {
+  const handleUpsertRedirection = () => {
     setCustomerModel(null!);
     navigate("/customer");
   };
@@ -114,8 +116,8 @@ export const CustomerUpsert = () => {
   ) => {
     setIsSubmit(false);
     if (successResponse) {
-      setSuccessToast(true);
-      handleUpsertClick();
+      successToastTransaction(genericMessages.success);
+      handleUpsertRedirection();
     } else errorToastTransaction(genericMessage);
   };
 
@@ -274,7 +276,7 @@ export const CustomerUpsert = () => {
               <button
                 className="btn btn-primary"
                 type="button"
-                onClick={handleUpsertClick}
+                onClick={handleUpsertRedirection}
               >
                 Cancel
               </button>
