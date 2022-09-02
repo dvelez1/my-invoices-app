@@ -16,7 +16,6 @@ import {
   errorToastTransaction,
   successToastTransaction,
 } from "../../helper/toastMessages";
-import { genericMessages } from "../../helper/genericMessages";
 import { customerValidation } from "../../hooks/Customers/customerValidation";
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";

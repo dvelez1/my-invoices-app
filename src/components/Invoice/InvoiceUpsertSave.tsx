@@ -55,6 +55,21 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
 
   const [submitted, setSubmitted] = useState(false);
 
+  // Return true on Create New Invoice
+  const isCreateEvent = (): boolean => {
+    return (
+      invoiceMasterModel === undefined || invoiceMasterModel?.InvoiceId === 0
+    );
+  };
+
+  // Validation Result Evaluation
+  const successValidation = (): boolean => {
+    return (
+      Object.keys(formErrors).length === 0 &&
+      Object.keys(formErrorsInvoiceDetails).length === 0
+    );
+  };
+
   // When Model be updated, Run The Validation
   useEffect(() => {
     setFormErrorsInvoiceDetails(
@@ -103,13 +118,6 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
       setIsInvoiceVoidSubmitted(false);
     }
   }, [formErrors]);
-
-  // Return true on Create New Invoice
-  const isCreateEvent = (): boolean => {
-    return (
-      invoiceMasterModel === undefined || invoiceMasterModel?.InvoiceId === 0
-    );
-  };
 
   // Insert/Edit Click Event
   const handleSaveClick = () => {
@@ -265,7 +273,8 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
         Submit
       </button>
       {!isCreateEvent() && (
-        <button className="btn btn-danger btn-md " onClick={handleVoidClick}>
+        <button className="btn btn-danger btn-md " 
+         onClick={handleVoidClick}>
           Void
         </button>
       )}
