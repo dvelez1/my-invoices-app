@@ -14,9 +14,9 @@ import "react-toastify/dist/ReactToastify.css";
 import {
   infoToastTransaction,
   errorToastTransaction,
-  successToastTransaction
+  successToastTransaction,
 } from "../../helper/toastMessages";
-import {genericMessages} from "../../helper/genericMessages"
+import { genericMessages } from "../../helper/genericMessages";
 import { customerValidation } from "../../hooks/Customers/customerValidation";
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";
@@ -26,10 +26,9 @@ import { Customer } from "../../interfaces/customer";
 
 export const CustomerUpsert = () => {
   // Data Context
-  const { setCustomerModel, customerModel} = useDataContext();
+  const { setCustomerModel, customerModel } = useDataContext();
 
   const [formErrors, setFormErrors] = useState<any>({});
-  const [isSubmit, setIsSubmit] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const customerDefaultInitialization: Customer = {
     CustomerId: 0,
@@ -46,11 +45,17 @@ export const CustomerUpsert = () => {
     EndDate: null,
   };
 
+  // Initialize with default data when null object
   useEffect(() => {
     if (!customerModel) {
       setCustomerModel(customerDefaultInitialization);
     }
   }, []);
+
+  // Run Validation
+  useEffect(() => {
+    if (customerModel) setFormErrors(customerValidation(customerModel));
+  }, [customerModel]);
 
   //#region "Methods"
 
@@ -69,54 +74,39 @@ export const CustomerUpsert = () => {
     });
   };
 
-  // Insert/Edit Operation
-  const handleSaveClick = () => {
-    setIsSubmit(true);
-    setFormErrors(customerValidation(customerModel));
+  // Validation Result Evaluation
+  const successValidation = (): boolean => {
+    return Object.keys(formErrors).length === 0;
   };
 
-  // Execute Post/Put After
-  useEffect(() => {
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      //Insert / Update Operation
+  // Insert/Edit Operation
+  const handleSaveClick = () => {
+    //Insert / Update Operation
+    if (successValidation()) {
       if (customerModel?.CustomerId === 0) {
-        //PUT (Create)
-        createCustomer(customerModel).then((result)=>{
+        createCustomer(customerModel).then((result) => {
           saveEventResultMessageHandler(result[0], result[1]);
         });
-        
       } else {
-        // Post (Update)
-        updateCustomer(customerModel).then((result)=>{
+        updateCustomer(customerModel).then((result) => {
           saveEventResultMessageHandler(result[0], result[1]);
         });
       }
     } else {
-      if (isSubmit)
-        infoToastTransaction(
-          "Please, provide all requested information!" +
-            " Maybe some data did not meet the requirements or is missing."
-        );
+      infoToastTransaction(
+        "Please, provide all requested information!" +
+          " Maybe some data did not meet the requirements or is missing."
+      );
     }
-    // After Run the validation, set IsSubmit to False
-    if (isSubmit) {
-      setIsSubmit(false);
-    }
-  }, [formErrors]);
-
-  // Run Validation
-  useEffect(() => {
-    if (customerModel) setFormErrors(customerValidation(customerModel));
-  }, [customerModel]);
+  };
 
   // Method to handle Insert/Update Operation Result Message
   const saveEventResultMessageHandler = (
     successResponse: boolean,
     genericMessage: string
   ) => {
-    setIsSubmit(false);
     if (successResponse) {
-      successToastTransaction(genericMessages.success);
+      successToastTransaction(genericMessage);
       handleUpsertRedirection();
     } else errorToastTransaction(genericMessage);
   };
@@ -267,6 +257,7 @@ export const CustomerUpsert = () => {
           <div className="card-footer text-muted mt-4">
             <div className="d-grid gap-2 d-md-flex justify-content-md-end">
               <button
+                disabled={!successValidation()}
                 className="btn btn-primary me-md-2"
                 type="button"
                 onClick={handleSaveClick}
