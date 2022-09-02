@@ -47,11 +47,31 @@ export const ProductUpsert = () => {
     });
   };
 
+  // Validation Result Evaluation
+  const successValidation = (): boolean => {
+    return Object.keys(formErrors).length === 0;
+  };
+
   // Submit Event
   const handleSubmit = (event: any) => {
-    setIsSubmit(true);
     event.preventDefault();
-    setFormErrors(productValidation(product));
+    setIsSubmit(true);
+    if (successValidation()) {
+      if (product.ProductId === 0)
+        createProduct(product).then((result) => {
+          saveEventResultMessageHandler(result[0], result[1]);
+        });
+      else if (product.ProductId > 0)
+        updateProduct(product).then((result) => {
+          saveEventResultMessageHandler(result[0], result[1]);
+        });
+    } else {
+      infoToastTransaction(
+        "Please, provide all requested information!" +
+          " Maybe some data did not meet the requirements or is missing."
+      );
+    }
+    setIsSubmit(false);
   };
 
   // Method to handle Insert/Update Operation Result Message
@@ -64,32 +84,6 @@ export const ProductUpsert = () => {
       handleUpsertRedirection();
     } else errorToastTransaction(genericMessage);
   };
-
-  /* Used for Form validation: Will be triggered if a formErrors object is modified.
-  If (Object.keys(formErrors).length === 0) is true (No errors found) AND isSubmit is true, will trigger the create/edit event */
-  useEffect(() => {
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      //Insert / Update Operation
-      if (product.ProductId === 0)
-        createProduct(product).then((result) => {
-          saveEventResultMessageHandler(result[0], result[1]);
-        });
-      else if (product.ProductId > 0)
-        updateProduct(product).then((result) => {
-          saveEventResultMessageHandler(result[0], result[1]);
-        });
-    } else {
-      if (isSubmit)
-        infoToastTransaction(
-          "Please, provide all requested information!" +
-            " Maybe some data did not meet the requirements or is missing."
-        );
-    }
-    // After Run the validation, set IsSubmit to False
-    if (isSubmit) {
-      setIsSubmit(false);
-    }
-  }, [formErrors]);
 
   // Used for Form validation: When Product Change - Trigger the validation without submit (Because isSubmit will be false )
   useEffect(() => {
@@ -116,6 +110,7 @@ export const ProductUpsert = () => {
             <ProductUpsertSave
               setIsSubmit={isSubmit}
               handleUpsertClick={handleUpsertRedirection}
+              successValidation={successValidation}
             />
           </div>
         </div>
