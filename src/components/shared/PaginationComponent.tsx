@@ -1,38 +1,72 @@
-import Pagination from "react-bootstrap/Pagination";
+import React, { useEffect, useState } from "react";
 
-export const PaginationComponent = ({ total, current, elipse, onChangePage }: any) => {
-  let items = [];
-  if (current > 1) {
-    items.push(
-      <Pagination.Prev key="prev" onClick={() => onChangePage(current - 1)} />
-    );
+export const PaginationComponent = (props: any) => {
+  const [page, setPage] = useState(props.currentPage);
+  
+  const totalPages = ():number =>{
+    return Math.ceil(totalGridRecords() / 10)
   }
 
+  const currentPageCalculator = (): number => {
+    if (totalPages() === 0) return 0;
 
-  for (let page = 1; page <= total; page++) {
-    items.push(
-      <Pagination.Item
-        key={page}
-        data-page={page}
-        active={page === current}
-        onClick={() => onChangePage(page)}
-      >
-        {page}
-      </Pagination.Item>
-    );
-  }
+    if (props.currentPage == 0) return 1;
 
-  if (current < total) {
-    items.push(
-      <Pagination.Next key="next" onClick={() => onChangePage(current + 1)} />
-    );
-  }
- 
+    return props.currentPage / 10 + 1;
+  };
+
+  const nextPage = () => {
+    if (
+      props.dataSource.filter((obj: any) =>
+        obj[props.filterValueName].includes(props.search)
+      ).length >
+      props.currentPage + 10
+    )
+      props.setCurrentPage(props.currentPage + 10);
+  };
+
+  const prevPage = () => {
+    if (props.currentPage > 0) props.setCurrentPage(props.currentPage - 10);
+  };
+
+  const totalGridRecords = (): number => {
+    if (props.search.length === 0) return props.dataSource.length;
+
+    return props.dataSource.filter((obj:any) => obj[props.filterValueName].toLowerCase().includes(props.search))
+      .length;
+  };
+
+  useEffect(() => {
+    setPage(currentPageCalculator);
+  }, [props.currentPage, totalPages]);
+
   return (
     <>
-      <div className="row">
-        <div className="col-md-12">
-          <Pagination>{items}</Pagination>
+      <div className="text-center shadow p-1 bg-white rounded">
+        <div className="d-inline p-2">
+          <span className="me-md-2 cursor body">
+            <i
+              title="Previuos Page"
+              className="bi bi-arrow-left-circle-fill"
+              style={{ fontSize: 28 }}
+              onClick={prevPage}
+            ></i>
+          </span>
+        </div>
+
+        <div className="d-inline body" style={{ fontSize: 20 }}>
+          {page} of {totalPages()}
+        </div>
+
+        <div className="d-inline p-2 ms-1 ">
+          <span className="me-md-2 cursor body">
+            <i
+              title="Next Page"
+              className="bi bi-arrow-right-circle-fill"
+              style={{ fontSize: 28 }}
+              onClick={nextPage}
+            ></i>
+          </span>
         </div>
       </div>
     </>

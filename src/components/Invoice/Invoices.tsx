@@ -16,7 +16,7 @@ import { useDataContext } from "../../context/DataContext";
 import { Loading } from "../../components/shared/Loading";
 import { InvoicesDetails } from "./InvoicesDetails";
 import { InvoiceBody } from "./InvoiceBody";
-import { PaginationCustom } from "../shared/PaginationCustom";
+import { PaginationComponent } from "../shared/PaginationComponent";
 
 export const Invoices = () => {
   // Import Data Context Properties
@@ -161,7 +161,7 @@ export const Invoices = () => {
             )
           )}
 
-          <PaginationCustom
+          <PaginationComponent
             currentPage={currentPage}
             search={search}
             dataSource={invoiceMaster}

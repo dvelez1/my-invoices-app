@@ -11,7 +11,7 @@ import { useDataContext } from "../../context/DataContext";
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";
 import { currentDate } from "../../helper/dateFormatter";
-import { PaginationCustom } from "../shared/PaginationCustom";
+import { PaginationComponent } from "../shared/PaginationComponent";
 
 //#endregion Imports
 
@@ -150,7 +150,7 @@ export const Customers = () => {
               )}
             </tbody>
           </table>
-          <PaginationCustom
+          <PaginationComponent
             currentPage={currentPage}
             search={search}
             dataSource={customers}

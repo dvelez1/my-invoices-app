@@ -7,7 +7,7 @@ import { Loading } from "../../components/shared/Loading";
 import { useProductsGet } from "../../hooks/Products/useProductsGet";
 import { ProductsRows } from "../Products/ProductsRows";
 // Toast
-import { PaginationCustom } from "../shared/PaginationCustom";
+import { PaginationComponent } from "../shared/PaginationComponent";
 
 export const Products = () => {
   // Get Product and execute Loading Spinner
@@ -104,7 +104,7 @@ export const Products = () => {
               ))}
             </tbody>
           </table>
-          <PaginationCustom
+          <PaginationComponent
             currentPage={currentPage}
             search={search}
             dataSource={products}
