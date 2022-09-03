@@ -1,5 +1,5 @@
 //#region Imports
-
+import { useState } from "react";
 // Master Files
 import { useCustomersGet } from "../../hooks/Customers/useCustomersGet";
 import { useProductsGet } from "../../hooks/Products/useProductsGet";
@@ -21,6 +21,7 @@ import {
 } from "../../helper/toastMessages";
 import { useEffect } from "react";
 import { genericMessages } from "../../helper/genericMessages";
+import { ValidationsResults } from "../shared/ValidationsResults";
 
 //#endregion
 
@@ -42,7 +43,7 @@ export const InvoiceUpsert = () => {
 
   // Import Data Context Properties
   const { setInvoiceMasterModel, invoiceMasterModel } = useDataContext();
-
+  const [invoiceDetailsErrors, setInvoiceDetailsErrors] = useState([]);
   // If no data found, initialize with default value
   useEffect(() => {
     if (!invoiceMasterModel) {
@@ -87,16 +88,16 @@ export const InvoiceUpsert = () => {
                   <div className="card-body">
                     <h5 className="card-title">Details</h5>
                     <hr />
-
                     {invoiceMasterModel?.InvoiceId === 0 && (
                       <InvoiceUpsertDetailsAddToList products={products} />
                     )}
-
+                    <ValidationsResults errors={invoiceDetailsErrors} />
                     <InvoiceUpsertDetails products={products} />
                   </div>
                 </div>
                 <InvoiceUpsertSave
                   handlePostOperationResult={handlePostOperationResult}
+                  setInvoiceDetailsErrors={setInvoiceDetailsErrors}
                 />
               </div>
             </div>

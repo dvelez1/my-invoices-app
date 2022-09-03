@@ -14,7 +14,10 @@ import { infoToastTransaction } from "../../helper/toastMessages";
 
 //#endregion Imports
 
-export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
+export const InvoiceUpsertSave = ({
+  handlePostOperationResult,
+  setInvoiceDetailsErrors,
+}: any) => {
   // DataContext
   const {
     invoiceMasterModel,
@@ -37,7 +40,7 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
 
   const [formErrors, setFormErrors] = useState<any>({});
   const [formErrorsInvoiceDetails, setFormErrorsInvoiceDetails] = useState<any>(
-    []
+    null!
   );
 
   const invPaymentInitialInitialization = {
@@ -59,14 +62,6 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
   const isCreateEvent = (): boolean => {
     return (
       invoiceMasterModel === undefined || invoiceMasterModel?.InvoiceId === 0
-    );
-  };
-
-  // Validation Result Evaluation
-  const successValidation = (): boolean => {
-    return (
-      Object.keys(formErrors).length === 0 &&
-      Object.keys(formErrorsInvoiceDetails).length === 0
     );
   };
 
@@ -117,6 +112,9 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
       // Update a DataContext
       setIsInvoiceVoidSubmitted(false);
     }
+
+    // Used to send the error list to InvoiceUpsert Component, and display its.
+    setInvoiceDetailsErrors(formErrorsInvoiceDetails);
   }, [formErrors]);
 
   // Insert/Edit Click Event
@@ -273,8 +271,7 @@ export const InvoiceUpsertSave = ({ handlePostOperationResult }: any) => {
         Submit
       </button>
       {!isCreateEvent() && (
-        <button className="btn btn-danger btn-md " 
-         onClick={handleVoidClick}>
+        <button className="btn btn-danger btn-md " onClick={handleVoidClick}>
           Void
         </button>
       )}
