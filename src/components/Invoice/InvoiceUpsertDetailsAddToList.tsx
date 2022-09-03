@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import Button from "react-bootstrap/Button";
+import Collapse from "react-bootstrap/Collapse";
 // Data Context
 import { useDataContext } from "../../context/DataContext";
 import { addInvoiceDetailsValidation } from "../../hooks/Invoice/addInvoiceDetailsValidation";
@@ -17,6 +19,7 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
   const [productPrice, setProductPrice] = useState<number | null>(null);
   const [formErrors, setFormErrors] = useState<any>({});
   const [isSubmit, setIsSubmit] = useState(false);
+  const [open, setOpen] = useState(false);
   const initialFormData: InvoiceDetails = {
     InvoiceDetailsId: 0,
     InvoiceId: 0,
@@ -112,105 +115,125 @@ export const InvoiceUpsertDetailsAddToList = (props: any) => {
 
   return (
     <>
-      <form
-        onSubmit={handleAddInvoiceDetailsSubmit}
-        id="add-invoice-details"
-        name="add-invoice-details"
-      >
-        <div className="card mt-2 mb-3 shadow" style={{ width: "100" }}>
-          <div className="card-body">
-            <label className="fw-bold mb-2">Add detail to the Invoice:</label>
-            <div className="row">
-              <div className="col-md-3">
-                <label className="form-label fw-bold">Product</label>
-                <select
-                  name="ProductId"
-                  className="form-control"
-                  aria-label="Floating label select example"
-                  onChange={handleChange}
-                  value={invoiceDetails?.ProductId || ""}
-                >
-                  <option value="" disabled>
-                    {" "}
-                    -- Select a Product --{" "}
-                  </option>
-                  {props.products.map((prod: any) => (
-                    <option key={prod.ProductId} value={prod.ProductId}>
-                      {prod.Name}
-                    </option>
-                  ))}
-                </select>
-                <p className="text-danger"> {formErrors.ProductId}</p>
-              </div>
+      <div className="mb-3">
+        <Button
+          onClick={() => setOpen(!open)}
+          aria-controls="collapse-add-invoice-details"
+          aria-expanded={open}
+          size="sm"
+        >
+          Click to Add Invoice Details
+        </Button>
+      </div>
 
-              <div className="col-md-2">
-                <label className="form-label fw-bold">Catalog Price</label>
-                <div className="input-group mb-3">
-                  <span className="input-group-text">$</span>
-                  <input
-                    type="number"
-                    step=".01"
-                    className="form-control"
-                    name="CatalogPrice"
-                    placeholder="Catalog Price"
-                    value={productPrice?.toFixed(2) ?? 0}
-                    onChange={handleChange}
-                    readOnly
-                  />
-                </div>
-              </div>
+      <Collapse in={open}>
+        <div id="collapse-add-invoice-details">
+          <form
+            onSubmit={handleAddInvoiceDetailsSubmit}
+            id="add-invoice-details"
+            name="add-invoice-details"
+          >
+            <div className="card mt-2 mb-3 shadow" style={{ width: "100" }}>
+              <div className="card-body">
+                <label className="fw-bold mb-2">
+                  Add detail to the Invoice:
+                </label>
+                <div className="row">
+                  <div className="col-md-3">
+                    <label className="form-label fw-bold">Product</label>
+                    <select
+                      name="ProductId"
+                      className="form-control"
+                      aria-label="Floating label select example"
+                      onChange={handleChange}
+                      value={invoiceDetails?.ProductId || ""}
+                    >
+                      <option value="" disabled>
+                        {" "}
+                        -- Select a Product --{" "}
+                      </option>
+                      {props.products.map((prod: any) => (
+                        <option key={prod.ProductId} value={prod.ProductId}>
+                          {prod.Name}
+                        </option>
+                      ))}
+                    </select>
+                    <p className="text-danger"> {formErrors.ProductId}</p>
+                  </div>
 
-              <div className="col-md-2">
-                <label className="form-label fw-bold">Price</label>
-                <div className="input-group mb-3">
-                  <span className="input-group-text">$</span>
-                  <input
-                    type="number"
-                    step=".01"
-                    className="form-control"
-                    name="Price"
-                    placeholder="Price"
-                    onChange={handleChange}
-                    value={invoiceDetails?.Price}
-                  />
-                </div>
-                <div style={{ position: "relative", bottom: "16px" }}>
-                  <p className="text-danger">{formErrors.Price}</p>
-                </div>
-              </div>
+                  <div className="col-md-2">
+                    <label className="form-label fw-bold">Catalog Price</label>
+                    <div className="input-group mb-3">
+                      <span className="input-group-text">$</span>
+                      <input
+                        type="number"
+                        step=".01"
+                        className="form-control"
+                        name="CatalogPrice"
+                        placeholder="Catalog Price"
+                        value={productPrice?.toFixed(2) ?? 0}
+                        onChange={handleChange}
+                        readOnly
+                      />
+                    </div>
+                  </div>
 
-              <div className="col-md-2">
-                <label className="form-label fw-bold">Quantity</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  name="Quantity"
-                  placeholder="Quantity"
-                  value={invoiceDetails?.Quantity}
-                  onChange={handleChange}
-                />
-                <p className="text-danger"> {formErrors.Quantity}</p>
-              </div>
+                  <div className="col-md-2">
+                    <label className="form-label fw-bold">Price</label>
+                    <div className="input-group mb-3">
+                      <span className="input-group-text">$</span>
+                      <input
+                        type="number"
+                        step=".01"
+                        className="form-control"
+                        name="Price"
+                        placeholder="Price"
+                        onChange={handleChange}
+                        value={invoiceDetails?.Price}
+                      />
+                    </div>
+                    <div style={{ position: "relative", bottom: "16px" }}>
+                      <p className="text-danger">{formErrors.Price}</p>
+                    </div>
+                  </div>
 
-              <div className="col-md-3">
-                <div className="d-grid gap-2 d-md-flex mt-2">
-                  <label className="form-label fw-bold"></label>
-                  <button className="btn btn-primary btn-md mt-4" type="submit">
-                    Add
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-primary btn-md mt-4"
-                    onClick={clearForm}
-                  >
-                    Clear
-                  </button>
+                  <div className="col-md-2">
+                    <label className="form-label fw-bold">Quantity</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      name="Quantity"
+                      placeholder="Quantity"
+                      value={invoiceDetails?.Quantity}
+                      onChange={handleChange}
+                    />
+                    <p className="text-danger"> {formErrors.Quantity}</p>
+                  </div>
+
+                  <div className="col-md-3">
+                    <div className="d-grid gap-2 d-md-flex mt-2">
+                      <label className="form-label fw-bold"></label>
+                      <button
+                        className="btn btn-primary btn-md mt-4"
+                        type="submit"
+                      >
+                        Add
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-primary btn-md mt-4"
+                        onClick={clearForm}
+                      >
+                        Clear
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </form>
         </div>
-      </form>
+      </Collapse>
     </>
   );
 };
