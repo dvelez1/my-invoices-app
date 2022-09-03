@@ -65,7 +65,7 @@ export const InvoiceUpsertSave = ({
     );
   };
 
-  // When Model be updated, Run The Validation
+  // When Models are updated, Run The Validations
   useEffect(() => {
     setFormErrorsInvoiceDetails(
       invoiceDetailsValidationSuccess(invoiceDetailsArray)
@@ -73,7 +73,7 @@ export const InvoiceUpsertSave = ({
     setFormErrors(invoiceMasterValidation(invoiceMasterModel));
 
     // Validate invoiceDetailsArray
-  }, [invoicePayment]);
+  }, [invoicePayment, invoiceDetailsArray, invoiceMasterModel]);
 
   // Trigger Submit After Validation (Only if submitted equal to true)
   useEffect(() => {
