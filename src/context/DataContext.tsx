@@ -39,9 +39,9 @@ type nameDataType = {
   setIsInvoiceVoidSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
 
   //#region Example for Login
-  login: () => Promise<void>;
-  logout: () => Promise<void>;
-  authed: boolean;
+  // login: () => Promise<void>;
+  // logout: () => Promise<void>;
+  // authed: boolean;
   //#endregion
 };
 
@@ -76,38 +76,42 @@ const DataProvider: React.FC<Props> = ({ children }) => {
 
   //#region Examples for Loging
 
-  const [authed, setAuthed] = useState<boolean>(false);
-  const login = async (): Promise<void> => {
-    const result = await fakeAsyncLogin();
+  // const [authed, setAuthed] = useState<boolean>(false);
+  // const login = async (): Promise<void> => {
+  //   const result = await fakeAsyncLogin();
 
-    if (result) {
-      setAuthed(true);
-    }
-  };
+  //   if (result) {
+  //     setAuthed(true);
+  //   }
+  // };
 
-  const fakeAsyncLogin = async (): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve("Logged In");
-      }, 300);
-    });
-  };
+  // const fakeAsyncLogin = async (): Promise<string> => {
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       resolve("Logged In");
+  //     }, 300);
+  //   });
+  // };
 
-  const logout = async (): Promise<void> => {
-    const result = await fakeAsyncLogout();
+  // const logout = async (): Promise<void> => {
+  //   const result = await fakeAsyncLogout();
 
-    if (result) {
-      setAuthed(false);
-    }
-  };
+  //   if (result) {
+  //     setAuthed(false);
+  //   }
+  // };
 
-  const fakeAsyncLogout = async (): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve("Logged Out");
-      }, 300);
-    });
-  };
+  // const fakeAsyncLogout = async (): Promise<string> => {
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       resolve("Logged Out");
+  //     }, 300);
+  //   });
+  // };
+
+  //#endregion
+
+  //#region Example Persist Data
 
   //#endregion
 
@@ -129,7 +133,7 @@ const DataProvider: React.FC<Props> = ({ children }) => {
         // Invoice Payments
         invoicePaymentsArray,
         setInvoicePaymentsArray,
-        // Set 
+        // Set
         successToast,
         setSuccessToast,
 
@@ -137,9 +141,9 @@ const DataProvider: React.FC<Props> = ({ children }) => {
         setIsInvoiceVoidSubmitted,
 
         //#region Examples for Loging
-        login,
-        logout,
-        authed,
+        // login,
+        // logout,
+        // authed,
         //#endregion
       }}
     >
