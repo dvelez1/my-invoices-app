@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { axiosInterface } from "../../helper/axiosInterface";
 import { Product } from "../../interfaces/product";
-import { genericMessages } from "../../helper/genericMessages";
-import {
-  errorToastTransaction,
-  successToastTransaction,
-} from "../../helper/toastMessages";
+import { useToastNotification } from "../../hooks/helpers/useToastNotification";
 
 export const useProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { notificationApi } = useToastNotification();
 
   const getProducts = async () => {
     try {
@@ -18,7 +15,10 @@ export const useProducts = () => {
       setProducts(resp.data);
     } catch (error: any) {
       console.error(error);
-      errorToastTransaction(genericMessages.error);
+      notificationApi.showNotification(
+        notificationApi.notificationType.Error,
+        notificationApi.genericMessage.Error
+      );
     } finally {
       setIsLoading(false);
     }
@@ -31,10 +31,17 @@ export const useProducts = () => {
           ? axiosInterface.post("product/updateProduct", product)
           : axiosInterface.put("product/createProduct", product);
 
-      if ((await resp)?.data) successToastTransaction(genericMessages.success);
+      if ((await resp)?.data)
+        notificationApi.showNotification(
+          notificationApi.notificationType.Success,
+          notificationApi.genericMessage.Success
+        );
     } catch (error) {
       console.error(error);
-      errorToastTransaction(genericMessages.error);
+      notificationApi.showNotification(
+        notificationApi.notificationType.Error,
+        notificationApi.genericMessage.Error
+      );
     } finally {
       getProducts();
     }

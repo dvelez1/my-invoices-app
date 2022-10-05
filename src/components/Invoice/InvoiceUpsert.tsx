@@ -12,15 +12,9 @@ import { InvoiceUpsertSave } from "./InvoiceUpsertSave";
 import { InvoiceUpserMaster } from "./InvoiceUpserMaster";
 import { InvoiceUpsertDetailsAddToList } from "./InvoiceUpsertDetailsAddToList";
 import { InvoiceUpsertDetails } from "./InvoiceUpsertDetails";
+import { useToastNotification } from "../../hooks/helpers/useToastNotification";
 
-// Import Toast components (react-toastify) -> Note: Was implemented a custom solution
-import "react-toastify/dist/ReactToastify.css";
-import {
-  errorToastTransaction,
-  successToastTransaction,
-} from "../../helper/toastMessages";
 import { useEffect } from "react";
-import { genericMessages } from "../../helper/genericMessages";
 import { ValidationsResults } from "../shared/ValidationsResults";
 
 //#endregion
@@ -47,6 +41,8 @@ export const InvoiceUpsert = () => {
   // For Select
   const { customers } = useCustomersGet();
   const { products, producApi } = useProducts();
+
+  const { notificationApi } = useToastNotification();
   // If no data found, initialize with default value
   useEffect(() => {
     producApi.getProducts();
@@ -66,8 +62,16 @@ export const InvoiceUpsert = () => {
 
   // Evaluate Post Response to Trigger the Toast
   const handlePostOperationResult = (successResult: boolean) => {
-    if (successResult) successToastTransaction(genericMessages.success);
-    else errorToastTransaction(genericMessages.error);
+    if (successResult)
+      notificationApi.showNotification(
+        notificationApi.notificationType.Success,
+        notificationApi.genericMessage.Success
+      );
+    else
+      notificationApi.showNotification(
+        notificationApi.notificationType.Error,
+        notificationApi.genericMessage.Error
+      );
   };
 
   //#endregion "Methods"

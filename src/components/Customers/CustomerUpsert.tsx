@@ -11,15 +11,12 @@ import { currentDate } from "../../helper/dateFormatter";
 import { useDataContext } from "../../context/DataContext";
 // Import Toast components (react-toastify) -> Note: Was implemented a custom solution
 import "react-toastify/dist/ReactToastify.css";
-import {
-  infoToastTransaction,
-  errorToastTransaction,
-  successToastTransaction,
-} from "../../helper/toastMessages";
+
 import { customerValidation } from "../../hooks/Customers/customerValidation";
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";
 import { Customer } from "../../interfaces/customer";
+import { useToastNotification } from "../../hooks/helpers/useToastNotification";
 
 //#endregion Imports
 
@@ -29,6 +26,8 @@ export const CustomerUpsert = () => {
 
   const [formErrors, setFormErrors] = useState<any>({});
   const [isLoading, setIsLoading] = useState(false);
+  const { notificationApi } = useToastNotification();
+
   const customerDefaultInitialization: Customer = {
     CustomerId: 0,
     Name: "",
@@ -92,7 +91,8 @@ export const CustomerUpsert = () => {
         });
       }
     } else {
-      infoToastTransaction(
+      notificationApi.showNotification(
+        notificationApi.notificationType.Info,
         "Please, provide all requested information!" +
           " Maybe some data did not meet the requirements or is missing."
       );
@@ -105,9 +105,16 @@ export const CustomerUpsert = () => {
     genericMessage: string
   ) => {
     if (successResponse) {
-      successToastTransaction(genericMessage);
+      notificationApi.showNotification(
+        notificationApi.notificationType.Success,
+        genericMessage
+      );
       handleUpsertRedirection();
-    } else errorToastTransaction(genericMessage);
+    } else
+      notificationApi.showNotification(
+        notificationApi.notificationType.Error,
+        genericMessage
+      );
   };
 
   //#endregion "Methods"

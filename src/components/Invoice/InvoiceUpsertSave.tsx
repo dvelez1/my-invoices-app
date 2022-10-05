@@ -10,7 +10,7 @@ import { InvoicePayments } from "../../interfaces/InvoicePayments";
 import { invoiceMasterValidation } from "../../hooks/Invoice/invoiceMasterValidation";
 import { invoiceDetailsValidationSuccess } from "../../hooks/Invoice/InvoiceDetailsArrayValidation";
 import { invoiceVoidValidation } from "../../hooks/Invoice/invoiceVoidValidation";
-import { infoToastTransaction } from "../../helper/toastMessages";
+import { useToastNotification } from "../../hooks/helpers/useToastNotification";
 
 //#endregion Imports
 
@@ -28,6 +28,8 @@ export const InvoiceUpsertSave = ({
     setInvoicePaymentsArray,
     setIsInvoiceVoidSubmitted,
   } = useDataContext();
+
+  const { notificationApi } = useToastNotification();
 
   // Redirect to another Page / Reset the Contect during redirection
   const navigate = useNavigate();
@@ -85,9 +87,10 @@ export const InvoiceUpsertSave = ({
         if (isCreateEvent()) handleCreateEvent();
         else handleEditEvent();
       } else {
-        infoToastTransaction(
+        notificationApi.showNotification(
+          notificationApi.notificationType.Info,
           "Please, provide all requested information!" +
-            " Maybe some data did not meet the requirements or is missing."
+          " Maybe some data did not meet the requirements or is missing."
         );
       }
     } else if (isInvoiceVoidSubmitted) {
@@ -95,9 +98,10 @@ export const InvoiceUpsertSave = ({
       if (Object.keys(formErrors).length === 0) {
         handleVoidOperation();
       } else {
-        infoToastTransaction(
+        notificationApi.showNotification(
+          notificationApi.notificationType.Info,
           "Please, provide all requested information!" +
-            " Maybe some data did not meet the requirements or is missing."
+          " Maybe some data did not meet the requirements or is missing."
         );
       }
     }
