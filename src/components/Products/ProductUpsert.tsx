@@ -6,9 +6,7 @@ import { Product } from "../../interfaces/product";
 // Import Toast components (react-toastify) -> Note: Was implemented a custom solution
 import "react-toastify/dist/ReactToastify.css";
 import {
-  errorToastTransaction,
   infoToastTransaction,
-  successToastTransaction,
 } from "../../helper/toastMessages";
 // Form Vaidation
 import { productValidation } from "../../hooks/Products/productValidation";
