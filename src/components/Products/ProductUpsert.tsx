@@ -23,7 +23,7 @@ import { useProducts } from "../../hooks/Products/useProducts";
 export const ProductUpsert = () => {
   // Note: We are sending from Product and Object of Product Type as Parameter on the Route Navigation event
   const location = useLocation();
-  const { products, isLoading, producApi } = useProducts();
+  const { producApi } = useProducts();
 
   var initialFormData = Object.freeze(location.state as Product);
 
@@ -58,18 +58,9 @@ export const ProductUpsert = () => {
     event.preventDefault();
     setIsSubmit(true);
     if (successValidation()) {
-      // if (product.ProductId === 0)
-      //   createProduct(product).then((result) => {
-      //     saveEventResultMessageHandler(result[0], result[1]);
-      //   });
-      // else if (product.ProductId > 0)
-      //   updateProduct(product).then((result) => {
-      //     saveEventResultMessageHandler(result[0], result[1]);
-      //   });
       producApi.upsertProduct(product).finally(()=>{
         handleUpsertRedirection();
       })
-
     } else {
       infoToastTransaction(
         "Please, provide all requested information!" +
@@ -77,17 +68,6 @@ export const ProductUpsert = () => {
       );
     }
     setIsSubmit(false);
-  };
-
-  // Method to handle Insert/Update Operation Result Message
-  const saveEventResultMessageHandler = (
-    successResponse: boolean,
-    genericMessage: string
-  ) => {
-    if (successResponse) {
-      successToastTransaction(genericMessage);
-      handleUpsertRedirection();
-    } else errorToastTransaction(genericMessage);
   };
 
   // Used for Form validation: When Product Change - Trigger the validation without submit (Because isSubmit will be false )
@@ -114,7 +94,7 @@ export const ProductUpsert = () => {
             />
             <ProductUpsertSave
               setIsSubmit={isSubmit}
-              handleUpsertClick={handleUpsertRedirection}
+              handleUpsertRedirection={handleUpsertRedirection}
               successValidation={successValidation}
             />
           </div>

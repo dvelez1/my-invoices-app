@@ -16,19 +16,6 @@ export const useProducts = () => {
       setIsLoading(true);
       const resp = await axiosInterface.get<Product[]>("product/getProducts");
       setProducts(resp.data);
-      // let result = resp.data;
-      // setProducts(
-      //   result.map(
-      //     (item: Product) =>
-      //     <Product>{
-      //       ProductId: 1,
-      //       Name: "",
-      //       Price:1,
-      //       StartDate: new Date(),
-      //       EndDate: null
-      //       }
-      //   )
-      // );
     } catch (error: any) {
       console.error(error);
       errorToastTransaction(genericMessages.error);
