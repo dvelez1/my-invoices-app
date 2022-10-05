@@ -2,7 +2,7 @@
 import { useState } from "react";
 // Master Files
 import { useCustomersGet } from "../../hooks/Customers/useCustomersGet";
-import { useProductsGet } from "../../hooks/Products/useProductsGet";
+import { useProducts } from "../../hooks/Products/useProducts";
 
 // Data Context
 import { useDataContext } from "../../context/DataContext";
@@ -44,16 +44,16 @@ export const InvoiceUpsert = () => {
   // Import Data Context Properties
   const { setInvoiceMasterModel, invoiceMasterModel } = useDataContext();
   const [invoiceDetailsErrors, setInvoiceDetailsErrors] = useState([]);
+  // For Select
+  const { customers } = useCustomersGet();
+  const { products, producApi } = useProducts();
   // If no data found, initialize with default value
   useEffect(() => {
+    producApi.getProducts();
     if (!invoiceMasterModel) {
       setInvoiceMasterModel(invoiceModelInitialization);
     }
   }, []);
-
-  // For Select
-  const { customers } = useCustomersGet();
-  const { products } = useProductsGet();
 
   //#region "Methods"
 

@@ -1,21 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Product } from "../../interfaces/product";
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";
 
-import { useProductsGet } from "../../hooks/Products/useProductsGet";
+import { useProducts } from "../../hooks/Products/useProducts";
 import { ProductsRows } from "../Products/ProductsRows";
 // Toast
 import { PaginationComponent } from "../shared/PaginationComponent";
 
 export const Products = () => {
   // Get Product and execute Loading Spinner
-  const { products, isLoading } = useProductsGet();
+  const { products, isLoading, producApi } = useProducts();
 
   // Properties for paging and Search
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    producApi.getProducts();
+  }, []);
 
   //#region "Methods"
   // Page Redirection

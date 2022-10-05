@@ -3,8 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 // Product Interface
 import { Product } from "../../interfaces/product";
-// Methods for Insert
-import { createProduct, updateProduct } from "../../api/Products/upsertEvents";
 // Import Toast components (react-toastify) -> Note: Was implemented a custom solution
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -18,12 +16,15 @@ import { productValidation } from "../../hooks/Products/productValidation";
 // Components
 import { ProductUpsertSave } from "./ProductUpsertSave";
 import { ProductUpsertBody } from "./ProductUpsertBody";
+import { useProducts } from "../../hooks/Products/useProducts";
 
 //#endregion Imports
 
 export const ProductUpsert = () => {
   // Note: We are sending from Product and Object of Product Type as Parameter on the Route Navigation event
   const location = useLocation();
+  const { products, isLoading, producApi } = useProducts();
+
   var initialFormData = Object.freeze(location.state as Product);
 
   const [product, setProduct] = React.useState<Product>(initialFormData);
@@ -57,14 +58,18 @@ export const ProductUpsert = () => {
     event.preventDefault();
     setIsSubmit(true);
     if (successValidation()) {
-      if (product.ProductId === 0)
-        createProduct(product).then((result) => {
-          saveEventResultMessageHandler(result[0], result[1]);
-        });
-      else if (product.ProductId > 0)
-        updateProduct(product).then((result) => {
-          saveEventResultMessageHandler(result[0], result[1]);
-        });
+      // if (product.ProductId === 0)
+      //   createProduct(product).then((result) => {
+      //     saveEventResultMessageHandler(result[0], result[1]);
+      //   });
+      // else if (product.ProductId > 0)
+      //   updateProduct(product).then((result) => {
+      //     saveEventResultMessageHandler(result[0], result[1]);
+      //   });
+      producApi.upsertProduct(product).finally(()=>{
+        handleUpsertRedirection();
+      })
+
     } else {
       infoToastTransaction(
         "Please, provide all requested information!" +
