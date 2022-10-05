@@ -10,14 +10,12 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { CustomerUpsert } from "./components/Customers/CustomerUpsert";
 import { ProductUpsert } from "./components/Products/ProductUpsert";
 import {InvoiceUpsert} from "./components/Invoice/InvoiceUpsert"
-import { ToastContainerImplementation } from "./components/shared/ToastContainerImplementation";
 import { ToastNotificationContainer } from "./components/shared/toastNotifications/ToastNotificationContainer";
 
 
 function App() {
   return (
     <>
-    {/* <ToastContainerImplementation /> */}
     <ToastNotificationContainer />
       <BrowserRouter>
         <Navbar />
