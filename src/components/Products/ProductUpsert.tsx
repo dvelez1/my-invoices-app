@@ -3,11 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 // Product Interface
 import { Product } from "../../interfaces/product";
-// Import Toast components (react-toastify) -> Note: Was implemented a custom solution
-import "react-toastify/dist/ReactToastify.css";
-import {
-  infoToastTransaction,
-} from "../../helper/toastMessages";
+import { useToastNotification } from "../../hooks/helpers/useToastNotification";
 // Form Vaidation
 import { productValidation } from "../../hooks/Products/productValidation";
 
@@ -22,6 +18,7 @@ export const ProductUpsert = () => {
   // Note: We are sending from Product and Object of Product Type as Parameter on the Route Navigation event
   const location = useLocation();
   const { producApi } = useProducts();
+  const { notificationApi } = useToastNotification();
 
   var initialFormData = Object.freeze(location.state as Product);
 
@@ -56,11 +53,12 @@ export const ProductUpsert = () => {
     event.preventDefault();
     setIsSubmit(true);
     if (successValidation()) {
-      producApi.upsertProduct(product).finally(()=>{
+      producApi.upsertProduct(product).finally(() => {
         handleUpsertRedirection();
-      })
+      });
     } else {
-      infoToastTransaction(
+      notificationApi.showNotification(
+        notificationApi.notificationType.Info,
         "Please, provide all requested information!" +
           " Maybe some data did not meet the requirements or is missing."
       );

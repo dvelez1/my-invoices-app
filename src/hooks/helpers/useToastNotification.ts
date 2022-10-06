@@ -43,6 +43,6 @@ export const useToastNotification = () => {
   };
 
   return {
-    notificationApi,
+    notificationApi
   };
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { axiosInterface } from "../../helper/axiosInterface";
 import { Product } from "../../interfaces/product";
-import { useToastNotification } from "../../hooks/helpers/useToastNotification";
+import { useToastNotification } from "../helpers/useToastNotification";
 
 export const useProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
