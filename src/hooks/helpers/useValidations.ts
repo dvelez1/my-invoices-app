@@ -23,9 +23,15 @@ export const useValidations = () => {
     return validationModel;
   };
 
-  const validationContainer = (validationRules: []) => {
+  const validationContainer = (validationRules: any) => {
+    console.log("Modelo 1", validationRules)
 
-    
+    let array = validationRules as [];
+  
+    const result = array.filter(element =>{
+      return element !== undefined;
+    })
+   
   };
 
   const validationsTypes = {
@@ -41,5 +47,6 @@ export const useValidations = () => {
   return {
     validationsTypes,
     validationsActions,
+    validationContainer
   };
 };

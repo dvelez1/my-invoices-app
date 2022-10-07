@@ -3,7 +3,8 @@ import { Product } from "../../interfaces/product";
 import { useValidations } from "../helpers/useValidations";
 
 export const useProductValidation = () => {
-  const { validationsTypes, validationsActions } = useValidations();
+  const { validationsTypes, validationsActions, validationContainer } =
+    useValidations();
   var validationErrors: any = {};
   const [productValidationErrors, setProductValidationErrors] = useState<{}>(
     {}
@@ -22,6 +23,12 @@ export const useProductValidation = () => {
       values.Price,
       "Price"
     );
+
+    validationContainer([validationsTypes.requiredField(values.Name, "Name"), 
+    validationsTypes.numberGreaterThanZero(
+      values.Price,
+      "Price"
+    )]);
 
     //Clean Model
     validationErrors =
