@@ -17,7 +17,7 @@ import { useProducts } from "../../hooks/Products/useProducts";
 export const ProductUpsert = () => {
   const { producApi } = useProducts();
   const { notificationApi } = useToastNotification();
-  const { runValidations } = useProductValidation();
+  const { productValidations, productValidationPassed } = useProductValidation();
 
   // Note: We are sending from Product and Object of Product Type as Parameter on the Route Navigation event
   const location = useLocation();
@@ -44,16 +44,12 @@ export const ProductUpsert = () => {
     });
   };
 
-  // Validation Result Evaluation
-  const successValidation = (): boolean => {
-    return Object.keys(formErrors).length === 0;
-  };
 
   // Submit Event
   const handleSubmit = (event: any) => {
     event.preventDefault();
     setIsSubmit(true);
-    if (successValidation()) {
+    if (productValidationPassed) {
       producApi.upsertProduct(product).finally(() => {
         handleUpsertRedirection();
       });
@@ -69,7 +65,7 @@ export const ProductUpsert = () => {
 
   // Used for Form validation: When Product Change - Trigger the validation without submit (Because isSubmit will be false )
   useEffect(() => {
-    setFormErrors(runValidations(product));
+    setFormErrors(productValidations(product));
   }, [product]);
 
   //#endregion "Methods"
@@ -92,7 +88,7 @@ export const ProductUpsert = () => {
             <ProductUpsertSave
               setIsSubmit={isSubmit}
               handleUpsertRedirection={handleUpsertRedirection}
-              successValidation={successValidation}
+              productValidationPassed={productValidationPassed}
             />
           </div>
         </div>

@@ -1,6 +1,7 @@
 import React from "react";
 
 export const useValidations = () => {
+
   const requiredField = (value: any, name: string) => {
     if (!value) return name + " is required!";
   };
@@ -26,9 +27,13 @@ export const useValidations = () => {
     numberGreaterThanZero,
   };
 
-  return {
-    validationsTypes,
+  const validationsActions = {
     validationsPassed,
     cleanValidationModel,
+  }
+
+  return {
+    validationsTypes,
+    validationsActions
   };
 };

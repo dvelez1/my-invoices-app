@@ -6,7 +6,7 @@ export const ProductUpsertSave = (props: any) => {
           {!props.isPending && (
             <button
               className="btn btn-primary me-md-2"
-              disabled={!props.successValidation()}
+              disabled={!props.productValidationPassed}
               type="submit"
             >
               Save
@@ -15,7 +15,7 @@ export const ProductUpsertSave = (props: any) => {
           {props.isSubmit && (
             <button
               className="btn btn-primary me-md-2"
-              disabled={!props.successValidation()}
+              disabled={!props.productValidationPassed}
               type="submit"
             >
               Saving
