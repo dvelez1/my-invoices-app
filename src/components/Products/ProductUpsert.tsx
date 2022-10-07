@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Product } from "../../interfaces/product";
 import { useToastNotification } from "../../hooks/helpers/useToastNotification";
 // Form Vaidation
-import { productValidation } from "../../hooks/Products/productValidation";
+import { useProductValidation } from "../../hooks/Products/useProductValidation";
 
 // Components
 import { ProductUpsertSave } from "./ProductUpsertSave";
@@ -15,11 +15,12 @@ import { useProducts } from "../../hooks/Products/useProducts";
 //#endregion Imports
 
 export const ProductUpsert = () => {
-  // Note: We are sending from Product and Object of Product Type as Parameter on the Route Navigation event
-  const location = useLocation();
   const { producApi } = useProducts();
   const { notificationApi } = useToastNotification();
+  const { runValidations } = useProductValidation();
 
+  // Note: We are sending from Product and Object of Product Type as Parameter on the Route Navigation event
+  const location = useLocation();
   var initialFormData = Object.freeze(location.state as Product);
 
   const [product, setProduct] = React.useState<Product>(initialFormData);
@@ -68,7 +69,7 @@ export const ProductUpsert = () => {
 
   // Used for Form validation: When Product Change - Trigger the validation without submit (Because isSubmit will be false )
   useEffect(() => {
-    setFormErrors(productValidation(product));
+    setFormErrors(runValidations(product));
   }, [product]);
 
   //#endregion "Methods"
