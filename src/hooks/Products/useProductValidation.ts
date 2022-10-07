@@ -4,7 +4,7 @@ import { useValidations } from "../helpers/useValidations";
 
 export const useProductValidation = () => {
   const { validationsTypes, validationsActions } = useValidations();
-  var productValidationErrors: any = {};
+  var validationErrors: any = {};
   const [productValidationPassed, setProductValidationPassed] =
     useState<boolean>(false);
     // const [productValidationErrors, setProductValidationErrors] = useState<{}>({})
@@ -12,27 +12,27 @@ export const useProductValidation = () => {
   const productValidations = (values: Product): {} => {
 
     // Run Validations
-    productValidationErrors.Name = validationsTypes.requiredField(
+    validationErrors.Name = validationsTypes.requiredField(
       values.Name,
       "Name"
     );
-    productValidationErrors.Price = validationsTypes.requiredField(
+    validationErrors.Price = validationsTypes.requiredField(
       values.Price,
       "Price"
     );
 
     //Clean Model
-    productValidationErrors = validationsActions.cleanValidationModel(
-      productValidationErrors
+    validationErrors = validationsActions.cleanValidationModel(
+      validationErrors
     );
 
     // Verify if model failed
     setProductValidationPassed(
-      validationsActions.validationsPassed(productValidationErrors)
+      validationsActions.validationsPassed(validationErrors)
     );
     
 
-    return productValidationErrors;
+    return validationErrors;
   };
 
   return {
