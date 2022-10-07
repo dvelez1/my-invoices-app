@@ -4,22 +4,35 @@ import { useValidations } from "../helpers/useValidations";
 
 export const useProductValidation = () => {
   const { validationsTypes, validationsActions } = useValidations();
-  const validationErrors: any = {};
-  const [productValidationPassed, setProductValidationPassed] = useState<boolean>(false);
+  var productValidationErrors: any = {};
+  const [productValidationPassed, setProductValidationPassed] =
+    useState<boolean>(false);
+    // const [productValidationErrors, setProductValidationErrors] = useState<{}>({})
 
   const productValidations = (values: Product): {} => {
-    validationErrors.Name = validationsTypes.requiredField(values.Name, "Name");
-    validationErrors.Price = validationsTypes.requiredField(
+
+    // Run Validations
+    productValidationErrors.Name = validationsTypes.requiredField(
+      values.Name,
+      "Name"
+    );
+    productValidationErrors.Price = validationsTypes.requiredField(
       values.Price,
       "Price"
     );
 
-    let cleanedValidationModel =
-      validationsActions.cleanValidationModel(validationErrors);
-      setProductValidationPassed(
-      validationsActions.validationsPassed(cleanedValidationModel)
+    //Clean Model
+    productValidationErrors = validationsActions.cleanValidationModel(
+      productValidationErrors
     );
-    return cleanedValidationModel;
+
+    // Verify if model failed
+    setProductValidationPassed(
+      validationsActions.validationsPassed(productValidationErrors)
+    );
+    
+
+    return productValidationErrors;
   };
 
   return {

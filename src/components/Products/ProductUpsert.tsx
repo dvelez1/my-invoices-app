@@ -17,7 +17,10 @@ import { useProducts } from "../../hooks/Products/useProducts";
 export const ProductUpsert = () => {
   const { producApi } = useProducts();
   const { notificationApi } = useToastNotification();
-  const { productValidations, productValidationPassed } = useProductValidation();
+  const {
+    productValidations,
+    productValidationPassed,
+  } = useProductValidation();
 
   // Note: We are sending from Product and Object of Product Type as Parameter on the Route Navigation event
   const location = useLocation();
@@ -43,7 +46,6 @@ export const ProductUpsert = () => {
       [e.target.name]: e.target.value.trim(),
     });
   };
-
 
   // Submit Event
   const handleSubmit = (event: any) => {
