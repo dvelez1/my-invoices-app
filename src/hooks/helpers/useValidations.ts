@@ -7,7 +7,8 @@ export const useValidations = () => {
   };
 
   const numberGreaterThanZero = (value: number, name: string) => {
-    if (value && value > 0) return name + " must be greater than 0!";
+    console.log(value)
+    if (value && !(value > 0)) return name + " must be greater than 0!";
   };
 
   const validationsPassed = (validationResults: {}): boolean => {
@@ -22,6 +23,7 @@ export const useValidations = () => {
     return validationModel;
   };
 
+  
   const validationsTypes = {
     requiredField,
     numberGreaterThanZero,

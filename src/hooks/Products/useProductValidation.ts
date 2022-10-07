@@ -14,6 +14,10 @@ export const useProductValidation = () => {
   const productValidations = (values: Product) => {
     // Run Validations
     validationErrors.Name = validationsTypes.requiredField(values.Name, "Name");
+    validationErrors.Price = validationsTypes.numberGreaterThanZero(
+      values.Price,
+      "Price"
+    );
     validationErrors.Price = validationsTypes.requiredField(
       values.Price,
       "Price"
