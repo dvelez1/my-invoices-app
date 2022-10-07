@@ -1,16 +1,16 @@
 import React from "react";
 
 export const useValidations = () => {
-
+  // Rules
   const requiredField = (value: any, name: string) => {
     if (!value) return name + " is required!";
   };
 
   const numberGreaterThanZero = (value: number, name: string) => {
-    console.log(value)
     if (value && !(value > 0)) return name + " must be greater than 0!";
   };
 
+  // Actions / Methods
   const validationsPassed = (validationResults: {}): boolean => {
     return Object.keys(validationResults).length === 0;
   };
@@ -23,7 +23,11 @@ export const useValidations = () => {
     return validationModel;
   };
 
-  
+  const validationContainer = (validationRules: []) => {
+
+    
+  };
+
   const validationsTypes = {
     requiredField,
     numberGreaterThanZero,
@@ -32,10 +36,10 @@ export const useValidations = () => {
   const validationsActions = {
     validationsPassed,
     cleanValidationModel,
-  }
+  };
 
   return {
     validationsTypes,
-    validationsActions
+    validationsActions,
   };
 };
