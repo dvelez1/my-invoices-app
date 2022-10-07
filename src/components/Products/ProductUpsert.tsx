@@ -20,6 +20,7 @@ export const ProductUpsert = () => {
   const {
     productValidations,
     productValidationPassed,
+    productValidationErrors
   } = useProductValidation();
 
   // Note: We are sending from Product and Object of Product Type as Parameter on the Route Navigation event
@@ -27,7 +28,6 @@ export const ProductUpsert = () => {
   var initialFormData = Object.freeze(location.state as Product);
 
   const [product, setProduct] = React.useState<Product>(initialFormData);
-  const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
 
   //#region "Methods"
@@ -67,7 +67,7 @@ export const ProductUpsert = () => {
 
   // Used for Form validation: When Product Change - Trigger the validation without submit (Because isSubmit will be false )
   useEffect(() => {
-    setFormErrors(productValidations(product));
+    productValidations(product);
   }, [product]);
 
   //#endregion "Methods"
@@ -84,7 +84,7 @@ export const ProductUpsert = () => {
           <div className="card-body">
             <ProductUpsertBody
               product={product}
-              formErrors={formErrors}
+              formErrors={productValidationErrors}
               handleChange={handleChange}
             />
             <ProductUpsertSave
