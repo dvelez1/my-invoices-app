@@ -83,13 +83,18 @@ export const Invoices = () => {
   //#region "Filtering and Pagination"
   const filteredDataSource = (): InvoiceMaster[] => {
     if (search.length === 0)
-      return invoiceMaster.slice(currentPage, currentPage + 10);
+      return invoiceMaster
+        ? invoiceMaster.slice(currentPage, currentPage + 10)
+        : [];
 
     //Search Input with data
     const filtered = invoiceMaster.filter((invMaster) =>
       invMaster.CustomerName.toLowerCase().includes(search)
     );
-    return filtered.slice(currentPage, currentPage + 10);
+
+    return filtered ? filtered.slice(currentPage, currentPage + 10) : [];
+
+    // return filtered.slice(currentPage, currentPage + 10);
   };
 
   const onSearchChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {

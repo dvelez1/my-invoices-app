@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 
 export const PaginationComponent = (props: any) => {
   const [page, setPage] = useState(props.currentPage);
-  
-  const totalPages = ():number =>{
-    return Math.ceil(totalGridRecords() / 10)
-  }
+
+  const totalPages = (): number => {
+    return Math.ceil(totalGridRecords() / 10);
+  };
 
   const currentPageCalculator = (): number => {
     if (totalPages() === 0) return 0;
@@ -16,13 +16,15 @@ export const PaginationComponent = (props: any) => {
   };
 
   const nextPage = () => {
-    if (
-      props.dataSource.filter((obj: any) =>
-        obj[props.filterValueName].includes(props.search)
-      ).length >
-      props.currentPage + 10
-    )
-      props.setCurrentPage(props.currentPage + 10);
+    if (props.dataSource) {
+      if (
+        props.dataSource.filter((obj: any) =>
+          obj[props.filterValueName].includes(props.search)
+        ).length >
+        props.currentPage + 10
+      )
+        props.setCurrentPage(props.currentPage + 10);
+    }
   };
 
   const prevPage = () => {
@@ -30,10 +32,13 @@ export const PaginationComponent = (props: any) => {
   };
 
   const totalGridRecords = (): number => {
-    if (props.search.length === 0) return props.dataSource.length;
+    if (props.dataSource) {
+      if (props.search.length === 0) return props.dataSource.length;
 
-    return props.dataSource.filter((obj:any) => obj[props.filterValueName].toLowerCase().includes(props.search))
-      .length;
+      return props.dataSource.filter((obj: any) =>
+        obj[props.filterValueName].toLowerCase().includes(props.search)
+      ).length;
+    } else return 0;
   };
 
   useEffect(() => {
