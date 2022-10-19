@@ -18,6 +18,7 @@ export const useInvoicesGet = () => {
       axiosInterface
         .get("invoiceMaster/getTransformedInvoiceAll")
         .then((response) => {
+          console.log("model get",response.data)
           setInvoiceMaster(response.data[0])
           setInvoiceDetails(response.data[1])
           setInvoicePayments(response.data[2])
