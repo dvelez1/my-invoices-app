@@ -55,14 +55,17 @@ const DataProvider: React.FC<Props> = ({ children }) => {
   const [productModel, setProductModel] = useState<Product | undefined>(
     undefined
   );
+  
   // Invoice Master
   const [invoiceMasterModel, setInvoiceMasterModel] = useState<InvoiceMaster>(
     null!
   );
+
   // Invoice Details
   const [invoiceDetailsArray, setInvoiceDetailsArray] = useState<
     InvoiceDetails[]
   >([]);
+
   // Invoice Payments
   const [invoicePaymentsArray, setInvoicePaymentsArray] = useState<
     InvoicePayments[]

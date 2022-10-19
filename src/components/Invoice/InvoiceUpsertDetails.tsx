@@ -14,6 +14,8 @@ export const InvoiceUpsertDetails = (props: any) => {
     return (price ?? 0) * (quantity ?? 0);
   };
 
+  console.log("invoiceDetailsArray", invoiceDetailsArray);
+
   //#region OnChange Methods
   const handleProductChange = (e: any, invoiceDetailsId: number) => {
     setProduct(e.target.value);

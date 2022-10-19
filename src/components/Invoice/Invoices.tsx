@@ -68,12 +68,12 @@ export const Invoices = () => {
     );
     setInvoiceDetailsArray(
       invoiceDetails.filter((obj) => {
-        return obj.InvoiceId === invoiceId && obj.RemovedTransaction === false;
+        return obj.InvoiceId === invoiceId && obj.RemovedTransaction == false;
       })
     );
     setInvoicePaymentsArray(
       invoicePayments.filter((obj) => {
-        return obj.InvoiceId === invoiceId && obj.RemovedTransaction === false;
+        return obj.InvoiceId === invoiceId && obj.RemovedTransaction == false;
       })
     );
     //#endregion
