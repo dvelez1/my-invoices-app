@@ -43,7 +43,6 @@ class InvoiceDataService {
     try {
       const promises = invoiceDetails.map(async (obj) => {
         const result = await axiosInterface.put(Urls.CreateInvoiceDetails, obj);
-        console.log("result", result);
         return result;
       });
 
@@ -129,7 +128,6 @@ class InvoiceDataService {
   createInvoicePayments = async (
     invoicePayments: InvoicePayments
   ): Promise<boolean> => {
-    console.log("invoicePayments",invoicePayments)
     try {
       const resp = await axiosInterface.put(
         Urls.CreateInvoicePayment,

@@ -24,7 +24,7 @@ export const useValidations = () => {
   };
 
   const validationContainer = (validationRules: any) => {
-    console.log("Modelo 1", validationRules)
+
 
     let array = validationRules as [];
   

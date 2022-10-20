@@ -162,7 +162,7 @@ export const InvoiceUpsertSave = ({
         });
 
         if (!(invoiceId === 0)) {
-          console.log("invoiceMasterModel",invoiceMasterModel)
+   
           // Create: Invoice Details
           // We are sending invoiceDetailsArray as parameter with their corresponding InvoiceId
           InvoiceDataService.createInvoiceInvoiceDetails(
