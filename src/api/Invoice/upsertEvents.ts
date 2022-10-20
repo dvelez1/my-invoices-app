@@ -98,7 +98,6 @@ class InvoiceDataService {
     invoiceDetails: InvoiceDetails[]
   ): Promise<boolean> => {
     const executionTime = invoiceDetails.length * 37;
-
     if (invoiceDetails.length === 0) {
       return false;
     } else {
@@ -130,6 +129,7 @@ class InvoiceDataService {
   createInvoicePayments = async (
     invoicePayments: InvoicePayments
   ): Promise<boolean> => {
+    console.log("invoicePayments",invoicePayments)
     try {
       const resp = await axiosInterface.put(
         Urls.CreateInvoicePayment,
