@@ -10,6 +10,12 @@ export const useValidations = () => {
     if (value && !(value > 0)) return name + " must be greater than 0!";
   };
 
+  const nullOrLengthEqualTo = (value: any, name: string, length: number) => {
+    if (value === null || value === undefined || value === "") return "";
+
+    if (value.length != length) return name + ": lenght must be equal to " + length + "!" ;
+  };
+
   // Actions / Methods
   const validationsPassed = (validationResults: {}): boolean => {
     return Object.keys(validationResults).length === 0;
@@ -24,19 +30,17 @@ export const useValidations = () => {
   };
 
   const validationContainer = (validationRules: any) => {
-
-
     let array = validationRules as [];
-  
-    const result = array.filter(element =>{
+
+    const result = array.filter((element) => {
       return element !== undefined;
-    })
-   
+    });
   };
 
   const validationsTypes = {
     requiredField,
     numberGreaterThanZero,
+    nullOrLengthEqualTo
   };
 
   const validationsActions = {
@@ -47,6 +51,6 @@ export const useValidations = () => {
   return {
     validationsTypes,
     validationsActions,
-    validationContainer
+    validationContainer,
   };
 };

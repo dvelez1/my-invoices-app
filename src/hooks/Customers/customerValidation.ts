@@ -11,8 +11,8 @@ export const customerValidation = (values: Customer): {} => {
     errors.FirstName = "Price is Required!";
   }
 
-  if (!values.FirstName) {
-    errors.FirstName = "Last Name is Required!";
+  if (!values.LastName) {
+    errors.LastName = "Last Name is Required!";
   }
 
   if (!values.City) {
