@@ -1,17 +1,10 @@
 //#region Imports
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  createCustomer,
-  updateCustomer,
-} from "../../api/Customers/upsertEvents";
-
+import { useCustomers } from "../../hooks/Customers/useCustomers";
 import { currentDate } from "../../helper/dateFormatter";
 // Data Context
 import { useDataContext } from "../../context/DataContext";
-// Import Toast components (react-toastify) -> Note: Was implemented a custom solution
-import "react-toastify/dist/ReactToastify.css";
-
 import { customerValidation } from "../../hooks/Customers/customerValidation";
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";
@@ -21,12 +14,11 @@ import { useToastNotification } from "../../hooks/helpers/useToastNotification";
 //#endregion Imports
 
 export const CustomerUpsert = () => {
-  // Data Context
   const { setCustomerModel, customerModel } = useDataContext();
-
   const [formErrors, setFormErrors] = useState<any>({});
-  const [isLoading, setIsLoading] = useState(false);
   const { notificationApi } = useToastNotification();
+  const [isSubmit, setIsSubmit] = useState(false);
+  const { customerApi } = useCustomers();
 
   const customerDefaultInitialization: Customer = {
     CustomerId: 0,
@@ -79,17 +71,11 @@ export const CustomerUpsert = () => {
 
   // Insert/Edit Operation
   const handleSaveClick = () => {
-    //Insert / Update Operation
+    setIsSubmit(true);
     if (successValidation()) {
-      if (customerModel?.CustomerId === 0) {
-        createCustomer(customerModel).then((result) => {
-          saveEventResultMessageHandler(result[0], result[1]);
-        });
-      } else {
-        updateCustomer(customerModel).then((result) => {
-          saveEventResultMessageHandler(result[0], result[1]);
-        });
-      }
+      customerApi.upsertCustomer(customerModel).finally(() => {
+        handleUpsertRedirection();
+      });
     } else {
       notificationApi.showNotification(
         notificationApi.notificationType.Info,
@@ -97,24 +83,7 @@ export const CustomerUpsert = () => {
           " Maybe some data did not meet the requirements or is missing."
       );
     }
-  };
-
-  // Method to handle Insert/Update Operation Result Message
-  const saveEventResultMessageHandler = (
-    successResponse: boolean,
-    genericMessage: string
-  ) => {
-    if (successResponse) {
-      notificationApi.showNotification(
-        notificationApi.notificationType.Success,
-        genericMessage
-      );
-      handleUpsertRedirection();
-    } else
-      notificationApi.showNotification(
-        notificationApi.notificationType.Error,
-        genericMessage
-      );
+    setIsSubmit(false);
   };
 
   //#endregion "Methods"
@@ -213,7 +182,7 @@ export const CustomerUpsert = () => {
               />
             </div>
           </div>
-          {isLoading && <Loading />}
+          {isSubmit && <Loading />}
           <div className="row mt-2 mb-2">
             <div className="col-md-4">
               <label className="form-label">
