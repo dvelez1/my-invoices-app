@@ -1,8 +1,8 @@
 //#region Imports
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCustomersGet } from "../../hooks/Customers/useCustomersGet";
 import { Customer } from "../../interfaces/customer";
+import { useCustomers } from "../../hooks/Customers/useCustomers";
 
 // Data Context
 import { useDataContext } from "../../context/DataContext";
@@ -16,10 +16,14 @@ import { PaginationComponent } from "../shared/PaginationComponent";
 //#endregion Imports
 
 export const Customers = () => {
-  const { setCustomerModel, successToast, setSuccessToast } = useDataContext();
-  const { customers, isLoading } = useCustomersGet();
+  const { setCustomerModel } = useDataContext();
+  const { customers, isLoading, customerApi } = useCustomers();
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    customerApi.getCustomers();
+  }, []);
 
   //#region "Methods"
 
@@ -42,6 +46,7 @@ export const Customers = () => {
     StartDate: currentDate(),
     EndDate: null,
   };
+
   // Redirect to Main Page
   function handleEditClick(customerId: Number) {
     if (customerId == 0) {

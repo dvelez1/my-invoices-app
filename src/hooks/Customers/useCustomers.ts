@@ -1,18 +1,20 @@
 import { useState } from "react";
 import { axiosInterface } from "../../helper/axiosInterface";
-import { Product } from "../../interfaces/product";
+import { Customer } from "../../interfaces/customer";
 import { useToastNotification } from "../helpers/useToastNotification";
 
-export const useProducts = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+export const useCustomers = () => {
+  const [customers, setCustomers] = useState<Customer[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { notificationApi } = useToastNotification();
 
-  const getProducts = async () => {
+  const getCustomers = async () => {
     try {
       setIsLoading(true);
-      const resp = await axiosInterface.get<Product[]>("product/getProducts");
-      setProducts(resp.data);
+      const resp = await axiosInterface.get<Customer[]>(
+        "customer/getCustomers"
+      );
+      setCustomers(resp.data);
     } catch (error: any) {
       console.error(error);
       notificationApi.showNotification(
@@ -24,12 +26,12 @@ export const useProducts = () => {
     }
   };
 
-  const upsertProduct = async (product: Product) => {
+  const upsertCustomer = async (customer: Customer) => {
     try {
       const resp =
-        product?.ProductId && product?.ProductId > 0
-          ? axiosInterface.post("product/updateProduct", product)
-          : axiosInterface.put("product/createProduct", product);
+        customer?.CustomerId && customer?.CustomerId > 0
+          ? axiosInterface.post("customer/updateCustomer", customer)
+          : axiosInterface.put("customer/createCustomer", customer);
 
       if ((await resp)?.data)
         notificationApi.showNotification(
@@ -43,18 +45,18 @@ export const useProducts = () => {
         notificationApi.genericMessage.Error
       );
     } finally {
-      getProducts();
+      getCustomers();
     }
   };
 
-  const producApi = {
-    getProducts,
-    upsertProduct,
+  const customerApi = {
+    getCustomers,
+    upsertCustomer,
   };
 
   return {
-    products,
+    customers,
     isLoading,
-    producApi,
+    customerApi,
   };
 };
