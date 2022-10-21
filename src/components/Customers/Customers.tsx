@@ -4,10 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Customer } from "../../interfaces/customer";
 import { useCustomers } from "../../hooks/Customers/useCustomers";
 
-// Data Context
-import { useDataContext } from "../../context/DataContext";
-// Toast
-
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";
 import { currentDate } from "../../helper/dateFormatter";
@@ -16,22 +12,6 @@ import { PaginationComponent } from "../shared/PaginationComponent";
 //#endregion Imports
 
 export const Customers = () => {
-  const { setCustomerModel } = useDataContext();
-  const { customers, isLoading, customerApi } = useCustomers();
-  const [currentPage, setCurrentPage] = useState(0);
-  const [search, setSearch] = useState("");
-
-  useEffect(() => {
-    customerApi.getCustomers();
-  }, []);
-
-  //#region "Methods"
-
-  const navigate = useNavigate();
-  const handleUpsertClick = () => {
-    navigate("/customerUpsert");
-  };
-
   const customerDefaultInitialization = {
     CustomerId: 0,
     Name: "",
@@ -47,12 +27,29 @@ export const Customers = () => {
     EndDate: null,
   };
 
+  const [customer, setCustomer] = useState<Customer>(
+    customerDefaultInitialization
+  );
+  const { customers, isLoading, customerApi } = useCustomers();
+  const [currentPage, setCurrentPage] = useState(0);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    customerApi.getCustomers();
+  }, []);
+
+  //#region "Methods"
+  const navigate = useNavigate();
+  const handleUpsertClick = () => {
+    navigate("/customerUpsert", {
+      state: customer,
+    });
+  };
+
   // Redirect to Main Page
   function handleEditClick(customerId: Number) {
     if (customerId == 0) {
-      setCustomerModel(customerDefaultInitialization);
-    } else {
-      setCustomerModel(
+      setCustomer(
         customers.filter((obj) => {
           return obj.CustomerId === customerId;
         })[0]

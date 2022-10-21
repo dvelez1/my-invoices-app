@@ -13,7 +13,7 @@ export const useValidations = () => {
   const nullOrLengthEqualTo = (value: any, name: string, length: number) => {
     if (value === null || value === undefined || value === "") return "";
 
-    if (value.length != length) return name + ": lenght must be equal to " + length + "!" ;
+    if (value.length != length) return name + " length must be equal to " + length + "!" ;
   };
 
   // Actions / Methods

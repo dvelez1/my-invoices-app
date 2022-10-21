@@ -1,79 +1,52 @@
 //#region Imports
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useCustomers } from "../../hooks/Customers/useCustomers";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
 import { currentDate } from "../../helper/dateFormatter";
 // Data Context
-import { useDataContext } from "../../context/DataContext";
-import { customerValidation } from "../../hooks/Customers/customerValidation";
+import { useCustomerValidation } from "../../hooks/Customers/useCustomerValidation";
 // Import Spinner
 import { Loading } from "../../components/shared/Loading";
 import { Customer } from "../../interfaces/customer";
 import { useToastNotification } from "../../hooks/helpers/useToastNotification";
+import { useCustomers } from "../../hooks/Customers/useCustomers";
 
 //#endregion Imports
 
 export const CustomerUpsert = () => {
-  const { setCustomerModel, customerModel } = useDataContext();
-  const [formErrors, setFormErrors] = useState<any>({});
+  const location = useLocation();
+  var formData = Object.freeze(location.state as Customer);
+  const [customer, setCustomer] = React.useState<Customer>(formData);
   const { notificationApi } = useToastNotification();
   const [isSubmit, setIsSubmit] = useState(false);
   const { customerApi } = useCustomers();
-
-  const customerDefaultInitialization: Customer = {
-    CustomerId: 0,
-    Name: "",
-    MiddleName: "",
-    FirstName: "",
-    LastName: "",
-    Address1: "",
-    Address2: "",
-    City: "",
-    State: "",
-    ZipCode: "",
-    StartDate: currentDate(),
-    EndDate: null,
-  };
-
-  // Initialize with default data when null object
-  useEffect(() => {
-    if (!customerModel) {
-      setCustomerModel(customerDefaultInitialization);
-    }
-  }, []);
-
-  // Run Validation
-  useEffect(() => {
-    if (customerModel) setFormErrors(customerValidation(customerModel));
-  }, [customerModel]);
+  const {
+    customerValidationErrors,
+    customerValidationPassed,
+    customerValidations,
+  } = useCustomerValidation();
 
   //#region "Methods"
 
   // Navigate (Route)
   const navigate = useNavigate();
   const handleUpsertRedirection = () => {
-    setCustomerModel(null!);
     navigate("/customer");
   };
 
   const handleChange = (e: any) => {
-    setCustomerModel({
-      ...customerModel,
+    setCustomer({
+      ...customer,
       // Trimming any whitespace
       [e.target.name]: e.target.value.trim(),
     });
   };
 
-  // Validation Result Evaluation
-  const successValidation = (): boolean => {
-    return Object.keys(formErrors).length === 0;
-  };
-
   // Insert/Edit Operation
   const handleSaveClick = () => {
     setIsSubmit(true);
-    if (successValidation()) {
-      customerApi.upsertCustomer(customerModel).finally(() => {
+    if (customerValidationPassed) {
+      customerApi.upsertCustomer(customer).finally(() => {
         handleUpsertRedirection();
       });
     } else {
@@ -88,13 +61,16 @@ export const CustomerUpsert = () => {
 
   //#endregion "Methods"
 
+  // Run Validation
+  useEffect(() => {
+    if (customer) customerValidations(customer);
+  }, [customer]);
+
   return (
     <>
       <div className="card">
         <h3 className="card-header">
-          {customerModel?.CustomerId === 0
-            ? "Create Customer"
-            : "Edit Customer"}
+          {customer?.CustomerId === 0 ? "Create Customer" : "Edit Customer"}
         </h3>
         <div className="card-body">
           <div className="row">
@@ -107,10 +83,10 @@ export const CustomerUpsert = () => {
                 className="form-control"
                 name="Name"
                 placeholder="Name"
-                defaultValue={customerModel?.Name}
+                defaultValue={customer?.Name}
                 onChange={handleChange}
               />
-              <p className="text-danger"> {formErrors?.Name}</p>
+              <p className="text-danger"> {customerValidationErrors?.Name}</p>
             </div>
             <div className="col-md-3">
               <label className="form-label">
@@ -121,7 +97,7 @@ export const CustomerUpsert = () => {
                 className="form-control"
                 name="MiddleName"
                 placeholder="Middle Name"
-                defaultValue={customerModel?.MiddleName}
+                defaultValue={customer?.MiddleName}
                 onChange={handleChange}
               />
             </div>
@@ -134,10 +110,10 @@ export const CustomerUpsert = () => {
                 className="form-control"
                 name="FirstName"
                 placeholder="First Name"
-                defaultValue={customerModel?.FirstName}
+                defaultValue={customer?.FirstName}
                 onChange={handleChange}
               />
-              <p className="text-danger"> {formErrors?.FirstName}</p>
+              <p className="text-danger"> {customerValidationErrors?.FirstName}</p>
             </div>
             <div className="col-md-3">
               <label className="form-label">
@@ -148,7 +124,7 @@ export const CustomerUpsert = () => {
                 className="form-control"
                 name="LastName"
                 placeholder="Last Name"
-                defaultValue={customerModel?.LastName}
+                defaultValue={customer?.LastName}
                 onChange={handleChange}
               />
             </div>
@@ -164,7 +140,7 @@ export const CustomerUpsert = () => {
                 className="form-control"
                 name="Address1"
                 placeholder="Address 1"
-                defaultValue={customerModel?.Address1}
+                defaultValue={customer?.Address1}
                 onChange={handleChange}
               />
             </div>
@@ -177,7 +153,7 @@ export const CustomerUpsert = () => {
                 className="form-control"
                 name="Address2"
                 placeholder="Address 2"
-                defaultValue={customerModel?.Address2}
+                defaultValue={customer?.Address2}
                 onChange={handleChange}
               />
             </div>
@@ -193,10 +169,10 @@ export const CustomerUpsert = () => {
                 className="form-control"
                 name="City"
                 placeholder="City"
-                defaultValue={customerModel?.City}
+                defaultValue={customer?.City}
                 onChange={handleChange}
               />
-              <p className="text-danger"> {formErrors?.City}</p>
+              <p className="text-danger"> {customerValidationErrors?.City}</p>
             </div>
             <div className="col-md-4">
               <label className="form-label">
@@ -208,10 +184,10 @@ export const CustomerUpsert = () => {
                 className="form-control"
                 name="State"
                 placeholder="State"
-                defaultValue={customerModel?.State}
+                defaultValue={customer?.State}
                 onChange={handleChange}
               />
-              <p className="text-danger"> {formErrors?.State}</p>
+              <p className="text-danger"> {customerValidationErrors?.State}</p>
             </div>
             <div className="col-md-4">
               <label className="form-label">
@@ -222,17 +198,17 @@ export const CustomerUpsert = () => {
                 className="form-control"
                 name="ZipCode"
                 placeholder="Zip Code"
-                defaultValue={customerModel?.ZipCode}
+                defaultValue={customer?.ZipCode}
                 onChange={handleChange}
               />
-              <p className="text-danger"> {formErrors?.ZipCode}</p>
+              <p className="text-danger"> {customerValidationErrors?.ZipCode}</p>
             </div>
           </div>
 
           <div className="card-footer text-muted mt-4">
             <div className="d-grid gap-2 d-md-flex justify-content-md-end">
               <button
-                disabled={!successValidation()}
+                disabled={!customerValidationPassed}
                 className="btn btn-primary me-md-2"
                 type="button"
                 onClick={handleSaveClick}
