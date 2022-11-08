@@ -1,24 +1,23 @@
 // Boostrap  5 --> npm i bootstrap
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 // Boostrap Icons --> npm i bootstrap-icons
-import 'bootstrap-icons/font/bootstrap-icons.css';
+import "bootstrap-icons/font/bootstrap-icons.css";
 
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
 
 //Context Provider
-import  DataProvider  from "./context/DataContext";
+import DataProvider from "./context/DataContext";
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
-  // <React.StrictMode>
-    <DataProvider>
-    <App />
-    </DataProvider>
-  // </React.StrictMode>
+  <DataProvider>
+    <div className="container-fluid">
+      <App />
+    </div>
+  </DataProvider>
 );
-
