@@ -1,5 +1,4 @@
 import React from "react";
-import { Navbar } from "./components/Navbar";
 
 import { Home } from "./pages/Home";
 import { CustomersPage } from "./pages/CustomersPage";
@@ -11,6 +10,7 @@ import { CustomerUpsert } from "./components/Customers/CustomerUpsert";
 import { ProductUpsert } from "./components/Products/ProductUpsert";
 import {InvoiceUpsert} from "./components/Invoice/InvoiceUpsert"
 import { ToastNotificationContainer } from "./components/shared/toastNotifications/ToastNotificationContainer";
+import { NavbarComponent } from "./components/shared/NavbarComponent";
 
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
     <>
     <ToastNotificationContainer />
       <BrowserRouter>
-        <Navbar />
+        <NavbarComponent />
         <div className="context">
           <Routes>
             <Route path="/" element={<Home />} />
