@@ -12,7 +12,7 @@ import { PaginationComponent } from "../shared/PaginationComponent";
 //#endregion Imports
 
 export const Customers = () => {
-  const customerDefaultInitialization = {
+  const customerDefaultInitialization: Customer = {
     CustomerId: 0,
     Name: "",
     MiddleName: "",
@@ -27,9 +27,6 @@ export const Customers = () => {
     EndDate: null,
   };
 
-  const [customer, setCustomer] = useState<Customer>(
-    customerDefaultInitialization
-  );
   const { customers, isLoading, customerApi } = useCustomers();
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState("");
@@ -40,23 +37,15 @@ export const Customers = () => {
 
   //#region "Methods"
   const navigate = useNavigate();
-  const handleUpsertClick = () => {
+  const handleUpsertClick = (customerId: Number) => {
+    let customer = customers.filter((obj) => {
+      return obj.CustomerId === customerId;
+    })[0];
+
     navigate("/customerUpsert", {
-      state: customer,
+      state: customer ?? customerDefaultInitialization,
     });
   };
-
-  // Redirect to Main Page
-  function handleEditClick(customerId: Number) {
-    if (customerId == 0) {
-      setCustomer(
-        customers.filter((obj) => {
-          return obj.CustomerId === customerId;
-        })[0]
-      );
-    }
-    handleUpsertClick();
-  }
 
   //#region "Filtering and Pagination"
 
@@ -98,7 +87,7 @@ export const Customers = () => {
           <button
             type="button"
             className="btn btn-primary mt-2"
-            onClick={() => handleEditClick(0)}
+            onClick={() => handleUpsertClick(0)}
           >
             Create New Customer
           </button>
@@ -143,7 +132,7 @@ export const Customers = () => {
                           title="Edit Customer"
                           className="bi bi-pencil-square cursor"
                           style={{ fontSize: 20 }}
-                          onClick={() => handleEditClick(CustomerId)}
+                          onClick={() => handleUpsertClick(CustomerId)}
                         ></i>
                       </span>
                     </td>
