@@ -14,7 +14,6 @@ export const InvoiceUpsertDetails = (props: any) => {
     return (price ?? 0) * (quantity ?? 0);
   };
 
-
   //#region OnChange Methods
   const handleProductChange = (e: any, invoiceDetailsId: number) => {
     setProduct(e.target.value);
@@ -79,133 +78,135 @@ export const InvoiceUpsertDetails = (props: any) => {
 
   return (
     <>
-      <table className="table table-sm mt-2">
-        <thead className="thead-dark">
-          <tr>
-            <th>Product Name</th>
-            <th>Catalog Price</th>
-            <th>Transaction Price</th>
-            <th>Quantity</th>
-            <th>Total</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {invoiceDetailsArray?.map(
-            ({
-              InvoiceDetailsId,
-              InvoiceId,
-              ProductId,
-              ProductName,
-              CatalogPrice,
-              Price,
-              Quantity,
-            }) => (
-              <tr key={InvoiceDetailsId}>
-                <td>
-                  <select
-                    className="form-control"
-                    aria-label="Floating label select example"
-                    onChange={(e) => {
-                      handleProductChange(e, InvoiceDetailsId);
-                    }}
-                    value={ProductId || ""}
-                    name="ProductId"
-                  >
-                    <option value="" disabled>
-                      {" "}
-                      -- Select a Product --{" "}
-                    </option>
-                    {props.products.map((prod: any) => (
-                      <option
-                        key={prod.ProductId}
-                        value={prod.ProductId}
-                        disabled={isCreateOperation(InvoiceId)}
-                      >
-                        ({prod.ProductId}) - {prod.Name}
-                      </option>
-                    ))}
-                  </select>
-                </td>
-                <td>
-                  <div className="input-group">
-                    <span className="input-group-text">$</span>
-                    <input
-                      type="number"
+      <div className="overflow-auto">
+        <table className="table table-sm mt-2">
+          <thead className="thead-dark">
+            <tr>
+              <th>Product Name</th>
+              <th>Catalog Price</th>
+              <th>Transaction Price</th>
+              <th>Quantity</th>
+              <th>Total</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {invoiceDetailsArray?.map(
+              ({
+                InvoiceDetailsId,
+                InvoiceId,
+                ProductId,
+                ProductName,
+                CatalogPrice,
+                Price,
+                Quantity,
+              }) => (
+                <tr key={InvoiceDetailsId}>
+                  <td>
+                    <select
                       className="form-control"
-                      name="CatalogPrice"
-                      placeholder="Catalog Price"
-                      value={CatalogPrice.toFixed(2)}
+                      aria-label="Floating label select example"
                       onChange={(e) => {
-                        handleCatPriceChange(e, InvoiceDetailsId);
+                        handleProductChange(e, InvoiceDetailsId);
                       }}
-                      readOnly
-                    />
-                  </div>
-                </td>
-                <td>
-                  <div className="input-group mb-3">
-                    <span className="input-group-text">$</span>
+                      value={ProductId || ""}
+                      name="ProductId"
+                    >
+                      <option value="" disabled>
+                        {" "}
+                        -- Select a Product --{" "}
+                      </option>
+                      {props.products.map((prod: any) => (
+                        <option
+                          key={prod.ProductId}
+                          value={prod.ProductId}
+                          disabled={isCreateOperation(InvoiceId)}
+                        >
+                          ({prod.ProductId}) - {prod.Name}
+                        </option>
+                      ))}
+                    </select>
+                  </td>
+                  <td>
+                    <div className="input-group">
+                      <span className="input-group-text">$</span>
+                      <input
+                        type="number"
+                        className="form-control"
+                        name="CatalogPrice"
+                        placeholder="Catalog Price"
+                        value={CatalogPrice.toFixed(2)}
+                        onChange={(e) => {
+                          handleCatPriceChange(e, InvoiceDetailsId);
+                        }}
+                        readOnly
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div className="input-group mb-3">
+                      <span className="input-group-text">$</span>
+                      <input
+                        type="number"
+                        className="form-control"
+                        name="Price"
+                        placeholder="Price"
+                        defaultValue={Price.toFixed(2)}
+                        onChange={(e) => {
+                          handlePriceChange(e, InvoiceDetailsId);
+                        }}
+                        readOnly={isCreateOperation(InvoiceId)}
+                      />
+                    </div>
+                  </td>
+                  <td>
                     <input
                       type="number"
                       className="form-control"
-                      name="Price"
-                      placeholder="Price"
-                      defaultValue={Price.toFixed(2)}
+                      name="Quantity"
+                      placeholder="Quantity"
+                      defaultValue={Quantity}
                       onChange={(e) => {
-                        handlePriceChange(e, InvoiceDetailsId);
+                        handleQuantityChange(e, InvoiceDetailsId);
                       }}
                       readOnly={isCreateOperation(InvoiceId)}
                     />
-                  </div>
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    className="form-control"
-                    name="Quantity"
-                    placeholder="Quantity"
-                    defaultValue={Quantity}
-                    onChange={(e) => {
-                      handleQuantityChange(e, InvoiceDetailsId);
-                    }}
-                    readOnly={isCreateOperation(InvoiceId)}
-                  />
-                </td>
-                <td>
-                  <div className="input-group mb-3">
-                    <span className="input-group-text">$</span>
-                    <input
-                      type="number"
-                      className="form-control"
-                      name="Total"
-                      placeholder="Total"
-                      value={calculateTotal(Price, Quantity).toFixed(2)}
-                      readOnly
-                    />
-                  </div>
-                </td>
-                <td>
-                  <span
-                    style={{
-                      visibility: !isCreateOperation(InvoiceId)
-                        ? "visible"
-                        : "hidden",
-                    }}
-                  >
-                    <i
-                      title="Delete Customer"
-                      className="bi bi-trash cursor"
-                      style={{ fontSize: 25 }}
-                      onClick={() => handleRemoveClick(InvoiceDetailsId)}
-                    ></i>
-                  </span>
-                </td>
-              </tr>
-            )
-          )}
-        </tbody>
-      </table>
+                  </td>
+                  <td>
+                    <div className="input-group mb-3">
+                      <span className="input-group-text">$</span>
+                      <input
+                        type="number"
+                        className="form-control"
+                        name="Total"
+                        placeholder="Total"
+                        value={calculateTotal(Price, Quantity).toFixed(2)}
+                        readOnly
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <span
+                      style={{
+                        visibility: !isCreateOperation(InvoiceId)
+                          ? "visible"
+                          : "hidden",
+                      }}
+                    >
+                      <i
+                        title="Delete Customer"
+                        className="bi bi-trash cursor"
+                        style={{ fontSize: 25 }}
+                        onClick={() => handleRemoveClick(InvoiceDetailsId)}
+                      ></i>
+                    </span>
+                  </td>
+                </tr>
+              )
+            )}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 };

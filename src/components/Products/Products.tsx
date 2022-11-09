@@ -85,29 +85,31 @@ export const Products = () => {
           >
             Create New Product
           </button>
-          <table className="table table-sm mt-2">
-            <thead className="">
-              <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Action</th>
-              </tr>
-            </thead>
+          <div className="overflow-auto">
+            <table className="table table-sm mt-2">
+              <thead className="">
+                <tr>
+                  <th>Id</th>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
 
-            <tbody>
-              {/* Row list implementation */}
-              {filteredDataSource().map(({ ProductId, Name, Price }) => (
-                <ProductsRows
-                  key={ProductId}
-                  ProductId={ProductId}
-                  Name={Name}
-                  Price={Price}
-                  handleUpsertClick={handleUpsertClick}
-                />
-              ))}
-            </tbody>
-          </table>
+              <tbody>
+                {/* Row list implementation */}
+                {filteredDataSource().map(({ ProductId, Name, Price }) => (
+                  <ProductsRows
+                    key={ProductId}
+                    ProductId={ProductId}
+                    Name={Name}
+                    Price={Price}
+                    handleUpsertClick={handleUpsertClick}
+                  />
+                ))}
+              </tbody>
+            </table>
+          </div>
           <PaginationComponent
             currentPage={currentPage}
             search={search}

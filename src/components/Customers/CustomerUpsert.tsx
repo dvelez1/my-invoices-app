@@ -113,7 +113,10 @@ export const CustomerUpsert = () => {
                 defaultValue={customer?.FirstName}
                 onChange={handleChange}
               />
-              <p className="text-danger"> {customerValidationErrors?.FirstName}</p>
+              <p className="text-danger">
+                {" "}
+                {customerValidationErrors?.FirstName}
+              </p>
             </div>
             <div className="col-md-3">
               <label className="form-label">
@@ -201,7 +204,10 @@ export const CustomerUpsert = () => {
                 defaultValue={customer?.ZipCode}
                 onChange={handleChange}
               />
-              <p className="text-danger"> {customerValidationErrors?.ZipCode}</p>
+              <p className="text-danger">
+                {" "}
+                {customerValidationErrors?.ZipCode}
+              </p>
             </div>
           </div>
 

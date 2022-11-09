@@ -23,51 +23,52 @@ export const InvoicesDetails = (props: any) => {
           Show Invoice Details
         </Button>
       </div>
+      <div className="overflow-auto">
+        <Collapse in={open}>
+          <div id="collapse-invoice-details">
+            <table className="table table-sm">
+              <thead className="thead-dark">
+                <tr>
+                  <th>Product Name</th>
+                  <th>Catalog Price</th>
+                  <th>Transaction Price</th>
+                  <th>Quantity</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
 
-      <Collapse in={open}>
-        <div id="collapse-invoice-details">
-          <table className="table table-sm">
-            <thead className="thead-dark">
-              <tr>
-                <th>Product Name</th>
-                <th>Catalog Price</th>
-                <th>Transaction Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {invoiceDetails
-                .filter((obj: any) => obj.InvoiceId === props.InvoiceId)
-                .map(
-                  ({
-                    ProductName,
-                    CatalogPrice,
-                    Price,
-                    Quantity,
-                    InvoiceDetailsId,
-                  }) => (
-                    <tr key={InvoiceDetailsId}>
-                      <td>{ProductName}</td>
-                      <td>
-                        {"$ "} {CatalogPrice ? CatalogPrice.toFixed(2) : 0}
-                      </td>
-                      <td>
-                        {"$ "} {Price ? Price.toFixed(2) : 0}
-                      </td>
-                      <td>{Quantity ?? 0}</td>
-                      <td>
-                        {"$ "}
-                        {((Quantity ?? 0) * (Price ?? 0)).toFixed(2)}
-                      </td>
-                    </tr>
-                  )
-                )}
-            </tbody>
-          </table>
-        </div>
-      </Collapse>
+              <tbody>
+                {invoiceDetails
+                  .filter((obj: any) => obj.InvoiceId === props.InvoiceId)
+                  .map(
+                    ({
+                      ProductName,
+                      CatalogPrice,
+                      Price,
+                      Quantity,
+                      InvoiceDetailsId,
+                    }) => (
+                      <tr key={InvoiceDetailsId}>
+                        <td>{ProductName}</td>
+                        <td>
+                          {"$ "} {CatalogPrice ? CatalogPrice.toFixed(2) : 0}
+                        </td>
+                        <td>
+                          {"$ "} {Price ? Price.toFixed(2) : 0}
+                        </td>
+                        <td>{Quantity ?? 0}</td>
+                        <td>
+                          {"$ "}
+                          {((Quantity ?? 0) * (Price ?? 0)).toFixed(2)}
+                        </td>
+                      </tr>
+                    )
+                  )}
+              </tbody>
+            </table>
+          </div>
+        </Collapse>
+      </div>
     </>
   );
 };

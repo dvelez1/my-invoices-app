@@ -91,56 +91,58 @@ export const Customers = () => {
           >
             Create New Customer
           </button>
-          <table className="table table-sm mt-2">
-            <thead className="thead-dark">
-              <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Address 1</th>
-                <th>Address 2</th>
-                <th>City</th>
-                <th>State</th>
-                <th>Zip Code</th>
-                <th>Action</th>
-              </tr>
-            </thead>
+          <div className="overflow-auto" >
+            <table className="table table-sm mt-2">
+              <thead className="thead-dark">
+                <tr>
+                  <th>Id</th>
+                  <th>Name</th>
+                  <th>Address 1</th>
+                  <th>Address 2</th>
+                  <th>City</th>
+                  <th>State</th>
+                  <th>Zip Code</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
 
-            <tbody>
-              {filteredDataSource().map(
-                ({
-                  CustomerId,
-                  Name,
-                  FirstName,
-                  LastName,
-                  Address1,
-                  Address2,
-                  City,
-                  State,
-                  ZipCode,
-                }) => (
-                  <tr key={CustomerId}>
-                    <td>{CustomerId}</td>
-                    <td>{Name + " " + FirstName + " " + LastName}</td>
-                    <td>{Address1}</td>
-                    <td>{Address2}</td>
-                    <td>{City}</td>
-                    <td>{State}</td>
-                    <td>{ZipCode}</td>
-                    <td>
-                      <span className="me-md-2 ">
-                        <i
-                          title="Edit Customer"
-                          className="bi bi-pencil-square cursor"
-                          style={{ fontSize: 20 }}
-                          onClick={() => handleUpsertClick(CustomerId)}
-                        ></i>
-                      </span>
-                    </td>
-                  </tr>
-                )
-              )}
-            </tbody>
-          </table>
+              <tbody>
+                {filteredDataSource().map(
+                  ({
+                    CustomerId,
+                    Name,
+                    FirstName,
+                    LastName,
+                    Address1,
+                    Address2,
+                    City,
+                    State,
+                    ZipCode,
+                  }) => (
+                    <tr key={CustomerId}>
+                      <td>{CustomerId}</td>
+                      <td>{Name + " " + FirstName + " " + LastName}</td>
+                      <td>{Address1}</td>
+                      <td>{Address2}</td>
+                      <td>{City}</td>
+                      <td>{State}</td>
+                      <td>{ZipCode}</td>
+                      <td>
+                        <span className="me-md-2 ">
+                          <i
+                            title="Edit Customer"
+                            className="bi bi-pencil-square cursor"
+                            style={{ fontSize: 20 }}
+                            onClick={() => handleUpsertClick(CustomerId)}
+                          ></i>
+                        </span>
+                      </td>
+                    </tr>
+                  )
+                )}
+              </tbody>
+            </table>
+          </div>
           <PaginationComponent
             currentPage={currentPage}
             search={search}
