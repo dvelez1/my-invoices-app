@@ -23,20 +23,28 @@ export const InvoicesDetails = (props: any) => {
           Show Invoice Details
         </Button>
       </div>
-      <div className="overflow-auto">
-        <Collapse in={open}>
-          <div id="collapse-invoice-details">
+
+      <Collapse in={open}>
+        <div id="collapse-invoice-details">
+          <div className="overflow-auto">
             <table className="table table-sm">
               <thead className="thead-dark">
                 <tr>
-                  <th>Product Name</th>
-                  <th>Catalog Price</th>
-                  <th>Transaction Price</th>
+                  <th>
+                    Product
+                    Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </th>
+                  <th>
+                    Catalog
+                    Price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </th>
+                  <th>Transaction Price&nbsp;&nbsp;&nbsp;</th>
                   <th>Quantity</th>
-                  <th>Total</th>
+                  <th>
+                    Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </th>
                 </tr>
               </thead>
-
               <tbody>
                 {invoiceDetails
                   .filter((obj: any) => obj.InvoiceId === props.InvoiceId)
@@ -67,8 +75,8 @@ export const InvoicesDetails = (props: any) => {
               </tbody>
             </table>
           </div>
-        </Collapse>
-      </div>
+        </div>
+      </Collapse>
     </>
   );
 };

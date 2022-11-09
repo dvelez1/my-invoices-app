@@ -80,13 +80,13 @@ export const InvoiceUpsertDetails = (props: any) => {
     <>
       <div className="overflow-auto">
         <table className="table table-sm mt-2">
-          <thead className="thead-dark">
+          <thead className="thead-dark" >
             <tr>
-              <th>Product Name</th>
-              <th>Catalog Price</th>
-              <th>Transaction Price</th>
+              <th>Product Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+              <th>Catalog Price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+              <th>Transaction Price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
               <th>Quantity</th>
-              <th>Total</th>
+              <th>Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -102,7 +102,7 @@ export const InvoiceUpsertDetails = (props: any) => {
                 Quantity,
               }) => (
                 <tr key={InvoiceDetailsId}>
-                  <td>
+                  <td >
                     <select
                       className="form-control"
                       aria-label="Floating label select example"
@@ -128,8 +128,8 @@ export const InvoiceUpsertDetails = (props: any) => {
                     </select>
                   </td>
                   <td>
-                    <div className="input-group">
-                      <span className="input-group-text">$</span>
+                    <div className="d-flex flex-lg-row">
+                    <span className="input-group-text">$</span>
                       <input
                         type="number"
                         className="form-control"
@@ -144,8 +144,8 @@ export const InvoiceUpsertDetails = (props: any) => {
                     </div>
                   </td>
                   <td>
-                    <div className="input-group mb-3">
-                      <span className="input-group-text">$</span>
+                    <div className="d-flex flex-lg-row">
+                    <span className="input-group-text">$</span>
                       <input
                         type="number"
                         className="form-control"
@@ -173,8 +173,8 @@ export const InvoiceUpsertDetails = (props: any) => {
                     />
                   </td>
                   <td>
-                    <div className="input-group mb-3">
-                      <span className="input-group-text">$</span>
+                    <div className="d-flex flex-lg-row">
+                    <span className="input-group-text">$</span>
                       <input
                         type="number"
                         className="form-control"

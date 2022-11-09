@@ -21,6 +21,7 @@ function App() {
         <NavbarComponent />
         <div className="context">
           <Routes>
+            <Route path="/*" element={<Home />} />
             <Route path="/" element={<Home />} />
             <Route path="/customer" element={<CustomersPage />} />
             <Route path="/customerUpsert" element={<CustomerUpsert />} />
